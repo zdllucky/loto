@@ -36,7 +36,7 @@
   },
   "eslintConfig": {
     "overrides": [{
-      "files": ["{**/*,*}.{js,ts,jsx,tsx,html,sass}"],
+      "files": ["{**/*,*}.{js,ts,jsx,tsx,html,sass,pug}"],
       "plugins": [
         "prettier",
         "pug"

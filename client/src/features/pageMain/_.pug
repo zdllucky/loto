@@ -1,6 +1,16 @@
 
 .header
   img(:src="$store.img.header")
+template(x-route="/" x-authredirect:unauthed="/sign")
+  .container-fluid
+    .row
+      .col.text-center
+        .display-1 Welcome
+    .row
+      .col.d-flex.flex-column.py-5
+        button.btn.btn-lg.btn-warning Start new game
+template(x-route="/sign")
+  include ../pageSign/_
 
 img.floatingBottomDog(:src="$store.img.dogBottom")
 
