@@ -18,7 +18,8 @@
     "winston": "^3.9.0",
     "zod-prisma": "^0.5.4",
     "express": "^4.18.2",
-    "zod": "^3.21.4"
+    "zod": "^3.21.4",
+    "@redis/client": "^1.5.8"
   },
   "devDependencies": {
     "@types/swagger-ui-express": "^4.1.3",

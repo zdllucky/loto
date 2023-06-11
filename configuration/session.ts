@@ -1,6 +1,8 @@
 import { randomBytes } from "crypto";
-import { statelessSessions } from "@keystone-6/core/session";
+import { storedSessions } from "@keystone-6/core/session";
 import { Config } from ".keystone/types";
+import { Session } from "../schema/misc/accessHelpers";
+import { createClient } from "@redis/client";
 
 let sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret && process.env.NODE_ENV !== "production") {
@@ -9,9 +11,35 @@ if (!sessionSecret && process.env.NODE_ENV !== "production") {
 
 const sessionMaxAge = 60 * 60 * 24 * 30;
 
-const session: Config["session"] = statelessSessions({
-  maxAge: sessionMaxAge,
-  secret: sessionSecret!,
+export const redis = createClient({
+  url: "redis://localhost:6379",
 });
 
+function redisSessionStrategy() {
+  return storedSessions<Session>({
+    maxAge: sessionMaxAge,
+    // the session secret is used to encrypt cookie data
+    secret: sessionSecret!,
+
+    store: () => ({
+      async get(sessionId) {
+        const result = await redis.get(sessionId);
+        if (!result) return;
+
+        return JSON.parse(result) as Session;
+      },
+
+      async set(sessionId, data) {
+        // we use redis for our Session data, in JSON
+        await redis.setEx(sessionId, sessionMaxAge, JSON.stringify(data));
+      },
+
+      async delete(sessionId) {
+        await redis.del(sessionId);
+      },
+    }),
+  });
+}
+
+const session: Config["session"] = redisSessionStrategy();
 export default session;

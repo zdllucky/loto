@@ -1,4 +1,5 @@
 import { Config } from ".keystone/types";
+import { redis } from "./session";
 
 const generatorZod = `
 generator zod {
@@ -13,9 +14,12 @@ generator zod {
 `;
 
 const db: Config["db"] = {
-  provider: "sqlite",
-  url: "file:./keystone.db",
+  provider: "postgresql",
+  url: "postgres://postgres:postgres@localhost:5432/postgres",
   extendPrismaSchema: (s) => `${s}${generatorZod}`,
+  async onConnect() {
+    await redis.connect();
+  },
 };
 
 export default db;
