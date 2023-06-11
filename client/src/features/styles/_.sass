@@ -1,0 +1,40 @@
+@import '_colors.sass'
+@import '_components.sass'
+@import '_fonts.sass'
+
+html, body
+  scroll-behavior: smooth
+
+  &::-webkit-scrollbar, *::-webkit-scrollbar
+    display: none
+
+  &, *
+    -ms-overflow-style: none
+    //noinspection CssUnknownProperty
+    scrollbar-width: none
+    touch-action: pan-y
+    -webkit-touch-callout: none
+
+  -webkit-user-select: none
+  -ms-user-select: none
+  user-select: none
+
+body
+  //overflow-x: hidden
+  padding: 0 calc((max(560px, 100vw) - 560px) / 2)
+
+  background-color: $bg
+  background-repeat: repeat-y
+  background-position: top center
+  background-size: 100vh max(calc(560px * 2.94), 100%)
+
+  & > *
+    position: relative
+
+//noinspection CssInvalidPseudoSelector
+input::-webkit-contacts-auto-fill-button
+  visibility: hidden
+  display: none !important
+  pointer-events: none
+  position: absolute
+  right: 0

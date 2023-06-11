@@ -1,0 +1,48 @@
+@use "../styles/_" as *
+
+.modal
+  position: fixed
+  height: 100vh
+  width: min(100vw, 560px)
+  background: $semitransparent-dark
+  top: 0
+  left: max(calc((100vw - 560px) / 2), 0)
+  box-sizing: border-box
+  z-index: 10
+  display: flex
+  justify-content: center
+  align-items: center
+
+  .panel
+    background: $label-light
+    padding: 24px 16px
+    overflow-x: hidden
+    max-height: 90vh
+    margin: 16px
+    overflow-y: scroll
+    position: relative
+    border-radius: 12px
+
+    .result
+      text-align: center
+
+      .title
+        @extend %title3-semibold
+        color: $label-primary !important
+
+      .subtitle
+        @extend %subheadline-semibold
+        color: $label-secondary !important
+        margin-top: 8px
+
+      button
+        margin-top: 10px
+        width: 100%
+
+.animated
+  transition: all 300ms ease-out
+
+  &-slide-start
+    transform: translateY(100vh)
+  &-slide-end
+    transform: translateY(0%)

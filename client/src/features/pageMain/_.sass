@@ -1,0 +1,31 @@
+@use '../styles/_.sass' as *
+
+.header
+  img
+    width: 100%
+
+.lead
+  text-align: center
+  padding: 0 16px
+  margin-top: 24px
+
+  .title
+    @extend %title3-semibold
+
+  .subtitle
+    margin-top: 12px
+    @extend %callout-regular
+
+.wish-form
+  padding: 0 16px
+  margin-top: 24px
+
+  .title
+    @extend %title3-semibold
+
+.floatingBottomDog
+  position: absolute
+  bottom: -350px
+  width: min(60vw, calc(560px * .6))
+  left: max(20vw, calc((100vw - 560px) / 2 + 560px * .2))
+  z-index: -1
