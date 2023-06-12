@@ -6,11 +6,19 @@ template(x-route="/" x-authredirect:unauthed="/sign")
     .row
       .col.text-center
         .display-1 Welcome
-    .row
-      .col.d-flex.flex-column.py-5
-        button.btn.btn-lg.btn-warning Start new game
+    .row.py-5
+      .col.d-flex.flex-column
+        .semitransparent-container.container-fluid
+          .row
+            .col
+              a.btn.btn-lg.btn-warning.w-100(x-link href="/rooms") Join games
+          .row
+            .col.d-flex.flex-column.pt-4
+              button.btn.btn-lg.btn-light(@click="$store.auth.signOut()") Sign out
 template(x-route="/sign")
   include ../pageSign/_
+template(x-route="/rooms" x-authredirect:unauthed="/sign")
+    include ../pageRooms/_
 
 img.floatingBottomDog(:src="$store.img.dogBottom")
 

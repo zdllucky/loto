@@ -3,9 +3,12 @@ import {
   authenticateUserWithPassword,
   registerUserWithLoginAndPassword,
 } from "./authRepo.js";
+import persist from "@alpinejs/persist";
+
+Alpine.plugin(persist);
 
 Alpine.store("auth", {
-  token: undefined,
+  token: Alpine.$persist(false).as("session_token"),
   async signIn(login, password) {
     try {
       this.token = await authenticateUserWithPassword(login, password);
@@ -27,7 +30,7 @@ Alpine.store("auth", {
     }
   },
   signOut() {
-    this.token = undefined;
+    this.token = false;
     this._alertAuthChange();
   },
   _alertAuthChange() {
