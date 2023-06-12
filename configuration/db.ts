@@ -1,5 +1,6 @@
 import { Config } from ".keystone/types";
 import { redis } from "./session";
+import initMQService from "../workers";
 
 const generatorZod = `
 generator zod {
@@ -17,8 +18,10 @@ const db: Config["db"] = {
   provider: "postgresql",
   url: "postgres://postgres:postgres@localhost:5432/postgres",
   extendPrismaSchema: (s) => `${s}${generatorZod}`,
-  async onConnect() {
+  async onConnect(context) {
     await redis.connect();
+
+    await initMQService({ context });
   },
 };
 

@@ -8,6 +8,11 @@ import { Context } from ".keystone/types";
 import express, { json, urlencoded } from "express";
 import routing from "./router";
 import { version, name } from "../package.json";
+import { ExpressAdapter } from "@bull-board/express";
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { Queue } from "bullmq";
+import { connection, Queues } from "../workers/consts";
 
 export let config: any;
 
@@ -24,6 +29,25 @@ const extendExpressApp = (app: express.Express, context: Context) => {
   };
 
   const { notFoundHandler } = attachRouting(config, routing);
+
+  const serverAdapter = new ExpressAdapter();
+  serverAdapter.setBasePath("/queues");
+
+  createBullBoard({
+    queues: [
+      new BullMQAdapter(new Queue(Queues.roomGenerator.name, { connection })),
+      new BullMQAdapter(
+        new Queue(Queues.roomBotsGenerator.name, { connection })
+      ),
+      new BullMQAdapter(new Queue(Queues.botsCleanup.name, { connection })),
+      new BullMQAdapter(
+        new Queue(Queues.fullFakeRoomCleanup.name, { connection })
+      ),
+    ],
+    serverAdapter,
+  });
+
+  app.use("/queues", serverAdapter.getRouter());
 
   //   app.use(
   //     "/api/rest/docs",

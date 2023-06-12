@@ -2,7 +2,7 @@ version: '3'
 
 services:
   database:
-    image: postgres:9.6
+    image: postgres:alpine
     ports:
       - "5432:5432"
     environment:
@@ -12,6 +12,6 @@ services:
     volumes:
       - ./data:/var/lib/postgresql/data
   session:
-    image: redis:3.2
+    image: redis:alpine
     ports:
       - "6379:6379"
