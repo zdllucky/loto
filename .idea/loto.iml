@@ -5,6 +5,10 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.keystone" />
       <excludeFolder url="file://$MODULE_DIR$/server/zod" />
+      <excludePattern pattern="package-lock.json" />
+      <excludePattern pattern="*.db" />
+      <excludePattern pattern="schema.prisma" />
+      <excludePattern pattern="*.log" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

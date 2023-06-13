@@ -9,16 +9,21 @@ template(x-route="/" x-authredirect:unauthed="/sign")
     .row.py-5
       .col.d-flex.flex-column
         .semitransparent-container.container-fluid
+          .row(x-show="$store.user.roomId" x-init="$store.user.refresh()")
+            .col.pb-4
+              a.btn.btn-lg.btn-warning.w-100(x-link href="/room/await") Continue
           .row
             .col
-              a.btn.btn-lg.btn-warning.w-100(x-link href="/rooms") Join games
+              a.btn.btn-lg.btn-warning.w-100(x-link href="/room/all") Join games
           .row
             .col.d-flex.flex-column.pt-4
               button.btn.btn-lg.btn-light(@click="$store.auth.signOut()") Sign out
 template(x-route="/sign")
   include ../pageSign/_
-template(x-route="/rooms" x-authredirect:unauthed="/sign")
+template(x-route="/room/all" x-authredirect:unauthed="/sign")
     include ../pageRooms/_
+template(x-route="/room/await" x-authredirect:unauthed="/sign")
+  include ../pageRoomAwait/_
 
 img.floatingBottomDog(:src="$store.img.dogBottom")
 

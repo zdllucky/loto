@@ -1,5 +1,7 @@
 import Alpine from "alpinejs";
 
+Alpine.$repo = {};
+
 Object.defineProperty(window, "onAlpineInit", {
   writable: false,
   value: (fn) => document.addEventListener("alpine:init", () => fn(Alpine)),
