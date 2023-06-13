@@ -10,14 +10,11 @@ export type ExportedSchema = Record<
   }
 >;
 
+export type Extension = (
+  schema: BaseSchemaMeta
+) => Field<unknown, any, OutputType<any>, string, any>;
+
 export type ExportedExtension = {
-  mutation?: Record<
-    string,
-    (
-      schema: BaseSchemaMeta
-    ) => Field<unknown, any, OutputType<any>, string, any>
-  >;
-  query?: (
-    schema: BaseSchemaMeta
-  ) => Field<unknown, any, OutputType<any>, string, any>;
+  mutation?: Record<string, Extension>;
+  query?: Record<string, Extension>;
 };
