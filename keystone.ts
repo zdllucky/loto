@@ -1,4 +1,4 @@
-import * as lists from "./schema/";
+import lists from "./schema/";
 import { config } from "@keystone-6/core";
 import { configuration, withAuth } from "./configuration";
 import { Config } from ".keystone/types";
@@ -6,6 +6,8 @@ import { Config } from ".keystone/types";
 export default withAuth(
   config({
     ...configuration,
-    lists,
+    lists: Object.fromEntries(
+      Object.keys(lists).map((key) => [key, lists[key].schema])
+    ),
   } as Config)
 );

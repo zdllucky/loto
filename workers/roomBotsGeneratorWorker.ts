@@ -14,14 +14,19 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
       return { message: "Too many rooms" };
 
     const rooms = await sCtx.query.Room.findMany({
-      query: "id, botsCount, bots { id }",
+      query: "id, botsCount, bots { id }, users { id }, usersCount",
     });
 
     const bots = rooms.reduce(
       (acc, room) => {
-        if (Math.random() < changeProbability && room.botsCount < amount) {
+        if (
+          Math.random() < changeProbability &&
+          room.botsCount + room.usersCount < amount
+        ) {
           const shouldAdd =
-            Math.random() < addToSubtractProbability || room.botsCount < 2;
+            Math.random() < addToSubtractProbability ||
+            room.botsCount < 2 ||
+            room.usersCount > 0;
 
           if (shouldAdd) {
             return {

@@ -1,7 +1,7 @@
 import { Worker, Job } from "bullmq";
 import { connection, Queues } from "./consts";
 import { Context } from ".keystone/types";
-import { createId } from "@paralleldrive/cuid2";
+import cuid from "cuid";
 import { generateUsername } from "unique-username-generator";
 
 const roomGeneratorWorkerInit = (context: Context) =>
@@ -19,7 +19,7 @@ const roomGeneratorWorkerInit = (context: Context) =>
         const roomsData = Array.from({ length: roomsToCreate }).map(() => ({
           speed: getRandomSpeed(),
           createdAt: new Date(),
-          id: createId(),
+          id: cuid(),
         }));
 
         const botsData = Array.from({ length: roomsToCreate }).map((_, i) => ({

@@ -11,11 +11,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Bot {
-  id     String  @id @default(cuid())
-  login  String  @unique @default("")
-  room   Room?   @relation("Bot_room", fields: [roomId], references: [id])
-  roomId String? @map("room")
+model User {
+  id        String       @id @default(cuid())
+  login     String       @unique @default("")
+  role      UserRoleType @default(user)
+  room      Room?        @relation("User_room", fields: [roomId], references: [id])
+  roomId    String?      @map("room")
+  password  String
+  createdAt DateTime?    @default(now())
 
   @@index([roomId])
 }
@@ -24,15 +27,17 @@ model Room {
   id        String    @id @default(cuid())
   speed     Int?
   bots      Bot[]     @relation("Bot_room")
+  users     User[]    @relation("User_room")
   createdAt DateTime? @default(now())
 }
 
-model User {
-  id        String       @id @default(cuid())
-  login     String       @unique @default("")
-  role      UserRoleType @default(user)
-  password  String
-  createdAt DateTime?    @default(now())
+model Bot {
+  id     String  @id @default(cuid())
+  login  String  @unique @default("")
+  room   Room?   @relation("Bot_room", fields: [roomId], references: [id])
+  roomId String? @map("room")
+
+  @@index([roomId])
 }
 
 enum UserRoleType {

@@ -3,7 +3,7 @@ import { denyAll } from "@keystone-6/core/access";
 import { hasSession } from "./misc/accessHelpers";
 import { relationship, text } from "@keystone-6/core/fields";
 
-export const Bot = list({
+const schema = list({
   fields: {
     login: text({
       validation: { isRequired: true },
@@ -29,3 +29,5 @@ export const Bot = list({
   },
   graphql: { omit: { create: true, update: true, delete: true } },
 });
+
+export default { schema };

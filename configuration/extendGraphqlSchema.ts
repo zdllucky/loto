@@ -1,52 +1,35 @@
 import { graphql } from "@keystone-6/core";
-import { Context, Config } from ".keystone/types";
+import { Config } from ".keystone/types";
+import schema from "../schema";
+import { Extension } from "@keystone-6/core/dist/declarations/src/types/schema/graphql-ts-schema";
 
 // noinspection TypeScriptValidateJSTypes
 const extendGraphqlSchema: Config["extendGraphqlSchema"] = graphql.extend(
-  (base) => ({
-    mutation: {
-      registerUserWithLoginAndPassword: graphql.field({
-        type: base.union("UserAuthenticationWithPasswordResult"),
-        args: {
-          login: graphql.arg({ type: graphql.nonNull(graphql.String) }),
-          password: graphql.arg({ type: graphql.nonNull(graphql.String) }),
-        },
-        async resolve(source, { login, password }, context: Context) {
-          const sudoContext = context.sudo();
+  (base) => {
+    return Object.entries(schema).reduce(
+      (acc, [, value]) => {
+        if (value.extension) {
+          value.extension.mutation &&
+            Object.entries(value.extension.mutation).forEach(
+              ([mutationKey, mutationValue]) =>
+                (acc.mutation![mutationKey] = mutationValue(base))
+            );
 
-          try {
-            await sudoContext.query.User.createOne({
-              data: { login, password },
-            });
-          } catch (e: any) {
-            return {
-              message: e?.message ?? "Undefined error",
-            };
-          }
-          const res = await context.graphql.run({
-            query: `
-              mutation AuthenticateUserWithPassword($login: String!, $password: String!) {
-                authenticateUserWithPassword(login: $login, password: $password) {
-                  ... on UserAuthenticationWithPasswordSuccess {
-                    sessionToken
-                  }
-                  ... on UserAuthenticationWithPasswordFailure {
-                    message
-                  }
-                }
-              }
-            `,
-            variables: {
-              login,
-              password,
-            },
-          });
+          value.extension.query &&
+            Object.entries(value.extension.query).forEach(
+              ([queryKey, queryValue]) =>
+                (acc.query![queryKey] = queryValue(base))
+            );
+        }
 
-          return (res as any).authenticateUserWithPassword;
-        },
-      }),
-    },
-  })
+        return acc;
+      },
+      {
+        mutation: {},
+        query: {},
+      } as Extension
+    );
+  }
 );
 
 export default extendGraphqlSchema;
