@@ -21,9 +21,7 @@ Alpine.store("user", {
       this.roomId = user.room?.id;
       this.createdAt = user.createdAt;
     } catch (e) {
-      const message = e.message ?? "Something went wrong";
-
-      return message;
+      return e.message ?? "Something went wrong";
     }
   },
 });

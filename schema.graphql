@@ -6,6 +6,7 @@ type User {
   login: String
   role: UserRoleType
   room: Room
+  game: Game
   password: PasswordState
   createdAt: DateTime
 }
@@ -34,6 +35,7 @@ input UserWhereInput {
   login: StringFilter
   role: UserRoleTypeNullableFilter
   room: RoomWhereInput
+  game: GameWhereInput
   createdAt: DateTimeNullableFilter
 }
 
@@ -116,12 +118,19 @@ input UserUpdateInput {
   login: String
   role: UserRoleType
   room: RoomRelateToOneForUpdateInput
+  game: GameRelateToOneForUpdateInput
   password: String
   createdAt: DateTime
 }
 
 input RoomRelateToOneForUpdateInput {
   connect: RoomWhereUniqueInput
+  disconnect: Boolean
+}
+
+input GameRelateToOneForUpdateInput {
+  create: GameCreateInput
+  connect: GameWhereUniqueInput
   disconnect: Boolean
 }
 
@@ -134,12 +143,18 @@ input UserCreateInput {
   login: String
   role: UserRoleType
   room: RoomRelateToOneForCreateInput
+  game: GameRelateToOneForCreateInput
   password: String
   createdAt: DateTime
 }
 
 input RoomRelateToOneForCreateInput {
   connect: RoomWhereUniqueInput
+}
+
+input GameRelateToOneForCreateInput {
+  create: GameCreateInput
+  connect: GameWhereUniqueInput
 }
 
 type Room {
@@ -200,6 +215,7 @@ type Bot {
   id: ID!
   login: String
   room: Room
+  game: Game
 }
 
 input BotWhereUniqueInput {
@@ -214,11 +230,192 @@ input BotWhereInput {
   id: IDFilter
   login: StringFilter
   room: RoomWhereInput
+  game: GameWhereInput
 }
 
 input BotOrderByInput {
   id: OrderDirection
   login: OrderDirection
+}
+
+type Game {
+  id: ID!
+  speed: Int
+  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
+  usersCount(where: UserWhereInput! = {}): Int
+  bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
+  botsCount(where: BotWhereInput! = {}): Int
+  createdAt: DateTime
+  step: Int
+  balls: JSON
+  playerBallBinds(where: PlayerBallBindWhereInput! = {}, orderBy: [PlayerBallBindOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PlayerBallBindWhereUniqueInput): [PlayerBallBind!]
+  playerBallBindsCount(where: PlayerBallBindWhereInput! = {}): Int
+}
+
+input GameWhereUniqueInput {
+  id: ID
+}
+
+input GameWhereInput {
+  AND: [GameWhereInput!]
+  OR: [GameWhereInput!]
+  NOT: [GameWhereInput!]
+  id: IDFilter
+  speed: IntFilter
+  users: UserManyRelationFilter
+  bots: BotManyRelationFilter
+  createdAt: DateTimeNullableFilter
+  step: IntFilter
+  playerBallBinds: PlayerBallBindManyRelationFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input PlayerBallBindManyRelationFilter {
+  every: PlayerBallBindWhereInput
+  some: PlayerBallBindWhereInput
+  none: PlayerBallBindWhereInput
+}
+
+input GameOrderByInput {
+  id: OrderDirection
+  speed: OrderDirection
+  createdAt: OrderDirection
+  step: OrderDirection
+}
+
+input GameUpdateInput {
+  speed: Int
+  users: UserRelateToManyForUpdateInput
+  bots: BotRelateToManyForUpdateInput
+  createdAt: DateTime
+  step: Int
+  balls: JSON
+  playerBallBinds: PlayerBallBindRelateToManyForUpdateInput
+}
+
+input UserRelateToManyForUpdateInput {
+  disconnect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input BotRelateToManyForUpdateInput {
+  disconnect: [BotWhereUniqueInput!]
+  set: [BotWhereUniqueInput!]
+  connect: [BotWhereUniqueInput!]
+}
+
+input PlayerBallBindRelateToManyForUpdateInput {
+  disconnect: [PlayerBallBindWhereUniqueInput!]
+  set: [PlayerBallBindWhereUniqueInput!]
+  create: [PlayerBallBindCreateInput!]
+  connect: [PlayerBallBindWhereUniqueInput!]
+}
+
+input GameUpdateArgs {
+  where: GameWhereUniqueInput!
+  data: GameUpdateInput!
+}
+
+input GameCreateInput {
+  speed: Int
+  users: UserRelateToManyForCreateInput
+  bots: BotRelateToManyForCreateInput
+  createdAt: DateTime
+  step: Int
+  playerBallBinds: PlayerBallBindRelateToManyForCreateInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input BotRelateToManyForCreateInput {
+  connect: [BotWhereUniqueInput!]
+}
+
+input PlayerBallBindRelateToManyForCreateInput {
+  create: [PlayerBallBindCreateInput!]
+  connect: [PlayerBallBindWhereUniqueInput!]
+}
+
+type PlayerBallBind {
+  id: ID!
+  user: User
+  bot: Bot
+  createdAt: DateTime
+  game: Game
+}
+
+input PlayerBallBindWhereUniqueInput {
+  id: ID
+}
+
+input PlayerBallBindWhereInput {
+  AND: [PlayerBallBindWhereInput!]
+  OR: [PlayerBallBindWhereInput!]
+  NOT: [PlayerBallBindWhereInput!]
+  id: IDFilter
+  user: UserWhereInput
+  bot: BotWhereInput
+  createdAt: DateTimeNullableFilter
+  game: GameWhereInput
+}
+
+input PlayerBallBindOrderByInput {
+  id: OrderDirection
+  createdAt: OrderDirection
+}
+
+input PlayerBallBindUpdateInput {
+  user: UserRelateToOneForUpdateInput
+  bot: BotRelateToOneForUpdateInput
+  createdAt: DateTime
+  game: GameRelateToOneForUpdateInput
+}
+
+input UserRelateToOneForUpdateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+  disconnect: Boolean
+}
+
+input BotRelateToOneForUpdateInput {
+  connect: BotWhereUniqueInput
+  disconnect: Boolean
+}
+
+input PlayerBallBindUpdateArgs {
+  where: PlayerBallBindWhereUniqueInput!
+  data: PlayerBallBindUpdateInput!
+}
+
+input PlayerBallBindCreateInput {
+  user: UserRelateToOneForCreateInput
+  bot: BotRelateToOneForCreateInput
+  createdAt: DateTime
+  game: GameRelateToOneForCreateInput
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input BotRelateToOneForCreateInput {
+  connect: BotWhereUniqueInput
 }
 
 """
@@ -233,6 +430,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createGame(data: GameCreateInput!): Game
+  createGames(data: [GameCreateInput!]!): [Game]
+  updateGame(where: GameWhereUniqueInput!, data: GameUpdateInput!): Game
+  updateGames(data: [GameUpdateArgs!]!): [Game]
+  deleteGame(where: GameWhereUniqueInput!): Game
+  deleteGames(where: [GameWhereUniqueInput!]!): [Game]
+  createPlayerBallBind(data: PlayerBallBindCreateInput!): PlayerBallBind
+  createPlayerBallBinds(data: [PlayerBallBindCreateInput!]!): [PlayerBallBind]
+  updatePlayerBallBind(where: PlayerBallBindWhereUniqueInput!, data: PlayerBallBindUpdateInput!): PlayerBallBind
+  updatePlayerBallBinds(data: [PlayerBallBindUpdateArgs!]!): [PlayerBallBind]
+  deletePlayerBallBind(where: PlayerBallBindWhereUniqueInput!): PlayerBallBind
+  deletePlayerBallBinds(where: [PlayerBallBindWhereUniqueInput!]!): [PlayerBallBind]
   endSession: Boolean!
   authenticateUserWithPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -287,6 +496,12 @@ type Query {
   bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
   bot(where: BotWhereUniqueInput!): Bot
   botsCount(where: BotWhereInput! = {}): Int
+  games(where: GameWhereInput! = {}, orderBy: [GameOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: GameWhereUniqueInput): [Game!]
+  game(where: GameWhereUniqueInput!): Game
+  gamesCount(where: GameWhereInput! = {}): Int
+  playerBallBinds(where: PlayerBallBindWhereInput! = {}, orderBy: [PlayerBallBindOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PlayerBallBindWhereUniqueInput): [PlayerBallBind!]
+  playerBallBind(where: PlayerBallBindWhereUniqueInput!): PlayerBallBind
+  playerBallBindsCount(where: PlayerBallBindWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

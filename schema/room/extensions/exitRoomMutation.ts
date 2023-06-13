@@ -1,8 +1,8 @@
-import { Extension } from "../../misc/types";
+import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
 import { Context } from ".keystone/types";
 
-const exitRoomMutation: Extension = (schema) => {
+const exitRoomMutation: Extension = () => {
   const ExitRoomFailure = graphql.object<{ message: string }>()({
     name: "ExitRoomFailure",
     fields: {

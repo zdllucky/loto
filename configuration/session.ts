@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { storedSessions } from "@keystone-6/core/session";
 import { Config } from ".keystone/types";
-import { Session } from "../schema/misc/accessHelpers";
+import { Session } from "../schema/_misc/accessHelpers";
 import { createClient } from "@redis/client";
 
 let sessionSecret = process.env.SESSION_SECRET;

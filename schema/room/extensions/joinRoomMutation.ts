@@ -1,8 +1,8 @@
 import { graphql } from "@keystone-6/core";
-import { Extension } from "../../misc/types";
+import { Extension } from "../../_misc/types";
 import { Context } from ".keystone/types";
 
-const joinRoomMutation: Extension = (schema) => {
+const joinRoomMutation: Extension = () => {
   const JoinRoomFailure = graphql.object<{ message: string }>()({
     name: "JoinRoomFailure",
     fields: {

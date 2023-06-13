@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { denyAll } from "@keystone-6/core/access";
-import { hasSession } from "./misc/accessHelpers";
+import { hasSession } from "./_misc/accessHelpers";
 import { relationship, text } from "@keystone-6/core/fields";
 
 const schema = list({
@@ -11,6 +11,7 @@ const schema = list({
       isIndexed: "unique",
     }),
     room: relationship({ ref: "Room.bots", many: false }),
+    game: relationship({ ref: "Game.bots", many: false }),
   },
   access: {
     operation: {
