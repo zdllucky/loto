@@ -238,6 +238,7 @@ type Mutation {
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   registerUserWithLoginAndPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   joinRoom(roomId: ID!): joinRoomResult
+  exitRoom: ExitRoomResult
 }
 
 union joinRoomResult = JoinRoomSuccess | JoinRoomFailure
@@ -247,6 +248,16 @@ type JoinRoomSuccess {
 }
 
 type JoinRoomFailure {
+  message: String!
+}
+
+union ExitRoomResult = ExitRoomSuccess | ExitRoomFailure
+
+type ExitRoomSuccess {
+  ok: Boolean
+}
+
+type ExitRoomFailure {
   message: String!
 }
 

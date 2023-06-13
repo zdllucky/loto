@@ -29,7 +29,9 @@ Alpine.data("waitRoom", () => ({
       alert(e.message ?? "Something went wrong");
     }
   },
-  exitRoom() {
+  async exitRoom() {
     Alpine.$router.push("/room/all");
+    await Alpine.$repo.rooms.exitRoom();
+    await Alpine.store("user").refresh();
   },
 }));

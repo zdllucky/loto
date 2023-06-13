@@ -51,10 +51,38 @@ const selectRoom = async ({ roomId }) => {
 
   const { data } = await res.json();
 
-  console.log(data);
-
   if (data.joinRoom.__typename === "JoinRoomFailure") {
     throw new Error(data.joinRoom.message);
+  }
+};
+
+const exitRoom = async () => {
+  const res = await fetch("http://localhost:3000/api/graphql", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${Alpine.store("auth").token}`,
+    },
+    body: JSON.stringify({
+      query: `mutation ExitRoom {
+        exitRoom {
+          __typename
+          ... on ExitRoomSuccess {
+            ok
+          }
+          ... on ExitRoomFailure {
+            message
+          }
+        }
+      }`,
+      variables: {},
+    }),
+  });
+
+  const { data } = await res.json();
+
+  if (data.exitRoom.__typename === "ExitRoomFailure") {
+    throw new Error(data.exitRoom.message);
   }
 };
 
@@ -102,4 +130,5 @@ Alpine.$repo.rooms = {
   getRooms,
   selectRoom,
   getRoom,
+  exitRoom,
 };
