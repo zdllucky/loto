@@ -1,5 +1,5 @@
 import { Context } from ".keystone/types";
-import { Queues } from "./consts";
+import { Queues } from "../consts";
 import { Worker } from "bullmq";
 const fullFakeRoomCleanupWorkerInit = ({ context }: { context: Context }) =>
   new Worker(Queues.fullFakeRoomCleanup.name, async () => {

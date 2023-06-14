@@ -1,6 +1,6 @@
 import { Config } from ".keystone/types";
 import { redis } from "./session";
-import initMQService from "../workers";
+import initMQService from "../brokers";
 
 const generatorZod = `
 generator zod {

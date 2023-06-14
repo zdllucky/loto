@@ -418,6 +418,54 @@ input BotRelateToOneForCreateInput {
   connect: BotWhereUniqueInput
 }
 
+type Card {
+  id: ID!
+  game: Game
+  user: User
+  bot: Bot
+  numbers: JSON
+  board: JSON
+}
+
+input CardWhereUniqueInput {
+  id: ID
+}
+
+input CardWhereInput {
+  AND: [CardWhereInput!]
+  OR: [CardWhereInput!]
+  NOT: [CardWhereInput!]
+  id: IDFilter
+  game: GameWhereInput
+  user: UserWhereInput
+  bot: BotWhereInput
+}
+
+input CardOrderByInput {
+  id: OrderDirection
+}
+
+input CardUpdateInput {
+  game: GameRelateToOneForUpdateInput
+  user: UserRelateToOneForUpdateInput
+  bot: BotRelateToOneForUpdateInput
+  numbers: JSON
+  board: JSON
+}
+
+input CardUpdateArgs {
+  where: CardWhereUniqueInput!
+  data: CardUpdateInput!
+}
+
+input CardCreateInput {
+  game: GameRelateToOneForCreateInput
+  user: UserRelateToOneForCreateInput
+  bot: BotRelateToOneForCreateInput
+  numbers: JSON
+  board: JSON
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -442,6 +490,12 @@ type Mutation {
   updatePlayerBallBinds(data: [PlayerBallBindUpdateArgs!]!): [PlayerBallBind]
   deletePlayerBallBind(where: PlayerBallBindWhereUniqueInput!): PlayerBallBind
   deletePlayerBallBinds(where: [PlayerBallBindWhereUniqueInput!]!): [PlayerBallBind]
+  createCard(data: CardCreateInput!): Card
+  createCards(data: [CardCreateInput!]!): [Card]
+  updateCard(where: CardWhereUniqueInput!, data: CardUpdateInput!): Card
+  updateCards(data: [CardUpdateArgs!]!): [Card]
+  deleteCard(where: CardWhereUniqueInput!): Card
+  deleteCards(where: [CardWhereUniqueInput!]!): [Card]
   endSession: Boolean!
   authenticateUserWithPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -502,6 +556,9 @@ type Query {
   playerBallBinds(where: PlayerBallBindWhereInput! = {}, orderBy: [PlayerBallBindOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PlayerBallBindWhereUniqueInput): [PlayerBallBind!]
   playerBallBind(where: PlayerBallBindWhereUniqueInput!): PlayerBallBind
   playerBallBindsCount(where: PlayerBallBindWhereInput! = {}): Int
+  cards(where: CardWhereInput! = {}, orderBy: [CardOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CardWhereUniqueInput): [Card!]
+  card(where: CardWhereUniqueInput!): Card
+  cardsCount(where: CardWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

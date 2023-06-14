@@ -30,6 +30,19 @@ export const Queues = {
       repeat: { every: 2000 },
     },
   },
+  createGameEvent: {
+    name: "createGameEvent",
+    options: {
+      limit: 100,
+      repeat: { every: 10000 },
+    },
+  },
+  createGameProcedure: {
+    name: "createGameProcedure",
+    options: {
+      amount: 5,
+    },
+  },
 };
 
 export const connection = {

@@ -1,17 +1,70 @@
 import { Context } from ".keystone/types";
 import { Queue } from "bullmq";
-import roomGeneratorWorkerInit from "./roomGeneratorWorker";
+import roomGeneratorWorkerInit from "./workers/roomGeneratorWorker";
 import { connection, Queues } from "./consts";
-import roomBotsGeneratorWorkerInit from "./roomBotsGeneratorWorker";
-import botsCleanupWorkerInit from "./botsCleanupWorker";
-import fullFakeRoomCleanupWorkerInit from "./fullFakeRoomCleanupWorker";
+import roomBotsGeneratorWorkerInit from "./workers/roomBotsGeneratorWorker";
+import botsCleanupWorkerInit from "./workers/botsCleanupWorker";
+import fullFakeRoomCleanupWorkerInit from "./workers/fullFakeRoomCleanupWorker";
+import createGameEventWorkerInit from "./workers/createGameEventWorker";
+import createGameProcedureWorkerInit from "./workers/createGameProcedureWorker";
+export interface BigInt {
+  /** Convert to BigInt to string form in JSON.stringify */
+  toJSON: () => string;
+}
+
+// @ts-ignore
+BigInt.prototype.toJSON = function () {
+  try {
+    const number = Number(this.toString());
+    if (Number.isNaN(number)) {
+      throw new Error("Not a number");
+    }
+
+    return number;
+  } catch (e) {
+    return this.toString();
+  }
+};
 
 const initMQService = async ({ context }: { context: Context }) => ({
   ...(await initRoomGenerator({ context })),
   ...(await initRoomBotsGenerator({ context })),
   ...(await initBotsCleanup({ context })),
   ...(await initFullFakeRoomCleanup({ context })),
+  ...(await initCreateGameProcedure({ context })),
+  ...(await initCreateGameEvent({ context })),
 });
+
+const initCreateGameProcedure = async ({ context }: { context: Context }) => {
+  const createGameProcedureQueue = new Queue(Queues.createGameProcedure.name, {
+    connection,
+  });
+
+  const createGameProcedureWorker = createGameProcedureWorkerInit({ context });
+
+  createGameProcedureWorker.isRunning() ||
+    (await createGameProcedureWorker.run());
+
+  return { createGameProcedureQueue, createGameProcedureWorker };
+};
+
+const initCreateGameEvent = async ({ context }: { context: Context }) => {
+  const createGameEventQueue = new Queue(Queues.createGameEvent.name, {
+    connection,
+  });
+
+  const createGameEventWorker = createGameEventWorkerInit({ context });
+
+  createGameEventWorker.isRunning() || (await createGameEventWorker.run());
+
+  await createGameEventQueue.add(
+    "createGameEventRepeatedly",
+    { limit: Queues.createGameEvent.options.limit },
+    { repeat: Queues.createGameEvent.options.repeat }
+  );
+
+  return { createGameEventQueue, createGameEventWorker };
+};
 
 const initFullFakeRoomCleanup = async ({ context }: { context: Context }) => {
   const fullFakeRoomCleanupQueue = new Queue(Queues.fullFakeRoomCleanup.name, {

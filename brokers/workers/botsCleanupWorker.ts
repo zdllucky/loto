@@ -1,6 +1,6 @@
 import { Context } from ".keystone/types";
 import { Worker } from "bullmq";
-import { Queues } from "./consts";
+import { Queues } from "../consts";
 const botsCleanupWorkerInit = ({ context }: { context: Context }) =>
   new Worker(Queues.botsCleanup.name, async () => {
     const sCtx = context.sudo();

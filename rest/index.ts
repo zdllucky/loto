@@ -12,7 +12,7 @@ import { ExpressAdapter } from "@bull-board/express";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
 import { Queue } from "bullmq";
-import { connection, Queues } from "../workers/consts";
+import { connection, Queues } from "../brokers/consts";
 
 export let config: any;
 
@@ -34,16 +34,9 @@ const extendExpressApp = (app: express.Express, context: Context) => {
   serverAdapter.setBasePath("/queues");
 
   createBullBoard({
-    queues: [
-      new BullMQAdapter(new Queue(Queues.roomGenerator.name, { connection })),
-      new BullMQAdapter(
-        new Queue(Queues.roomBotsGenerator.name, { connection })
-      ),
-      new BullMQAdapter(new Queue(Queues.botsCleanup.name, { connection })),
-      new BullMQAdapter(
-        new Queue(Queues.fullFakeRoomCleanup.name, { connection })
-      ),
-    ],
+    queues: Object.values(Queues).map(
+      (queue) => new BullMQAdapter(new Queue(queue.name, { connection }))
+    ),
     serverAdapter,
   });
 

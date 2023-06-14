@@ -1,5 +1,5 @@
 import { Worker, Job } from "bullmq";
-import { connection, Queues } from "./consts";
+import { connection, Queues } from "../consts";
 import { Context } from ".keystone/types";
 import cuid from "cuid";
 import { generateUsername } from "unique-username-generator";

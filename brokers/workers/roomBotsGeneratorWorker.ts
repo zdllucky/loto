@@ -1,6 +1,6 @@
 import { Context } from ".keystone/types";
 import { Worker } from "bullmq";
-import { Queues } from "./consts";
+import { Queues } from "../consts";
 import { generateUsername } from "unique-username-generator";
 const roomBotsGeneratorWorkerInit = (context: Context) =>
   new Worker(Queues.roomBotsGenerator.name, async ({ data }) => {
