@@ -355,12 +355,14 @@ type PlayerBallBind {
   id: ID!
   user: User
   bot: Bot
+  number: Int
   createdAt: DateTime
   game: Game
 }
 
 input PlayerBallBindWhereUniqueInput {
   id: ID
+  number: Int
 }
 
 input PlayerBallBindWhereInput {
@@ -370,18 +372,21 @@ input PlayerBallBindWhereInput {
   id: IDFilter
   user: UserWhereInput
   bot: BotWhereInput
+  number: IntFilter
   createdAt: DateTimeNullableFilter
   game: GameWhereInput
 }
 
 input PlayerBallBindOrderByInput {
   id: OrderDirection
+  number: OrderDirection
   createdAt: OrderDirection
 }
 
 input PlayerBallBindUpdateInput {
   user: UserRelateToOneForUpdateInput
   bot: BotRelateToOneForUpdateInput
+  number: Int
   createdAt: DateTime
   game: GameRelateToOneForUpdateInput
 }
@@ -405,6 +410,7 @@ input PlayerBallBindUpdateArgs {
 input PlayerBallBindCreateInput {
   user: UserRelateToOneForCreateInput
   bot: BotRelateToOneForCreateInput
+  number: Int
   createdAt: DateTime
   game: GameRelateToOneForCreateInput
 }
@@ -561,6 +567,13 @@ type Query {
   cardsCount(where: CardWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
+  gamePlayerProgress: [Player!]!
+}
+
+type Player {
+  id: ID!
+  login: String!
+  progress: [Int!]
 }
 
 union AuthenticatedItem = User

@@ -45,7 +45,7 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           createdAt: new Date(),
           users: { connect: room.users.map((user) => ({ id: user.id })) },
           bots: { connect: room.bots.map((bot) => ({ id: bot.id })) },
-          balls: { create: generateRandomUniqueNumbersArray(90) },
+          balls: generateRandomUniqueNumbersArray(90),
           step: 0,
         },
       });
@@ -59,15 +59,13 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           .map((user, index) =>
             Array(3)
               .fill(undefined)
-              .map((_, i) => {
-                return {
-                  userId: user.id,
-                  gameId: game.id,
-                  numbers: cards[index * i].flat(2).filter((n) => n !== 0),
+              .map((_, i) => ({
+                userId: user.id,
+                gameId: game.id,
+                numbers: cards[(index + 1) * i].flat(2).filter((n) => n !== 0),
 
-                  board: cards[index * i],
-                };
-              })
+                board: cards[(index + 1) * i],
+              }))
           )
           .flat(),
 
@@ -76,14 +74,15 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
             Array(3)
               .fill(undefined)
               .map((_, i) => {
+                console.log(bot.id);
                 return {
                   botId: bot.id,
                   gameId: game.id,
-                  numbers: cards[room._count.users * 3 + index * i]
+                  numbers: cards[room._count.users * 3 + (index + 1) * i]
                     .flat(2)
                     .filter((n) => n !== 0),
 
-                  board: cards[room._count.users * 3 + index * i],
+                  board: cards[room._count.users * 3 + (index + 1) * i],
                 };
               })
           )

@@ -57,7 +57,7 @@ model Game {
   bots            Bot[]            @relation("Bot_game")
   createdAt       DateTime?        @default(now())
   step            Int              @default(0)
-  balls           Json?            @default("[86,64,60,50,49,16,57,42,51,13,22,28,17,83,62,47,56,23,37,60,48,45,36,83,54,51,37,47,40,49,81,45,13,37,24,12,90,52,70,5,12,80,29,43,70,33,89,15,13,58,11,19,5,43,74,76,84,72,3,42,56,32,42,25,1,25,60,23,65,70,39,72,4,38,1,4,14,89,56,36,69,58,36,69,12,50,6,66,35,21]")
+  balls           Json?            @default("[50,51,36,56,19,56,41,52,66,86,28,88,80,69,35,77,22,5,14,76,48,59,31,22,73,36,82,10,47,42,84,42,79,41,75,90,18,68,69,12,40,4,17,86,67,7,23,39,75,28,38,55,89,21,77,1,90,37,44,60,74,56,43,84,8,1,2,38,1,44,90,3,66,85,27,28,42,24,8,84,69,53,61,4,88,22,42,22,19,24]")
   playerBallBinds PlayerBallBind[] @relation("PlayerBallBind_game")
   from_Card_game  Card[]           @relation("Card_game")
 }
@@ -68,6 +68,7 @@ model PlayerBallBind {
   userId    String?   @map("user")
   bot       Bot?      @relation("PlayerBallBind_bot", fields: [botId], references: [id])
   botId     String?   @map("bot")
+  number    Int       @unique
   createdAt DateTime? @default(now())
   game      Game?     @relation("PlayerBallBind_game", fields: [gameId], references: [id])
   gameId    String?   @map("game")

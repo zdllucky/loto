@@ -27,6 +27,12 @@ const schema = list({
   fields: {
     user: relationship({ ref: "User", many: false, isFilterable: true }),
     bot: relationship({ ref: "Bot", many: false, isFilterable: true }),
+    number: integer({
+      isFilterable: true,
+      isOrderable: true,
+      validation: { min: 1, max: 90, isRequired: true },
+      isIndexed: "unique",
+    }),
     createdAt: timestamp({ defaultValue: { kind: "now" }, isOrderable: true }),
     game: relationship({
       ref: "Game.playerBallBinds",

@@ -6,7 +6,9 @@ const botsCleanupWorkerInit = ({ context }: { context: Context }) =>
     const sCtx = context.sudo();
 
     const { count } = await sCtx.prisma.bot.deleteMany({
-      where: { roomId: { equals: null } },
+      where: {
+        AND: [{ roomId: { equals: null } }, { gameId: { equals: null } }],
+      },
     });
 
     return { message: "Complete", count };
