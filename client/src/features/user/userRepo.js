@@ -7,8 +7,20 @@ export const getMe = async () => {
       Authorization: `Bearer ${Alpine.store("auth").token}`,
     },
     body: JSON.stringify({
-      query:
-        "query AuthenticatedItem {\n  authenticatedItem {\n    ... on User {\n      createdAt\n      login\n      room {\n        id\n      }\n    }\n  }\n}",
+      query: `query AuthenticatedItem {
+        authenticatedItem {
+          ... on User {
+            createdAt
+            login
+            room {
+              id
+            }
+            game {
+              id
+            }
+          }
+        }
+      }`,
     }),
   });
 

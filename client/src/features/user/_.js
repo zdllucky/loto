@@ -5,9 +5,13 @@ Alpine.store("user", {
   login: undefined,
   createdAt: undefined,
   roomId: undefined,
+  gameId: undefined,
   _refresher: undefined,
 
   init() {
+    if (Alpine.store("auth").token) {
+      this.refresh();
+    }
     window.addEventListener("authchange", () => this.refresh());
   },
   destroy() {
@@ -17,6 +21,7 @@ Alpine.store("user", {
     try {
       const user = await getMe();
 
+      this.gameId = user.game?.id;
       this.login = user.login;
       this.roomId = user.room?.id;
       this.createdAt = user.createdAt;

@@ -1,7 +1,7 @@
 .container-fluid(x-authredirect:authed="/" )
   .row
-    .col.text-center.mt-4
-      .display-1 Sign in or Register
+    .col.text-center.mt-5
+      .display-1.fw-bolder.text-warning Sign in or Register
   .row
     .col.d-flex.flex-column.py-5
       form.signInForm.semitransparent-container.container-fluid(x-id="['login', 'password']", x-data="authForm", x-bind="form")

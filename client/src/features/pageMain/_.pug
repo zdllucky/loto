@@ -1,17 +1,17 @@
-
-.header
-  img(:src="$store.img.header")
 template(x-route="/" x-authredirect:unauthed="/sign")
   .container-fluid
     .row
-      .col.text-center
-        .display-1 Welcome
+      .col.text-center.mt-5
+        .display-1.fw-bolder.text-warning Lotto
     .row.py-5
       .col.d-flex.flex-column
         .semitransparent-container.container-fluid
           .row(x-show="$store.user.roomId" x-init="$store.user.refresh()")
             .col.pb-4
               a.btn.btn-lg.btn-warning.w-100(x-link href="/room/await") Continue
+          .row(x-show="$store.user.gameId")
+            .col.pb-4
+              a.btn.btn-lg.btn-warning.w-100(x-link href="/game") Continue
           .row
             .col
               a.btn.btn-lg.btn-warning.w-100(x-link href="/room/all") Join games
@@ -24,6 +24,8 @@ template(x-route="/room/all" x-authredirect:unauthed="/sign")
     include ../pageRooms/_
 template(x-route="/room/await" x-authredirect:unauthed="/sign")
   include ../pageRoomAwait/_
+template(x-route="/game" x-authredirect:unauthed="/sign")
+  include ../pageGame/_
 
 img.floatingBottomDog(:src="$store.img.dogBottom")
 

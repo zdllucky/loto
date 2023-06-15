@@ -15,18 +15,20 @@ Alpine.data("waitRoom", () => ({
   async refresh() {
     const roomId = Alpine.store("user").roomId;
 
-    if (!roomId) {
-      return Alpine.$router.push("/");
-    }
+    if (!roomId) throw new Error("No room provided");
 
     try {
       this.room = await Alpine.$repo.rooms.getRoom({
-        roomId: Alpine.store("user").roomId,
+        roomId: roomId,
       });
 
       this.remaining = 5 - this.room.users.length;
     } catch (e) {
-      alert(e.message ?? "Something went wrong");
+      await Alpine.store("user").refresh();
+
+      if (!Alpine.store("user").gameId) return Alpine.$router.push("/game");
+
+      return Alpine.$router.push("/");
     }
   },
   async exitRoom() {
