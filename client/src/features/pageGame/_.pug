@@ -9,22 +9,17 @@
               .rounded-circle.bg-light.fw-bold.text-center.shadow 45
               .rounded-circle.bg-light.fw-bold.text-center.shadow 45
               .rounded-circle.bg-light.fw-bold.text-center.shadow 45
-    .col.height-120px
+    .col.height-120px(x-data="gamePlayerProgress")
       .card.h-100.w-100.bg-dark
         .card-body.w-100.h-100
-          h5.card-title.text-light Players progress
+          h5.card-title.text-light Player progress
           .h-100.w-100
             .vstack.gap-3.w-100
-              .hstack.h-50.gap-3.w-100
-                .progress.shadow.w-100(role='progressbar' aria-label='Example with label' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100')
-                  .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.px-1.text-truncate(style='width: 10%') userasd
-                .progress.shadow.w-100(role='progressbar' aria-label='Example with label' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100')
-                  .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.px-1(style='width: 10%') username
-              .hstack.h-50.gap-3.w-100
-                .progress.shadow.w-100(role='progressbar' aria-label='Example with label' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100')
-                  .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.px-1(style='width: 10%') username
-                .progress.shadow.w-100(role='progressbar' aria-label='Example with label' aria-valuenow='10' aria-valuemin='0' aria-valuemax='100')
-                  .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.px-1(style='width: 10%') username
+              template(:key="index")&attributes({"x-for": "(playerCouple, index) in playersProgress"})
+                .w-100.hstack.h-50.gap-3
+                  template(:key="player.id")&attributes({"x-for": "(player, index) in playerCouple"})
+                    .progress.shadow.w-100(role='progressbar' :aria-label='player.login' :aria-valuenow='Math.max(...player.progress)' aria-valuemin='0' aria-valuemax='90')
+                      .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(:style='`width: ${Math.max(...player.progress) / 90 * 100}%;`' x-text="player.login.substring(0, 6) + '...'")
   .row(x-data="gameCards")
     template(:key="card.id")&attributes({"x-for": "card in cards"})
       .col-12.mt-3
