@@ -6,10 +6,7 @@ import {
   json,
   timestamp,
 } from "@keystone-6/core/fields";
-import {
-  hasSession,
-  isAdminOrOnlySameUserFilter,
-} from "../_misc/accessHelpers";
+import { hasSession } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
 import { generateRandomArray } from "./_misc/helpers";
 
@@ -22,7 +19,7 @@ const schema = list({
       delete: denyAll,
     },
     filter: {
-      query: isAdminOrOnlySameUserFilter,
+      query: hasSession,
     },
   },
   fields: {

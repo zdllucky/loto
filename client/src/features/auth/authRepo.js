@@ -1,5 +1,5 @@
 export const authenticateUserWithPassword = async (login, password) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     body: JSON.stringify({
       query: `
 mutation AuthenticateUserWithPassword($login: String!, $password: String!) {  
@@ -28,7 +28,7 @@ mutation AuthenticateUserWithPassword($login: String!, $password: String!) {
 };
 
 export const registerUserWithLoginAndPassword = async (login, password) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     body: JSON.stringify({
       query: `
         mutation RegisterUserWithLoginAndPassword($login: String!, $password: String!) {

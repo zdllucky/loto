@@ -1,9 +1,6 @@
 import { list } from "@keystone-6/core";
 import { denyAll } from "@keystone-6/core/access";
-import {
-  hasSession,
-  isAdminOrOnlySameUserFilter,
-} from "../_misc/accessHelpers";
+import { hasSession } from "../_misc/accessHelpers";
 import { json, relationship } from "@keystone-6/core/fields";
 
 const schema = list({
@@ -15,7 +12,7 @@ const schema = list({
       delete: denyAll,
     },
     filter: {
-      query: isAdminOrOnlySameUserFilter,
+      query: hasSession,
     },
   },
   fields: {

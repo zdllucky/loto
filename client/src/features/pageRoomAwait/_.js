@@ -22,11 +22,13 @@ Alpine.data("waitRoom", () => ({
         roomId: roomId,
       });
 
+      if (!this.room) throw new Error("No room provided");
+
       this.remaining = 5 - this.room.users.length;
     } catch (e) {
       await Alpine.store("user").refresh();
 
-      if (!Alpine.store("user").gameId) return Alpine.$router.push("/game");
+      if (Alpine.store("user").gameId) return Alpine.$router.push("/game");
 
       return Alpine.$router.push("/");
     }

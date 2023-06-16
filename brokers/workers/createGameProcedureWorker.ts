@@ -62,9 +62,9 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
               .map((_, i) => ({
                 userId: user.id,
                 gameId: game.id,
-                numbers: cards[(index + 1) * i].flat(2).filter((n) => n !== 0),
+                numbers: cards[index * 3 + i].flat(2).filter((n) => n !== 0),
 
-                board: cards[(index + 1) * i],
+                board: cards[index * 3 + i],
               }))
           )
           .flat(),
@@ -73,18 +73,15 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           .map((bot, index) =>
             Array(3)
               .fill(undefined)
-              .map((_, i) => {
-                console.log(bot.id);
-                return {
-                  botId: bot.id,
-                  gameId: game.id,
-                  numbers: cards[room._count.users * 3 + (index + 1) * i]
-                    .flat(2)
-                    .filter((n) => n !== 0),
+              .map((_, i) => ({
+                botId: bot.id,
+                gameId: game.id,
+                numbers: cards[room._count.users * 3 + index * 3 + i]
+                  .flat(2)
+                  .filter((n) => n !== 0),
 
-                  board: cards[room._count.users * 3 + (index + 1) * i],
-                };
-              })
+                board: cards[room._count.users * 3 + index * 3 + i],
+              }))
           )
           .flat(),
       ];

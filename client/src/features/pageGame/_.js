@@ -3,15 +3,20 @@ import { getUserCards } from "./repoCards.js";
 import { getGamePlayerProgress } from "./repoGame.js";
 
 Alpine.data("gameCards", () => ({
-  cards: undefined,
+  cards: [],
   init() {
-    this.loadCards();
+    const intervalId = setInterval(() => {
+      if (Alpine.store("user")?.login) {
+        clearInterval(intervalId);
+        this.loadCards();
+      }
+    }, 10);
   },
   async loadCards() {
     try {
-      this.cards = await getUserCards({ userId: Alpine.store("user").id });
+      this.cards = await getUserCards({ login: Alpine.store("user").login });
     } catch (e) {
-      this.cards = undefined;
+      this.cards = [];
     }
   },
 }));

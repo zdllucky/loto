@@ -1,6 +1,6 @@
 import Alpine from "alpinejs";
 export const getMe = async () => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",

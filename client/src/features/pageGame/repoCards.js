@@ -1,6 +1,6 @@
 import Alpine from "alpinejs";
-export const getUserCards = async ({ userId }) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+export const getUserCards = async ({ login }) => {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -14,7 +14,7 @@ export const getUserCards = async ({ userId }) => {
           }
         }`,
       variables: {
-        where: { user: { id: { equals: userId } } },
+        where: { user: { login: { equals: login } } },
       },
     }),
   });

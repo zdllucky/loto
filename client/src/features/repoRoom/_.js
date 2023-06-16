@@ -1,6 +1,6 @@
 import Alpine from "alpinejs";
 const getRooms = async ({ amount = 10 }) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     body: JSON.stringify({
       query: `
         query Rooms($orderBy: [RoomOrderByInput!]!, $take: Int) {
@@ -25,7 +25,7 @@ const getRooms = async ({ amount = 10 }) => {
 };
 
 const selectRoom = async ({ roomId }) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -57,7 +57,7 @@ const selectRoom = async ({ roomId }) => {
 };
 
 const exitRoom = async () => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -87,7 +87,7 @@ const exitRoom = async () => {
 };
 
 const getRoom = async ({ roomId }) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",

@@ -7,11 +7,7 @@ import {
   text,
   timestamp,
 } from "@keystone-6/core/fields";
-import {
-  hasSession,
-  isAdmin,
-  isAdminOrOnlySameUserFilter,
-} from "../_misc/accessHelpers";
+import { hasSession, isAdmin } from "../_misc/accessHelpers";
 
 const schema = list({
   access: {
@@ -22,7 +18,7 @@ const schema = list({
       delete: isAdmin,
     },
     filter: {
-      query: isAdminOrOnlySameUserFilter,
+      query: hasSession,
     },
   },
   fields: {
