@@ -2,7 +2,7 @@ import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
 import { Context } from ".keystone/types";
 
-const gameBallSetQuery: Extension = (schema) => {
+const gameBallSetQuery: Extension = () => {
   return graphql.field({
     type: graphql.nonNull(graphql.list(graphql.nonNull(graphql.Int))),
     args: {},

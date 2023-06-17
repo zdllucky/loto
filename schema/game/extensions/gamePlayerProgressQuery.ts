@@ -3,7 +3,7 @@ import { graphql } from "@keystone-6/core";
 import { Context } from ".keystone/types";
 import { Prisma } from ".prisma/client";
 
-const gamePlayerProgressQuery: Extension = (schema) => {
+const gamePlayerProgressQuery: Extension = () => {
   const Player = graphql.object<{
     id: string;
     login: string;
@@ -15,7 +15,7 @@ const gamePlayerProgressQuery: Extension = (schema) => {
       login: graphql.field({ type: graphql.nonNull(graphql.String) }),
       progress: graphql.field({
         type: graphql.list(graphql.nonNull(graphql.Int)),
-        resolve: (source, args) => source.progress,
+        resolve: (source) => source.progress,
       }),
     },
   });
