@@ -54,14 +54,17 @@ Alpine.data("gameBalls", () => ({
       if (Alpine.store("user")?.gameId) {
         clearInterval(intervalId);
 
-        this.speed = await getGameParams({
+        const { speed } = await getGameParams({
           gameId: Alpine.store("user").gameId,
         });
+
+        this.speed = speed;
+
         await this.loadBalls();
 
         this.refreshIntervalId = setInterval(
           () => this.loadBalls(),
-          2 / this.speed
+          2000 / this.speed
         );
       }
     }, 10);
