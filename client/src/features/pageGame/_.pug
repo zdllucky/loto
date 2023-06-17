@@ -1,14 +1,14 @@
 .container-fluid.mt-4
   .row
-    .col.width-150px.height-120px
+    .col.width-150px.height-120px(x-data="gameBalls")
       .card.h-100.w-100.bg-warning
         .card-body
           .hstack.gap-2
-            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg 45
+            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(:class="{'visually-hidden': !balls.length}" x-text="balls.length && balls[balls.length - 1]")
             .vstack.gap-2
-              .rounded-circle.bg-light.fw-bold.text-center.shadow 45
-              .rounded-circle.bg-light.fw-bold.text-center.shadow 45
-              .rounded-circle.bg-light.fw-bold.text-center.shadow 45
+              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 1" x-text="balls.length > 1 && balls[balls.length - 2]")
+              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 2" x-text="balls.length > 1 && balls[balls.length - 3]")
+              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 3" x-text="balls.length > 1 && balls[balls.length - 4]")
     .col.height-120px(x-data="gamePlayerProgress")
       .card.h-100.w-100.bg-dark
         .card-body.w-100.h-100

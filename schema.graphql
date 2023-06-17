@@ -589,12 +589,18 @@ type Query {
   authenticatedItem: AuthenticatedItem
   gamePlayerProgress: [Player!]!
   gameBallSet: [Int!]!
+  selectedBalls(cardIds: [ID!]!): [CardWithSelectedBalls]!
 }
 
 type Player {
   id: ID!
   login: String!
   progress: [Int!]
+}
+
+type CardWithSelectedBalls {
+  cardId: ID!
+  balls: [Int!]!
 }
 
 union AuthenticatedItem = User

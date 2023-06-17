@@ -1,6 +1,10 @@
 import Alpine from "alpinejs";
 import { getUserCards } from "./repoCards.js";
-import { getGamePlayerProgress } from "./repoGame.js";
+import {
+  getGameBalls,
+  getGameParams,
+  getGamePlayerProgress,
+} from "./repoGame.js";
 
 Alpine.data("gameCards", () => ({
   cards: [],
@@ -37,6 +41,39 @@ Alpine.data("gamePlayerProgress", () => ({
       this.playersProgress = chunkArray(await getGamePlayerProgress(), 2);
     } catch (e) {
       this.playersProgress = [];
+    }
+  },
+}));
+
+Alpine.data("gameBalls", () => ({
+  balls: [],
+  refreshIntervalId: undefined,
+  speed: undefined,
+  async init() {
+    const intervalId = setInterval(async () => {
+      if (Alpine.store("user")?.gameId) {
+        clearInterval(intervalId);
+
+        this.speed = await getGameParams({
+          gameId: Alpine.store("user").gameId,
+        });
+        await this.loadBalls();
+
+        this.refreshIntervalId = setInterval(
+          () => this.loadBalls(),
+          2 / this.speed
+        );
+      }
+    }, 10);
+  },
+  destroy() {
+    clearInterval(this.refreshIntervalId);
+  },
+  async loadBalls() {
+    try {
+      this.balls = await getGameBalls();
+    } catch (e) {
+      this.balls = [];
     }
   },
 }));
