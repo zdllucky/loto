@@ -4,11 +4,11 @@
       .card.h-100.w-100.bg-warning
         .card-body
           .hstack.gap-2
-            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(:class="{'visually-hidden': !balls.length}" x-text="balls.length && balls[balls.length - 1]")
+            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(:class="{'visually-hidden': !balls.length}" x-text="balls[0]")
             .vstack.gap-2
-              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 1" x-text="balls.length > 1 && balls[balls.length - 2]")
-              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 2" x-text="balls.length > 1 && balls[balls.length - 3]")
-              .rounded-circle.bg-light.fw-bold.text-center.shadow(x-show="balls.length > 3" x-text="balls.length > 1 && balls[balls.length - 4]")
+              template&attributes({"x-for": "(ball, index) in balls"})
+                template(x-if="index >= 1")
+                  .rounded-circle.bg-light.fw-bold.text-center.shadow(x-text="ball")
     .col.height-120px(x-data="gamePlayerProgress")
       .card.h-100.w-100.bg-dark
         .card-body.w-100.h-100
@@ -21,16 +21,18 @@
                     .progress.shadow.w-100(role='progressbar' :aria-label='player.login' :aria-valuenow='Math.max(...player.progress)' aria-valuemin='0' aria-valuemax='90')
                       .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(:style='`width: ${Math.max(...player.progress) / 90 * 100}%;`' x-text="player.login.substring(0, 6) + '...'")
   .row(x-data="gameCards")
-    template(:key="card.id")&attributes({"x-for": "card in cards"})
-      .col-12.mt-3
-        .card.rounded-4
-          .card-body
-            table.table.table-bordered.mb-0.lotto-table
-              tbody
-                template(:key="rowIndex")&attributes({"x-for": "(row, rowIndex) in card.board"})
-                  tr
-                    template(:key="cellIndex")&attributes({"x-for": "(cell, cellIndex) in row"})
-                      td(x-text="cell || ' '")
+    template(x-if="cards.length !== 0")
+      template(x-if="true" x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})")
+        template(:key="card.id")&attributes({"x-for": "card in cards"})
+          .col-12.mt-3
+            .card.rounded-4
+              .card-body
+                table.table.table-bordered.mb-0.lotto-table
+                  tbody
+                    template(:key="rowIndex")&attributes({"x-for": "(row, rowIndex) in card.board"})
+                      tr
+                        template(:key="cellIndex")&attributes({"x-for": "(cell, cellIndex) in row"})
+                          td(x-bind="gameCardCell")
   .row.mt-3
     .col
       a(x-link href="/").btn.btn-md.btn-light.w-100 Back

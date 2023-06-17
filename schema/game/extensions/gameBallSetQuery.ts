@@ -20,10 +20,9 @@ const gameBallSetQuery: Extension = () => {
       if (!game) return [];
 
       return (
-        (game?.balls as Array<number>).slice(
-          Math.max(game.step - 5, 0),
-          game.step
-        ) ?? []
+        (game?.balls as Array<number>)
+          .slice(Math.max(game.step - 5, 0), game.step)
+          .reverse() ?? []
       );
     },
   });
