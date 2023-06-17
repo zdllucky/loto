@@ -43,6 +43,12 @@ export const Queues = {
       amount: 5,
     },
   },
+  generateBallOnTimeEvent: {
+    name: "generateBallOnTimeEvent",
+    options: {
+      repeat: { every: 1000 },
+    },
+  },
 };
 
 export const connection = {

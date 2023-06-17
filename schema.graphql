@@ -356,13 +356,13 @@ type PlayerBallBind {
   user: User
   bot: Bot
   number: Int
+  card: Card
   createdAt: DateTime
   game: Game
 }
 
 input PlayerBallBindWhereUniqueInput {
   id: ID
-  number: Int
 }
 
 input PlayerBallBindWhereInput {
@@ -373,6 +373,7 @@ input PlayerBallBindWhereInput {
   user: UserWhereInput
   bot: BotWhereInput
   number: IntFilter
+  card: CardWhereInput
   createdAt: DateTimeNullableFilter
   game: GameWhereInput
 }
@@ -387,6 +388,7 @@ input PlayerBallBindUpdateInput {
   user: UserRelateToOneForUpdateInput
   bot: BotRelateToOneForUpdateInput
   number: Int
+  card: CardRelateToOneForUpdateInput
   createdAt: DateTime
   game: GameRelateToOneForUpdateInput
 }
@@ -402,6 +404,12 @@ input BotRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input CardRelateToOneForUpdateInput {
+  create: CardCreateInput
+  connect: CardWhereUniqueInput
+  disconnect: Boolean
+}
+
 input PlayerBallBindUpdateArgs {
   where: PlayerBallBindWhereUniqueInput!
   data: PlayerBallBindUpdateInput!
@@ -411,6 +419,7 @@ input PlayerBallBindCreateInput {
   user: UserRelateToOneForCreateInput
   bot: BotRelateToOneForCreateInput
   number: Int
+  card: CardRelateToOneForCreateInput
   createdAt: DateTime
   game: GameRelateToOneForCreateInput
 }
@@ -422,6 +431,11 @@ input UserRelateToOneForCreateInput {
 
 input BotRelateToOneForCreateInput {
   connect: BotWhereUniqueInput
+}
+
+input CardRelateToOneForCreateInput {
+  create: CardCreateInput
+  connect: CardWhereUniqueInput
 }
 
 type Card {
@@ -508,6 +522,7 @@ type Mutation {
   registerUserWithLoginAndPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   joinRoom(roomId: ID!): joinRoomResult
   exitRoom: ExitRoomResult
+  selectBall(number: Int!, cardId: ID!): SelectBallResult!
 }
 
 union joinRoomResult = JoinRoomSuccess | JoinRoomFailure
@@ -528,6 +543,11 @@ type ExitRoomSuccess {
 
 type ExitRoomFailure {
   message: String!
+}
+
+type SelectBallResult {
+  success: Boolean!
+  message: String
 }
 
 union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
@@ -568,6 +588,7 @@ type Query {
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   gamePlayerProgress: [Player!]!
+  gameBallSet: [Int!]!
 }
 
 type Player {

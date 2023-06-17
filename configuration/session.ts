@@ -4,10 +4,8 @@ import { Config } from ".keystone/types";
 import { Session } from "../schema/_misc/accessHelpers";
 import { createClient } from "@redis/client";
 
-let sessionSecret = process.env.SESSION_SECRET;
-if (!sessionSecret && process.env.NODE_ENV !== "production") {
-  sessionSecret = randomBytes(32).toString("hex");
-}
+const sessionSecret: string =
+  process.env.SESSION_SECRET ?? randomBytes(32).toString("hex");
 
 const sessionMaxAge = 60 * 60 * 24 * 30;
 
@@ -19,7 +17,7 @@ function redisSessionStrategy() {
   return storedSessions<Session>({
     maxAge: sessionMaxAge,
     // the session secret is used to encrypt cookie data
-    secret: sessionSecret!,
+    secret: sessionSecret,
 
     store: () => ({
       async get(sessionId) {

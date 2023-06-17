@@ -22,8 +22,9 @@ const schema = list({
       isFilterable: true,
       isOrderable: true,
       validation: { min: 1, max: 90, isRequired: true },
-      isIndexed: "unique",
+      isIndexed: true,
     }),
+    card: relationship({ ref: "Card", many: false, isFilterable: true }),
     createdAt: timestamp({ defaultValue: { kind: "now" }, isOrderable: true }),
     game: relationship({
       ref: "Game.playerBallBinds",

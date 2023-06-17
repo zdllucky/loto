@@ -39,6 +39,12 @@ const joinRoomMutation: Extension = () => {
           message: "User not found",
         };
 
+      if (user.gameId)
+        return {
+          __typename: "JoinRoomFailure",
+          message: "User already in game",
+        };
+
       try {
         const transactionRes = await sCtx.prisma.$transaction<
           string | undefined

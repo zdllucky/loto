@@ -57,7 +57,7 @@ model Game {
   bots            Bot[]            @relation("Bot_game")
   createdAt       DateTime?        @default(now())
   step            Int              @default(0)
-  balls           Json?            @default("[26,3,23,18,15,62,41,14,52,29,14,49,57,56,81,43,13,63,33,22,17,36,50,29,33,61,58,6,2,74,51,52,64,32,83,51,16,8,46,28,29,51,36,29,60,72,53,47,18,88,31,73,31,28,8,88,28,57,14,5,6,75,2,75,13,59,34,90,67,16,19,89,84,25,15,1,41,64,31,33,8,82,27,33,55,69,35,20,31,38]")
+  balls           Json?            @default("[39,27,19,54,55,2,87,14,9,20,51,49,24,70,20,2,11,1,2,3,81,33,16,60,36,30,54,38,47,25,17,64,88,7,5,1,76,88,89,60,30,79,10,47,28,18,55,74,11,39,16,24,49,77,62,23,37,85,4,86,71,73,10,21,10,19,33,10,77,77,26,15,78,63,87,2,40,10,4,44,70,32,25,84,55,11,64,18,72,76]")
   playerBallBinds PlayerBallBind[] @relation("PlayerBallBind_game")
   from_Card_game  Card[]           @relation("Card_game")
 }
@@ -68,26 +68,31 @@ model PlayerBallBind {
   userId    String?   @map("user")
   bot       Bot?      @relation("PlayerBallBind_bot", fields: [botId], references: [id])
   botId     String?   @map("bot")
-  number    Int       @unique
+  number    Int
+  card      Card?     @relation("PlayerBallBind_card", fields: [cardId], references: [id])
+  cardId    String?   @map("card")
   createdAt DateTime? @default(now())
   game      Game?     @relation("PlayerBallBind_game", fields: [gameId], references: [id])
   gameId    String?   @map("game")
 
   @@index([userId])
   @@index([botId])
+  @@index([number])
+  @@index([cardId])
   @@index([gameId])
 }
 
 model Card {
-  id      String  @id @default(cuid())
-  game    Game?   @relation("Card_game", fields: [gameId], references: [id])
-  gameId  String? @map("game")
-  user    User?   @relation("Card_user", fields: [userId], references: [id])
-  userId  String? @map("user")
-  bot     Bot?    @relation("Card_bot", fields: [botId], references: [id])
-  botId   String? @map("bot")
-  numbers Json?
-  board   Json?
+  id                       String           @id @default(cuid())
+  game                     Game?            @relation("Card_game", fields: [gameId], references: [id])
+  gameId                   String?          @map("game")
+  user                     User?            @relation("Card_user", fields: [userId], references: [id])
+  userId                   String?          @map("user")
+  bot                      Bot?             @relation("Card_bot", fields: [botId], references: [id])
+  botId                    String?          @map("bot")
+  numbers                  Json?
+  board                    Json?
+  from_PlayerBallBind_card PlayerBallBind[] @relation("PlayerBallBind_card")
 
   @@index([gameId])
   @@index([userId])
