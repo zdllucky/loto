@@ -7,6 +7,8 @@ import botsCleanupWorkerInit from "./workers/botsCleanupWorker";
 import fullFakeRoomCleanupWorkerInit from "./workers/fullFakeRoomCleanupWorker";
 import createGameEventWorkerInit from "./workers/createGameEventWorker";
 import createGameProcedureWorkerInit from "./workers/createGameProcedureWorker";
+import generateGameStepperQueuesOnGameWorkerInit from "./workers/generateGameStepperQueuesOnGameWorker";
+import gameStepperQueueOnGameWorkerInit from "./workers/gameStepperQueueOnGameWorker";
 export interface BigInt {
   /** Convert to BigInt to string form in JSON.stringify */
   toJSON: () => string;
@@ -33,7 +35,58 @@ const initMQService = async ({ context }: { context: Context }) => ({
   ...(await initFullFakeRoomCleanup({ context })),
   ...(await initCreateGameProcedure({ context })),
   ...(await initCreateGameEvent({ context })),
+  ...(await initGenerateGameStepperQueuesOnGame({ context })),
 });
+
+const initGenerateGameStepperQueuesOnGame = async ({
+  context,
+}: {
+  context: Context;
+}) => {
+  const generateGameStepperQueueOnGamesQueue = new Queue(
+    Queues.generateGameStepperQueueOnGames.name,
+    {
+      connection,
+    }
+  );
+
+  const gameStepperQueueOnGameQueue = new Queue(
+    Queues.gameStepperQueueOnGame.name,
+    { connection }
+  );
+
+  const generateGameStepperQueuesOnGameWorker =
+    generateGameStepperQueuesOnGameWorkerInit({
+      context,
+      gameStepperQueueOnGameQueue,
+    });
+
+  generateGameStepperQueuesOnGameWorker.isRunning() ||
+    (await generateGameStepperQueuesOnGameWorker.run());
+
+  await generateGameStepperQueueOnGamesQueue.add(
+    "generateGameStepperQueueOnGames",
+    {},
+    {
+      repeat: Queues.generateGameStepperQueueOnGames.options.repeat,
+      delay: 5000,
+    }
+  );
+
+  const gameStepperQueueOnGameWorker = gameStepperQueueOnGameWorkerInit({
+    context,
+    gameStepperQueueOnGameQueue,
+  });
+
+  gameStepperQueueOnGameWorker.isRunning() ||
+    (await gameStepperQueueOnGameWorker.run());
+
+  return {
+    generateGameStepperQueueOnGamesQueue,
+    gameStepperQueueOnGameQueue,
+    gameStepperQueueOnGameWorker,
+  };
+};
 
 const initCreateGameProcedure = async ({ context }: { context: Context }) => {
   const createGameProcedureQueue = new Queue(Queues.createGameProcedure.name, {

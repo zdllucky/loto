@@ -3,7 +3,7 @@ import { graphql } from "@keystone-6/core";
 import { Context } from ".keystone/types";
 import { Prisma } from ".prisma/client";
 
-const selectBallMutation: Extension = (schema) => {
+const selectBallMutation: Extension = () => {
   const SelectBallResult = graphql.object<{
     success: boolean;
     message: string | undefined;
@@ -37,6 +37,7 @@ const selectBallMutation: Extension = (schema) => {
               balls: true,
               step: true,
               speed: true,
+              gameStatus: true,
             },
           },
           from_PlayerBallBind_user: {
@@ -63,6 +64,12 @@ const selectBallMutation: Extension = (schema) => {
       if (!user) return { success: false, message: "User not found" };
 
       if (!user.game) return { success: false, message: "Game not found" };
+
+      if (user.game.gameStatus === "finished")
+        return { success: false, message: "Game finished" };
+
+      if (user.game.gameStatus === "waiting")
+        return { success: false, message: "Game not started yet" };
 
       if (user.from_Card_user.length === 0)
         return { success: false, message: "Card with this number not found" };

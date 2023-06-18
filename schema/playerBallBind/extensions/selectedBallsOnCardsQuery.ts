@@ -2,7 +2,7 @@ import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
 import { Context } from ".keystone/types";
 
-const selectedBallsOnCardsQuery: Extension = (schema) => {
+const selectedBallsOnCardsQuery: Extension = () => {
   const CardWithSelectedBalls = graphql.object<{
     cardId: string;
     balls: number[];

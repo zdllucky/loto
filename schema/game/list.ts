@@ -35,6 +35,15 @@ const schema = list({
     }),
     users: relationship({ ref: "User.game", many: true }),
     bots: relationship({ ref: "Bot.game", many: true }),
+    gameStatus: select({
+      type: "enum",
+      defaultValue: "waiting",
+      options: [
+        { label: "Waiting", value: "waiting" },
+        { label: "Playing", value: "playing" },
+        { label: "Finished", value: "finished" },
+      ],
+    }),
     createdAt: timestamp({ defaultValue: { kind: "now" } }),
     step: integer({ defaultValue: 0, validation: { isRequired: true } }),
     balls: json({

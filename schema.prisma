@@ -51,15 +51,16 @@ model Bot {
 }
 
 model Game {
-  id              String           @id @default(cuid())
-  speed           Int              @default(2)
-  users           User[]           @relation("User_game")
-  bots            Bot[]            @relation("Bot_game")
-  createdAt       DateTime?        @default(now())
-  step            Int              @default(0)
-  balls           Json?            @default("[52,47,17,69,5,41,1,6,32,85,10,49,28,13,83,42,45,21,12,87,45,38,3,12,10,77,63,16,38,28,2,7,45,76,36,28,67,85,89,70,30,60,88,57,30,62,83,44,6,65,61,36,45,74,35,54,80,15,72,3,88,20,84,78,30,35,52,81,69,35,56,73,66,80,17,84,38,77,54,14,84,4,49,61,65,39,72,58,52,40]")
-  playerBallBinds PlayerBallBind[] @relation("PlayerBallBind_game")
-  from_Card_game  Card[]           @relation("Card_game")
+  id              String              @id @default(cuid())
+  speed           Int                 @default(2)
+  users           User[]              @relation("User_game")
+  bots            Bot[]               @relation("Bot_game")
+  gameStatus      GameGameStatusType? @default(waiting)
+  createdAt       DateTime?           @default(now())
+  step            Int                 @default(0)
+  balls           Json?               @default("[51,58,17,67,72,7,2,30,15,44,13,43,84,26,79,26,14,5,50,72,58,39,88,35,23,52,36,43,28,47,57,67,52,38,32,88,69,2,88,37,1,8,3,30,54,86,21,44,61,37,78,84,88,76,67,51,47,75,19,59,29,44,33,24,50,35,34,90,38,56,12,22,85,36,31,25,28,34,67,9,45,78,5,86,42,52,60,56,54,84]")
+  playerBallBinds PlayerBallBind[]    @relation("PlayerBallBind_game")
+  from_Card_game  Card[]              @relation("Card_game")
 }
 
 model PlayerBallBind {
@@ -102,6 +103,12 @@ model Card {
 enum UserRoleType {
   admin
   user
+}
+
+enum GameGameStatusType {
+  waiting
+  playing
+  finished
 }
 
 generator zod {

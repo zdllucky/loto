@@ -245,11 +245,18 @@ type Game {
   usersCount(where: UserWhereInput! = {}): Int
   bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
   botsCount(where: BotWhereInput! = {}): Int
+  gameStatus: GameGameStatusType
   createdAt: DateTime
   step: Int
   balls: JSON
   playerBallBinds(where: PlayerBallBindWhereInput! = {}, orderBy: [PlayerBallBindOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PlayerBallBindWhereUniqueInput): [PlayerBallBind!]
   playerBallBindsCount(where: PlayerBallBindWhereInput! = {}): Int
+}
+
+enum GameGameStatusType {
+  waiting
+  playing
+  finished
 }
 
 input GameWhereUniqueInput {
@@ -264,6 +271,7 @@ input GameWhereInput {
   speed: IntFilter
   users: UserManyRelationFilter
   bots: BotManyRelationFilter
+  gameStatus: GameGameStatusTypeNullableFilter
   createdAt: DateTimeNullableFilter
   step: IntFilter
   playerBallBinds: PlayerBallBindManyRelationFilter
@@ -280,6 +288,13 @@ input IntFilter {
   not: IntFilter
 }
 
+input GameGameStatusTypeNullableFilter {
+  equals: GameGameStatusType
+  in: [GameGameStatusType!]
+  notIn: [GameGameStatusType!]
+  not: GameGameStatusTypeNullableFilter
+}
+
 input PlayerBallBindManyRelationFilter {
   every: PlayerBallBindWhereInput
   some: PlayerBallBindWhereInput
@@ -289,6 +304,7 @@ input PlayerBallBindManyRelationFilter {
 input GameOrderByInput {
   id: OrderDirection
   speed: OrderDirection
+  gameStatus: OrderDirection
   createdAt: OrderDirection
   step: OrderDirection
 }
@@ -297,6 +313,7 @@ input GameUpdateInput {
   speed: Int
   users: UserRelateToManyForUpdateInput
   bots: BotRelateToManyForUpdateInput
+  gameStatus: GameGameStatusType
   createdAt: DateTime
   step: Int
   balls: JSON
@@ -332,6 +349,7 @@ input GameCreateInput {
   speed: Int
   users: UserRelateToManyForCreateInput
   bots: BotRelateToManyForCreateInput
+  gameStatus: GameGameStatusType
   createdAt: DateTime
   step: Int
   playerBallBinds: PlayerBallBindRelateToManyForCreateInput

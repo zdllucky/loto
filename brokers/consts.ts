@@ -43,11 +43,15 @@ export const Queues = {
       amount: 5,
     },
   },
-  generateBallOnTimeEvent: {
-    name: "generateBallOnTimeEvent",
+  generateGameStepperQueueOnGames: {
+    name: "generateGameStepperQueueOnGames",
     options: {
-      repeat: { every: 1000 },
+      repeat: { every: 5000 },
     },
+  },
+  gameStepperQueueOnGame: {
+    name: "gameStepperQueueOnGame",
+    options: {},
   },
 };
 

@@ -15,7 +15,7 @@ export default ({ cardIds }) => ({
 
     if (success) {
       this.selectedBalls = [
-        this.selectedBalls.filter(({ cardId: cId }) => cId !== cardId),
+        ...this.selectedBalls.filter(({ cardId: cId }) => cId !== cardId),
         ...(await getSelectedBallsOnCards({ cardIds: [cardId] })),
       ];
     }

@@ -7,7 +7,7 @@
             .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(:class="{'visually-hidden': !balls.length}" x-text="balls[0]")
             .vstack.gap-2
               template&attributes({"x-for": "(ball, index) in balls"})
-                template(x-if="index >= 1")
+                template(x-if="index >= 1 && index <= 3")
                   .rounded-circle.bg-light.fw-bold.text-center.shadow(x-text="ball")
     .col.height-120px(x-data="gamePlayerProgress")
       .card.h-100.w-100.bg-dark
@@ -29,9 +29,9 @@
               .card-body
                 table.table.table-bordered.mb-0.lotto-table
                   tbody
-                    template(:key="rowIndex")&attributes({"x-for": "(row, rowIndex) in card.board"})
+                    template()&attributes({"x-for": "(row, rowIndex) in card.board"})
                       tr
-                        template(:key="cellIndex")&attributes({"x-for": "(cell, cellIndex) in row"})
+                        template()&attributes({"x-for": "(cell, cellIndex) in row"})
                           td(x-bind="gameCardCell")
   .row.mt-3
     .col
