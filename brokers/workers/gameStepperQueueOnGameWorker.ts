@@ -1,13 +1,16 @@
 import { Queues } from "../consts";
 import { Queue, Worker } from "bullmq";
 import { Context } from ".keystone/types";
+import { Prisma } from ".prisma/client";
 
 const gameStepperQueueOnGameWorkerInit = ({
   context,
   gameStepperQueueOnGameQueue,
+  botMoveSimulationQueue,
 }: {
   context: Context;
   gameStepperQueueOnGameQueue: Queue;
+  botMoveSimulationQueue: Queue;
 }) =>
   new Worker(Queues.gameStepperQueueOnGame.name, async ({ data }) => {
     const sCtx = context.sudo();
@@ -16,7 +19,12 @@ const gameStepperQueueOnGameWorkerInit = ({
     return await sCtx.prisma.$transaction(async (prisma) => {
       const game = await prisma.game.findUnique({
         where: { id: gameId },
-        select: { step: true, speed: true, gameStatus: true },
+        select: {
+          step: true,
+          speed: true,
+          gameStatus: true,
+          balls: true,
+        },
       });
 
       if (!game) {
@@ -26,11 +34,11 @@ const gameStepperQueueOnGameWorkerInit = ({
         return { success: false, message: "Game does not exist" };
       }
 
-      if (game.gameStatus === "playing") {
+      if (game.gameStatus === "waiting") {
         await gameStepperQueueOnGameQueue.removeRepeatableByKey(
           `${gameId}:${gameId}:::${16000 / speed}`
         );
-        return { success: false, message: "Game is not in active play" };
+        return { success: false, message: "Game hasn't started yet" };
       }
 
       if (game.step === 90) {
@@ -48,6 +56,11 @@ const gameStepperQueueOnGameWorkerInit = ({
         await prisma.game.update({
           where: { id: gameId },
           data: { step: { increment: 1 } },
+        });
+
+        await botMoveSimulationQueue.add("botMoveSimulation", {
+          gameId,
+          ball: (game.balls as Prisma.JsonArray)[game.step],
         });
 
         const nextStep = game.step + 1;

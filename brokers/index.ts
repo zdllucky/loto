@@ -9,6 +9,7 @@ import createGameEventWorkerInit from "./workers/createGameEventWorker";
 import createGameProcedureWorkerInit from "./workers/createGameProcedureWorker";
 import generateGameStepperQueuesOnGameWorkerInit from "./workers/generateGameStepperQueuesOnGameWorker";
 import gameStepperQueueOnGameWorkerInit from "./workers/gameStepperQueueOnGameWorker";
+import botMoveSimulationWorkerInit from "./workers/botMoveSimulationWorker";
 export interface BigInt {
   /** Convert to BigInt to string form in JSON.stringify */
   toJSON: () => string;
@@ -45,15 +46,17 @@ const initGenerateGameStepperQueuesOnGame = async ({
 }) => {
   const generateGameStepperQueueOnGamesQueue = new Queue(
     Queues.generateGameStepperQueueOnGames.name,
-    {
-      connection,
-    }
+    { connection }
   );
 
   const gameStepperQueueOnGameQueue = new Queue(
     Queues.gameStepperQueueOnGame.name,
     { connection }
   );
+
+  const botMoveSimulationQueue = new Queue(Queues.botMoveSimulation.name, {
+    connection,
+  });
 
   const generateGameStepperQueuesOnGameWorker =
     generateGameStepperQueuesOnGameWorkerInit({
@@ -76,15 +79,21 @@ const initGenerateGameStepperQueuesOnGame = async ({
   const gameStepperQueueOnGameWorker = gameStepperQueueOnGameWorkerInit({
     context,
     gameStepperQueueOnGameQueue,
+    botMoveSimulationQueue,
   });
 
   gameStepperQueueOnGameWorker.isRunning() ||
     (await gameStepperQueueOnGameWorker.run());
 
+  const botMoveSimulationWorker = botMoveSimulationWorkerInit({ context });
+
+  botMoveSimulationWorker.isRunning() || (await botMoveSimulationWorker.run());
+
   return {
     generateGameStepperQueueOnGamesQueue,
     gameStepperQueueOnGameQueue,
     gameStepperQueueOnGameWorker,
+    botMoveSimulationQueue,
   };
 };
 

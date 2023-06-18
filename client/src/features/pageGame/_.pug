@@ -19,7 +19,7 @@
                 .w-100.hstack.h-50.gap-3
                   template(:key="player.id")&attributes({"x-for": "(player, index) in playerCouple"})
                     .progress.shadow.w-100(role='progressbar' :aria-label='player.login' :aria-valuenow='Math.max(...player.progress)' aria-valuemin='0' aria-valuemax='90')
-                      .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(:style='`width: ${Math.max(...player.progress) / 90 * 100}%;`' x-text="player.login.substring(0, 6) + '...'")
+                      .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(:style='`width: ${Math.max(...player.progress) / 15 * 100}%;`' x-text="player.login.substring(0, 6) + '...'")
   .row(x-data="gameCards")
     template(x-if="cards.length !== 0")
       template(x-if="true" x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})")

@@ -215,6 +215,7 @@ type Bot {
   id: ID!
   login: String
   room: Room
+  accuracy: Int
   game: Game
 }
 
@@ -230,12 +231,14 @@ input BotWhereInput {
   id: IDFilter
   login: StringFilter
   room: RoomWhereInput
+  accuracy: IntNullableFilter
   game: GameWhereInput
 }
 
 input BotOrderByInput {
   id: OrderDirection
   login: OrderDirection
+  accuracy: OrderDirection
 }
 
 type Game {

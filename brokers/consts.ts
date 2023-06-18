@@ -53,6 +53,9 @@ export const Queues = {
     name: "gameStepperQueueOnGame",
     options: {},
   },
+  botMoveSimulation: {
+    name: "botMoveSimulation",
+  },
 };
 
 export const connection = {

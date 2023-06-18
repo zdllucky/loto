@@ -35,6 +35,7 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
                 ...acc.add,
                 {
                   roomId: room.id,
+                  accuracy: randomBotAccuracy(),
                   login: generateUsername("", 2, 15),
                 },
               ],
@@ -61,5 +62,20 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
 
     return { message: "Complete", bots };
   });
+
+const randomBotAccuracy = () => {
+  const accuracySelect = Math.floor(Math.random() * 4);
+
+  switch (accuracySelect) {
+    case 0:
+      return 9999;
+    case 1:
+      return 9900;
+    case 2:
+      return 9800;
+    case 3:
+      return 9000;
+  }
+};
 
 export default roomBotsGeneratorWorkerInit;

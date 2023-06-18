@@ -41,6 +41,7 @@ model Bot {
   login                   String           @unique @default("")
   room                    Room?            @relation("Bot_room", fields: [roomId], references: [id])
   roomId                  String?          @map("room")
+  accuracy                Int?             @default(9999)
   game                    Game?            @relation("Bot_game", fields: [gameId], references: [id])
   gameId                  String?          @map("game")
   from_PlayerBallBind_bot PlayerBallBind[] @relation("PlayerBallBind_bot")
@@ -58,7 +59,7 @@ model Game {
   gameStatus      GameGameStatusType? @default(waiting)
   createdAt       DateTime?           @default(now())
   step            Int                 @default(0)
-  balls           Json?               @default("[76,77,78,45,55,87,20,90,24,29,47,28,77,16,18,77,24,9,69,51,74,75,80,32,56,46,25,14,18,64,53,32,23,25,70,7,29,68,40,85,76,72,4,59,84,7,45,86,36,37,57,19,27,57,79,14,13,50,48,79,90,25,36,48,76,36,42,56,11,10,36,35,45,27,57,2,60,19,72,63,82,33,11,83,2,26,17,77,53,66]")
+  balls           Json?               @default("[20,19,83,38,29,57,14,22,7,39,34,67,46,75,68,15,12,1,69,13,26,76,48,36,33,39,64,56,40,63,30,25,26,46,65,64,79,41,72,31,19,26,27,14,37,86,29,48,61,52,81,16,53,10,16,56,76,76,35,43,60,14,29,76,18,58,5,48,83,61,39,59,63,39,45,37,84,78,42,68,52,58,20,36,89,11,83,11,85,50]")
   playerBallBinds PlayerBallBind[]    @relation("PlayerBallBind_game")
   from_Card_game  Card[]              @relation("Card_game")
 }
