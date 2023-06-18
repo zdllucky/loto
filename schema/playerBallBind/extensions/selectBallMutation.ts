@@ -98,6 +98,21 @@ const selectBallMutation: Extension = () => {
         },
       });
 
+      const ballsCount = await sCtx.prisma.playerBallBind.count({
+        where: {
+          userId: userId,
+          gameId: user.game.id,
+          cardId,
+        },
+      });
+
+      if (ballsCount >= 15) {
+        await sCtx.prisma.game.update({
+          where: { id: user.game.id },
+          data: { gameStatus: "finished" },
+        });
+      }
+
       if (!res) return { success: false, message: "Failed to select ball" };
 
       return { success: true, message: "Selected!" };

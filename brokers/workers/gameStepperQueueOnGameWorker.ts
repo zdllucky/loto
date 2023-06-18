@@ -27,18 +27,25 @@ const gameStepperQueueOnGameWorkerInit = ({
         },
       });
 
-      if (!game) {
+      const removeQueue = async () => {
         await gameStepperQueueOnGameQueue.removeRepeatableByKey(
           `${gameId}:${gameId}:::${16000 / speed}`
         );
+      };
+
+      if (!game) {
+        await removeQueue();
         return { success: false, message: "Game does not exist" };
       }
 
       if (game.gameStatus === "waiting") {
-        await gameStepperQueueOnGameQueue.removeRepeatableByKey(
-          `${gameId}:${gameId}:::${16000 / speed}`
-        );
+        await removeQueue();
         return { success: false, message: "Game hasn't started yet" };
+      }
+
+      if (game.gameStatus === "finished") {
+        await removeQueue();
+        return { success: false, message: "Game already finished" };
       }
 
       if (game.step === 90) {
@@ -47,9 +54,7 @@ const gameStepperQueueOnGameWorkerInit = ({
           data: { gameStatus: { set: "finished" } },
         });
 
-        await gameStepperQueueOnGameQueue.removeRepeatableByKey(
-          `${gameId}:${gameId}:::${16000 / game.speed}`
-        );
+        await removeQueue();
 
         return { success: true, message: "Game finished", gameId };
       } else {

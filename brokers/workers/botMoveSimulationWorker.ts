@@ -22,6 +22,12 @@ const botMoveSimulationWorkerInit = ({ context }: { context: Context }) =>
                 numbers: true,
               },
             },
+            from_PlayerBallBind_bot: {
+              select: {
+                cardId: true,
+                number: true,
+              },
+            },
           },
         },
       },
@@ -35,6 +41,8 @@ const botMoveSimulationWorkerInit = ({ context }: { context: Context }) =>
     if (game.gameStatus === "finished")
       return { success: false, message: "Game already finished" };
 
+    let winnerCardId: string | undefined;
+
     await sCtx.prisma.playerBallBind.createMany({
       data: game.bots
         .map((bot) => {
@@ -46,6 +54,14 @@ const botMoveSimulationWorkerInit = ({ context }: { context: Context }) =>
               Math.random() < accuracy
           );
 
+          winnerCardId ??= suitableCards.find(
+            ({ id }) =>
+              bot.from_PlayerBallBind_bot.filter(({ cardId }) => cardId === id)
+                .length >= 14
+          )?.id;
+
+          // TODO: Schedule gameEnd event
+
           return suitableCards.map(({ id }) => ({
             number: ball,
             cardId: id,
@@ -56,7 +72,18 @@ const botMoveSimulationWorkerInit = ({ context }: { context: Context }) =>
         .flat(),
     });
 
-    return { message: "Complete", botIds: game.bots.map(({ id }) => id) };
+    if (winnerCardId) {
+      await sCtx.prisma.game.update({
+        where: { id: gameId },
+        data: { gameStatus: { set: "finished" } },
+      });
+    }
+
+    return {
+      message: "Complete",
+      botIds: game.bots.map(({ id }) => id),
+      winnerCardId,
+    };
   });
 
 export default botMoveSimulationWorkerInit;

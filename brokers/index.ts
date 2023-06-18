@@ -10,6 +10,8 @@ import createGameProcedureWorkerInit from "./workers/createGameProcedureWorker";
 import generateGameStepperQueuesOnGameWorkerInit from "./workers/generateGameStepperQueuesOnGameWorker";
 import gameStepperQueueOnGameWorkerInit from "./workers/gameStepperQueueOnGameWorker";
 import botMoveSimulationWorkerInit from "./workers/botMoveSimulationWorker";
+import finishGameEventWorkerInit from "./workers/finishGameEventWorker";
+import finishGameProcedureWorkerInit from "./workers/finishGameProcedureWorker";
 export interface BigInt {
   /** Convert to BigInt to string form in JSON.stringify */
   toJSON: () => string;
@@ -37,7 +39,43 @@ const initMQService = async ({ context }: { context: Context }) => ({
   ...(await initCreateGameProcedure({ context })),
   ...(await initCreateGameEvent({ context })),
   ...(await initGenerateGameStepperQueuesOnGame({ context })),
+  ...(await initFinishGame({ context })),
 });
+
+const initFinishGame = async ({ context }: { context: Context }) => {
+  const finishGameEventQueue = new Queue(Queues.finishGameEvent.name, {
+    connection,
+  });
+
+  const finishGameProcedureQueue = new Queue(Queues.finishGameProcedure.name, {
+    connection,
+  });
+
+  const finishGameEventWorker = finishGameEventWorkerInit({
+    context,
+    finishGameProcedureQueue,
+  });
+
+  finishGameEventWorker.isRunning() || (await finishGameEventWorker.run());
+
+  await finishGameEventQueue.add(
+    Queues.finishGameEvent.name,
+    {},
+    Queues.finishGameEvent.options
+  );
+
+  const finishGameProcedureWorker = finishGameProcedureWorkerInit({ context });
+
+  finishGameProcedureWorker.isRunning() ||
+    (await finishGameProcedureWorker.run());
+
+  return {
+    finishGameEventQueue,
+    finishGameProcedureQueue,
+    finishGameEventWorker,
+    finishGameProcedureWorker,
+  };
+};
 
 const initGenerateGameStepperQueuesOnGame = async ({
   context,

@@ -12,17 +12,18 @@ generator client {
 }
 
 model User {
-  id                       String           @id @default(cuid())
-  login                    String           @unique @default("")
-  role                     UserRoleType     @default(user)
-  room                     Room?            @relation("User_room", fields: [roomId], references: [id])
-  roomId                   String?          @map("room")
-  game                     Game?            @relation("User_game", fields: [gameId], references: [id])
-  gameId                   String?          @map("game")
-  password                 String
-  createdAt                DateTime?        @default(now())
-  from_PlayerBallBind_user PlayerBallBind[] @relation("PlayerBallBind_user")
-  from_Card_user           Card[]           @relation("Card_user")
+  id                         String           @id @default(cuid())
+  login                      String           @unique @default("")
+  role                       UserRoleType     @default(user)
+  room                       Room?            @relation("User_room", fields: [roomId], references: [id])
+  roomId                     String?          @map("room")
+  game                       Game?            @relation("User_game", fields: [gameId], references: [id])
+  gameId                     String?          @map("game")
+  password                   String
+  createdAt                  DateTime?        @default(now())
+  from_PlayerBallBind_user   PlayerBallBind[] @relation("PlayerBallBind_user")
+  from_Card_user             Card[]           @relation("Card_user")
+  from_GameResult_winnerUser GameResult[]     @relation("GameResult_winnerUser")
 
   @@index([roomId])
   @@index([gameId])
@@ -37,15 +38,16 @@ model Room {
 }
 
 model Bot {
-  id                      String           @id @default(cuid())
-  login                   String           @unique @default("")
-  room                    Room?            @relation("Bot_room", fields: [roomId], references: [id])
-  roomId                  String?          @map("room")
-  accuracy                Int?             @default(9999)
-  game                    Game?            @relation("Bot_game", fields: [gameId], references: [id])
-  gameId                  String?          @map("game")
-  from_PlayerBallBind_bot PlayerBallBind[] @relation("PlayerBallBind_bot")
-  from_Card_bot           Card[]           @relation("Card_bot")
+  id                        String           @id @default(cuid())
+  login                     String           @unique @default("")
+  room                      Room?            @relation("Bot_room", fields: [roomId], references: [id])
+  roomId                    String?          @map("room")
+  accuracy                  Int?             @default(9999)
+  game                      Game?            @relation("Bot_game", fields: [gameId], references: [id])
+  gameId                    String?          @map("game")
+  from_PlayerBallBind_bot   PlayerBallBind[] @relation("PlayerBallBind_bot")
+  from_Card_bot             Card[]           @relation("Card_bot")
+  from_GameResult_winnerBot GameResult[]     @relation("GameResult_winnerBot")
 
   @@index([roomId])
   @@index([gameId])
@@ -54,12 +56,14 @@ model Bot {
 model Game {
   id              String              @id @default(cuid())
   speed           Int                 @default(2)
+  result          GameResult?         @relation("Game_result", fields: [resultId], references: [id])
+  resultId        String?             @unique @map("result")
   users           User[]              @relation("User_game")
   bots            Bot[]               @relation("Bot_game")
   gameStatus      GameGameStatusType? @default(waiting)
   createdAt       DateTime?           @default(now())
   step            Int                 @default(0)
-  balls           Json?               @default("[20,19,83,38,29,57,14,22,7,39,34,67,46,75,68,15,12,1,69,13,26,76,48,36,33,39,64,56,40,63,30,25,26,46,65,64,79,41,72,31,19,26,27,14,37,86,29,48,61,52,81,16,53,10,16,56,76,76,35,43,60,14,29,76,18,58,5,48,83,61,39,59,63,39,45,37,84,78,42,68,52,58,20,36,89,11,83,11,85,50]")
+  balls           Json?               @default("[31,9,7,45,20,48,70,82,64,61,77,25,2,41,39,41,19,12,35,31,60,28,36,83,19,17,26,73,75,64,26,41,64,15,16,90,63,63,49,86,14,6,21,80,22,90,66,65,54,76,47,84,21,50,62,68,53,51,79,49,15,62,45,20,88,87,64,8,53,82,63,40,86,9,44,56,54,89,25,62,70,4,1,44,88,40,86,42,73,12]")
   playerBallBinds PlayerBallBind[]    @relation("PlayerBallBind_game")
   from_Card_game  Card[]              @relation("Card_game")
 }
@@ -99,6 +103,19 @@ model Card {
   @@index([gameId])
   @@index([userId])
   @@index([botId])
+}
+
+model GameResult {
+  id           String    @id @default(cuid())
+  winnerBot    Bot?      @relation("GameResult_winnerBot", fields: [winnerBotId], references: [id])
+  winnerBotId  String?   @map("winnerBot")
+  winnerUser   User?     @relation("GameResult_winnerUser", fields: [winnerUserId], references: [id])
+  winnerUserId String?   @map("winnerUser")
+  createdAt    DateTime? @default(now())
+  game         Game?     @relation("Game_result")
+
+  @@index([winnerBotId])
+  @@index([winnerUserId])
 }
 
 enum UserRoleType {

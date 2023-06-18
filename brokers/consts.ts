@@ -56,6 +56,15 @@ export const Queues = {
   botMoveSimulation: {
     name: "botMoveSimulation",
   },
+  finishGameEvent: {
+    name: "finishGameEvent",
+    options: {
+      repeat: { every: 1000 },
+    },
+  },
+  finishGameProcedure: {
+    name: "finishGameProcedure",
+  },
 };
 
 export const connection = {

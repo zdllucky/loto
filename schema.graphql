@@ -244,6 +244,7 @@ input BotOrderByInput {
 type Game {
   id: ID!
   speed: Int
+  result: GameResult
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
   bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
@@ -272,6 +273,7 @@ input GameWhereInput {
   NOT: [GameWhereInput!]
   id: IDFilter
   speed: IntFilter
+  result: GameResultWhereInput
   users: UserManyRelationFilter
   bots: BotManyRelationFilter
   gameStatus: GameGameStatusTypeNullableFilter
@@ -314,6 +316,7 @@ input GameOrderByInput {
 
 input GameUpdateInput {
   speed: Int
+  result: GameResultRelateToOneForUpdateInput
   users: UserRelateToManyForUpdateInput
   bots: BotRelateToManyForUpdateInput
   gameStatus: GameGameStatusType
@@ -321,6 +324,12 @@ input GameUpdateInput {
   step: Int
   balls: JSON
   playerBallBinds: PlayerBallBindRelateToManyForUpdateInput
+}
+
+input GameResultRelateToOneForUpdateInput {
+  create: GameResultCreateInput
+  connect: GameResultWhereUniqueInput
+  disconnect: Boolean
 }
 
 input UserRelateToManyForUpdateInput {
@@ -350,12 +359,18 @@ input GameUpdateArgs {
 
 input GameCreateInput {
   speed: Int
+  result: GameResultRelateToOneForCreateInput
   users: UserRelateToManyForCreateInput
   bots: BotRelateToManyForCreateInput
   gameStatus: GameGameStatusType
   createdAt: DateTime
   step: Int
   playerBallBinds: PlayerBallBindRelateToManyForCreateInput
+}
+
+input GameResultRelateToOneForCreateInput {
+  create: GameResultCreateInput
+  connect: GameResultWhereUniqueInput
 }
 
 input UserRelateToManyForCreateInput {
@@ -507,6 +522,53 @@ input CardCreateInput {
   board: JSON
 }
 
+type GameResult {
+  id: ID!
+  winnerBot: Bot
+  winnerUser: User
+  createdAt: DateTime
+  game: Game
+}
+
+input GameResultWhereUniqueInput {
+  id: ID
+}
+
+input GameResultWhereInput {
+  AND: [GameResultWhereInput!]
+  OR: [GameResultWhereInput!]
+  NOT: [GameResultWhereInput!]
+  id: IDFilter
+  winnerBot: BotWhereInput
+  winnerUser: UserWhereInput
+  createdAt: DateTimeNullableFilter
+  game: GameWhereInput
+}
+
+input GameResultOrderByInput {
+  id: OrderDirection
+  createdAt: OrderDirection
+}
+
+input GameResultUpdateInput {
+  winnerBot: BotRelateToOneForUpdateInput
+  winnerUser: UserRelateToOneForUpdateInput
+  createdAt: DateTime
+  game: GameRelateToOneForUpdateInput
+}
+
+input GameResultUpdateArgs {
+  where: GameResultWhereUniqueInput!
+  data: GameResultUpdateInput!
+}
+
+input GameResultCreateInput {
+  winnerBot: BotRelateToOneForCreateInput
+  winnerUser: UserRelateToOneForCreateInput
+  createdAt: DateTime
+  game: GameRelateToOneForCreateInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -537,6 +599,12 @@ type Mutation {
   updateCards(data: [CardUpdateArgs!]!): [Card]
   deleteCard(where: CardWhereUniqueInput!): Card
   deleteCards(where: [CardWhereUniqueInput!]!): [Card]
+  createGameResult(data: GameResultCreateInput!): GameResult
+  createGameResults(data: [GameResultCreateInput!]!): [GameResult]
+  updateGameResult(where: GameResultWhereUniqueInput!, data: GameResultUpdateInput!): GameResult
+  updateGameResults(data: [GameResultUpdateArgs!]!): [GameResult]
+  deleteGameResult(where: GameResultWhereUniqueInput!): GameResult
+  deleteGameResults(where: [GameResultWhereUniqueInput!]!): [GameResult]
   endSession: Boolean!
   authenticateUserWithPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -606,6 +674,9 @@ type Query {
   cards(where: CardWhereInput! = {}, orderBy: [CardOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CardWhereUniqueInput): [Card!]
   card(where: CardWhereUniqueInput!): Card
   cardsCount(where: CardWhereInput! = {}): Int
+  gameResults(where: GameResultWhereInput! = {}, orderBy: [GameResultOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: GameResultWhereUniqueInput): [GameResult!]
+  gameResult(where: GameResultWhereUniqueInput!): GameResult
+  gameResultsCount(where: GameResultWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   gamePlayerProgress: [Player!]!

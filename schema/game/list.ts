@@ -33,6 +33,7 @@ const schema = list({
       defaultValue: 2,
       validation: { isRequired: true },
     }),
+    result: relationship({ ref: "GameResult.game", many: false }),
     users: relationship({ ref: "User.game", many: true }),
     bots: relationship({ ref: "Bot.game", many: true }),
     gameStatus: select({

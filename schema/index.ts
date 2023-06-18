@@ -5,6 +5,7 @@ import { ExportedSchema } from "./_misc/types";
 import Game from "./game";
 import PlayerBallBind from "./playerBallBind";
 import Card from "./card";
+import GameResult from "./gameResult";
 
 export default {
   User,
@@ -13,4 +14,5 @@ export default {
   Game,
   PlayerBallBind,
   Card,
+  GameResult,
 } as ExportedSchema;
