@@ -41,7 +41,7 @@ services:
       VITE_BASE_PATH: ${VITE_BASE_PATH}
     restart: unless-stopped
     volumes:
-      - deployment/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - app/deployment/caddy/Caddyfile:/etc/caddy/Caddyfile
       - ~/caddy_data:/data
     ports:
       - "80:80"
