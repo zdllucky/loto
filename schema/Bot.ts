@@ -30,6 +30,14 @@ const schema = list({
       update: denyAll,
       delete: denyAll,
     },
+    filter: {
+      query: ({ session }) => ({
+        OR: [
+          { game: { users: { some: { id: { equals: session?.itemId } } } } },
+          { room: { users: { some: { id: { equals: session?.itemId } } } } },
+        ],
+      }),
+    },
   },
   ui: {
     hideCreate: true,

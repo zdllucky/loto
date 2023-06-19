@@ -11,9 +11,6 @@ const schema = list({
       update: denyAll,
       delete: denyAll,
     },
-    filter: {
-      query: hasSession,
-    },
   },
   fields: {
     speed: select({

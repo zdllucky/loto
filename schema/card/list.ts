@@ -12,7 +12,9 @@ const schema = list({
       delete: denyAll,
     },
     filter: {
-      query: hasSession,
+      query: ({ session }) => ({
+        user: { some: { id: { equals: session?.itemId } } },
+      }),
     },
   },
   fields: {

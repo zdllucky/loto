@@ -10,7 +10,7 @@ const roomGeneratorWorkerInit = (context: Context) =>
     async ({ data }: Job) => {
       const { min, max } = data.amount;
       const sCtx = context.sudo();
-      const roomsCount = await sCtx.query.Room.count();
+      const roomsCount = await sCtx.prisma.room.count();
       const nextRandomAmount = Math.floor(Math.random() * (max - min) + min);
 
       if (roomsCount < nextRandomAmount) {

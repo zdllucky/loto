@@ -1,18 +1,18 @@
 import { list } from "@keystone-6/core";
 import { integer, relationship, timestamp } from "@keystone-6/core/fields";
-import { hasSession } from "../_misc/accessHelpers";
+import { hasSession, isAdmin } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
 
 const schema = list({
   access: {
     operation: {
-      query: hasSession,
+      query: isAdmin,
       create: denyAll,
       update: denyAll,
       delete: denyAll,
     },
     filter: {
-      query: hasSession,
+      query: isAdmin,
     },
   },
   fields: {

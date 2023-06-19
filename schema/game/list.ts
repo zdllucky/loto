@@ -6,7 +6,7 @@ import {
   json,
   timestamp,
 } from "@keystone-6/core/fields";
-import { hasSession } from "../_misc/accessHelpers";
+import { hasSession, isAdmin } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
 import { generateRandomArray } from "./_misc/helpers";
 
@@ -19,7 +19,9 @@ const schema = list({
       delete: denyAll,
     },
     filter: {
-      query: hasSession,
+      query: ({ session }) => ({
+        user: { some: { id: { equals: session?.itemId } } },
+      }),
     },
   },
   fields: {
@@ -50,12 +52,14 @@ const schema = list({
     balls: json({
       defaultValue: generateRandomArray(),
       graphql: { omit: { create: true } },
+      access: { read: isAdmin },
     }),
     playerBallBinds: relationship({
       ref: "PlayerBallBind.game",
       many: true,
       isOrderable: true,
       isFilterable: true,
+      access: { read: isAdmin },
     }),
   },
   hooks: {

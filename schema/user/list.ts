@@ -18,7 +18,13 @@ const schema = list({
       delete: isAdmin,
     },
     filter: {
-      query: hasSession,
+      query: ({ session }) => ({
+        OR: [
+          { id: { equals: session?.itemId } },
+          { game: { users: { some: { id: { equals: session?.itemId } } } } },
+          { room: { users: { some: { id: { equals: session?.itemId } } } } },
+        ],
+      }),
     },
   },
   fields: {
@@ -42,7 +48,7 @@ const schema = list({
       validation: { isRequired: true },
       access: {
         create: denyAll,
-        read: allowAll,
+        read: isAdmin,
         update: isAdmin,
       },
     }),
