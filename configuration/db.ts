@@ -21,7 +21,9 @@ generator zod {
 
 const db: Config["db"] = {
   provider: "postgresql",
-  url: "postgres://postgres:postgres@localhost:5432/postgres",
+  url:
+    process.env.DATABASE_URL ||
+    "postgres://postgres:postgres@localhost:5432/postgres",
   extendPrismaSchema: (s) =>
     `${s.replace(exGeneratorClient, generatorClient)}${generatorZod}`,
   async onConnect(context) {

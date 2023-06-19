@@ -5,12 +5,12 @@ import { Session } from "../schema/_misc/accessHelpers";
 import { createClient } from "@redis/client";
 
 const sessionSecret: string =
-  process.env.SESSION_SECRET ?? randomBytes(32).toString("hex");
+  process.env.COOKIE_SECRET ?? randomBytes(32).toString("hex");
 
 const sessionMaxAge = 60 * 60 * 24 * 30;
 
 export const redis = createClient({
-  url: "redis://localhost:6379",
+  url: process.env.REDIS_URL ?? "redis://localhost:6379",
 });
 
 function redisSessionStrategy() {

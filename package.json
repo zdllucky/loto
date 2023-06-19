@@ -3,9 +3,9 @@
   "version": "1.0.2",
   "private": true,
   "scripts": {
-    "dev": "SESSION_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone dev --with-migrations",
+    "dev": "COOKIE_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone dev --with-migrations",
     "start": "keystone start",
-    "build": "SESSION_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone build",
+    "build": "COOKIE_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone build",
     "make_migrations": "keystone prisma migrate dev",
     "migrate": "keystone prisma migrate deploy",
     "postinstall": "keystone build --no-ui --frozen && keystone telemetry disable"
