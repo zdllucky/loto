@@ -46,5 +46,5 @@ jobs:
             export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
             export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
             
-            docker-compose build backend frontend
-            docker-compose up -d
+            docker compose build backend frontend
+            docker compose up -d
