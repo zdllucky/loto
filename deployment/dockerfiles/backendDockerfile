@@ -6,7 +6,7 @@ COPY . .
 
 RUN rm -rf client
 
-RUN npm install --omit=dev --silent
+RUN npm install --omit=dev
 
 RUN npm run build
 

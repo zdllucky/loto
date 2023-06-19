@@ -2,6 +2,11 @@ import { Config } from ".keystone/types";
 import { redis } from "./session";
 import initMQService from "../brokers";
 
+const exGeneratorClient = `provider = "prisma-client-js"`;
+
+const generatorClient = `provider = "prisma-client-js"
+binaryTargets = ["native", "linux-musl"]`;
+
 const generatorZod = `
 generator zod {
   provider                 = "zod-prisma"
@@ -17,7 +22,8 @@ generator zod {
 const db: Config["db"] = {
   provider: "postgresql",
   url: "postgres://postgres:postgres@localhost:5432/postgres",
-  extendPrismaSchema: (s) => `${s}${generatorZod}`,
+  extendPrismaSchema: (s) =>
+    `${s.replace(exGeneratorClient, generatorClient)}${generatorZod}`,
   async onConnect(context) {
     await redis.connect();
 
