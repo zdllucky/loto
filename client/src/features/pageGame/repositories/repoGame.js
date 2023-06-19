@@ -29,7 +29,10 @@ export const getGameBalls = async () => {
     },
     body: JSON.stringify({
       query: `query Query {
-        gameBallSet
+        gameBallSet {
+          balls
+          gameStatus
+        }
       }`,
     }),
   });
@@ -38,7 +41,7 @@ export const getGameBalls = async () => {
 };
 
 export const getGameParams = async ({ gameId }) => {
-  const res = await fetch("http://localhost:3000/api/graphql", {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
       "content-type": "application/json",

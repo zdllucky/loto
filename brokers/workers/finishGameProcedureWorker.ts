@@ -16,7 +16,11 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           select: {
             id: true,
             userId: true,
-            botId: true,
+            bot: {
+              select: {
+                login: true,
+              },
+            },
             _count: {
               select: {
                 from_PlayerBallBind_card: true,
@@ -43,7 +47,7 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
       data: {
         game: { connect: { id: gameId } },
         createdAt: new Date(),
-        winnerBotId: winnerCard?.botId,
+        winnerBotLogin: winnerCard?.bot?.login ?? undefined,
         winnerUserId: winnerCard?.userId,
       },
     });
@@ -64,7 +68,7 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
       },
     });
 
-    return { success: true, winner: res.winnerBotId ?? res.winnerUserId };
+    return { success: true, winner: res.winnerBotLogin ?? res.winnerUserId };
   });
 
 export default finishGameProcedureWorkerInit;

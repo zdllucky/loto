@@ -524,7 +524,7 @@ input CardCreateInput {
 
 type GameResult {
   id: ID!
-  winnerBot: Bot
+  winnerBotLogin: String
   winnerUser: User
   createdAt: DateTime
   game: Game
@@ -539,7 +539,7 @@ input GameResultWhereInput {
   OR: [GameResultWhereInput!]
   NOT: [GameResultWhereInput!]
   id: IDFilter
-  winnerBot: BotWhereInput
+  winnerBotLogin: StringFilter
   winnerUser: UserWhereInput
   createdAt: DateTimeNullableFilter
   game: GameWhereInput
@@ -547,11 +547,12 @@ input GameResultWhereInput {
 
 input GameResultOrderByInput {
   id: OrderDirection
+  winnerBotLogin: OrderDirection
   createdAt: OrderDirection
 }
 
 input GameResultUpdateInput {
-  winnerBot: BotRelateToOneForUpdateInput
+  winnerBotLogin: String
   winnerUser: UserRelateToOneForUpdateInput
   createdAt: DateTime
   game: GameRelateToOneForUpdateInput
@@ -563,7 +564,7 @@ input GameResultUpdateArgs {
 }
 
 input GameResultCreateInput {
-  winnerBot: BotRelateToOneForCreateInput
+  winnerBotLogin: String
   winnerUser: UserRelateToOneForCreateInput
   createdAt: DateTime
   game: GameRelateToOneForCreateInput
@@ -680,7 +681,7 @@ type Query {
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   gamePlayerProgress: [Player!]!
-  gameBallSet: [Int!]!
+  gameBallSet: GameBalls!
   selectedBalls(cardIds: [ID!]!): [CardWithSelectedBalls]!
 }
 
@@ -688,6 +689,11 @@ type Player {
   id: ID!
   login: String!
   progress: [Int!]
+}
+
+type GameBalls {
+  gameStatus: String!
+  balls: [Int!]!
 }
 
 type CardWithSelectedBalls {

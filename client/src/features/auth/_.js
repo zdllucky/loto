@@ -5,7 +5,7 @@ import {
 } from "./authRepo.js";
 import persist from "@alpinejs/persist";
 
-Alpine.plugin(persist);
+if (!Alpine.$persist) Alpine.plugin(persist);
 
 Alpine.store("auth", {
   token: Alpine.$persist(false).as("session_token"),

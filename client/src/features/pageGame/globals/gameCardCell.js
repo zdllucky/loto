@@ -12,13 +12,22 @@ export default () => ({
     return {
       "bg-dark": selected,
       "text-light": selected,
+      hoverable: !!this.cell,
       "bg-success-subtle": this.clickedBalls.find(
         ({ number, cardId }) => number === this.cell && cardId === this.card.id
       ),
     };
   },
   "@click"() {
-    if (!this.clickedBalls.some(({ cardId }) => cardId === this.card.id))
+    const selected = this.selectedBalls
+      .find(({ cardId }) => cardId === this.card.id)
+      ?.balls?.includes?.(this.cell);
+
+    if (
+      !this.clickedBalls.some(({ cardId }) => cardId === this.card.id) &&
+      !selected &&
+      !!this.cell
+    )
       this.selectBall({ number: this.cell, cardId: this.card.id });
   },
 });

@@ -17,7 +17,3 @@ onAlpineInit(({ store }) => {
   imgStore.import("present_box", presentBox);
   imgStore.import("envelope", svg64(envelope));
 });
-
-Alpine.data("content", () => ({
-  sentForm: Alpine.$persist(false).as("sentForm"),
-}));
