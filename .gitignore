@@ -5,4 +5,4 @@ keystone.db
 /server/zod/
 /.keystone/
 /rest/zod/*
-/deployment/dev/data/*
+/deployment/dev/data/

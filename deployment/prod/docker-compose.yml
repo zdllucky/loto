@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  database:
+    image: postgres:alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - ~/data:/var/lib/postgresql/data
+    restart: unless-stopped
+  session:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+  backend:
+    depends_on:
+      - database
+      - session
+    build:
+      context: ../../
+      dockerfile: deployment/dockerfiles/backendDockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      REDIS_URL: redis://session:6379
+    restart: unless-stopped
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ../../
+      dockerfile: deployment/dockerfiles/frontendDockerfile
+    environment:
+      VITE_BASE_PATH: ${VITE_BASE_PATH}
+    restart: unless-stopped
+    volumes:
+      - app/deployment/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ~/caddy_data:/data
+    ports:
+      - "80:80"
+      - "443:443"
+
+

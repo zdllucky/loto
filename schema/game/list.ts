@@ -50,7 +50,7 @@ const schema = list({
     createdAt: timestamp({ defaultValue: { kind: "now" } }),
     step: integer({ defaultValue: 0, validation: { isRequired: true } }),
     balls: json({
-      defaultValue: generateRandomArray(),
+      defaultValue: [],
       graphql: { omit: { create: true } },
       access: { read: isAdmin },
     }),

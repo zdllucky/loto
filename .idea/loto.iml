@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.keystone" />
       <excludeFolder url="file://$MODULE_DIR$/server/zod" />
+      <excludeFolder url="file://$MODULE_DIR$/deployment/dev/data" />
       <excludePattern pattern="package-lock.json" />
       <excludePattern pattern="*.db" />
       <excludePattern pattern="schema.prisma" />

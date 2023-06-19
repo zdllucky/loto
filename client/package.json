@@ -5,10 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "VITE_BASE_PATH=http://192.168.31.149:3000/api/graphql/ vite --port 3333 --host",
-    "build": "vite build",
-    "deploy": "curl --request PUT --url \"http://dc-i18n-service.k8s-prod.kar-tel.local/i18n/document/simply_bday_2y_wish/${VITE_LANG}\" --header 'Content-Type: multipart/form-data' --form 'file=@/Users/zdllucky/projects/html/simply-bday-wish/dist/index.html'",
-    "build_deploy": "npm run build && npm run deploy",
-    "deploy:all": "VITE_LANG=en npm run build_deploy && VITE_LANG=ru npm run build_deploy && VITE_LANG=kk npm run build_deploy"
+    "build": "vite build"
   },
   "devDependencies": {
     "@alpinejs/persist": "^3.10.5",
