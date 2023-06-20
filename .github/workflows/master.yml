@@ -32,24 +32,6 @@ jobs:
           source: "."
           target: "./app"
 
-      - name: Run Docker Compose Build on remote server
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USERNAME }}
-          key: ${{ secrets.REMOTE_SSH_KEY }}
-
-          script: |
-            cd ./app/deployment/prod
-            export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-            export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
-            export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
-            
-            docker compose build backend frontend
-            docker compose up -d
-
       - name: Run Docker Compose Up on remote server
         uses: appleboy/ssh-action@master
         with:
@@ -64,5 +46,4 @@ jobs:
             export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
             export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
             
-            docker compose build backend frontend
-            docker compose up -d
+            docker compose up -d --build --remove-orphans -p app
