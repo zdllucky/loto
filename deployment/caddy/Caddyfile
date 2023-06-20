@@ -6,15 +6,5 @@ loto.ponder8.quest {
     root * /usr/share/caddy
     file_server
 
-    @apiRest {
-        path /api/* /rest/*
-    }
-    rewrite @apiRest {http.request.uri}
-
-    # Proxy all other paths as /admin/*
-    @others {
-        not path /api/* /rest/*
-    }
-    rewrite @others /admin{http.request.uri}
-    reverse_proxy @others backend:3000
+    reverse_proxy backend:3000
 }
