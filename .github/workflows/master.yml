@@ -46,4 +46,4 @@ jobs:
             export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
             export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
             
-            docker compose up -d --build --remove-orphans -p app
+            docker compose up -d --build --remove-orphans
