@@ -38,6 +38,7 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USERNAME }}
           key: ${{ secrets.REMOTE_SSH_KEY }}
+
           script: |
             cd ./app/deployment/prod
             export POSTGRES_USER=${{ secrets.POSTGRES_USER }}

@@ -12,28 +12,45 @@ services:
     volumes:
       - ~/data:/var/lib/postgresql/data
     restart: unless-stopped
-  session:
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  redis:
     image: redis:alpine
     ports:
       - "6379:6379"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   backend:
-    depends_on:
+    links:
       - database
-      - session
+      - redis
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     build:
       context: ../../
       dockerfile: deployment/dockerfiles/backendDockerfile
-    ports:
-      - "3000:3000"
+      args:
+        COOKIE_SECRET: ${COOKIE_SECRET}
+        DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+        REDIS_HOST: redis
     environment:
       COOKIE_SECRET: ${COOKIE_SECRET}
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
-      REDIS_URL: redis://session:6379
+      REDIS_HOST: redis
+    ports:
+      - "3000:3000"
     restart: unless-stopped
   frontend:
-    depends_on:
-      - backend
     build:
       context: ../../
       dockerfile: deployment/dockerfiles/frontendDockerfile

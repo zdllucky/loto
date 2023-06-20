@@ -10,7 +10,7 @@ const sessionSecret: string =
 const sessionMaxAge = 60 * 60 * 24 * 30;
 
 export const redis = createClient({
-  url: process.env.REDIS_URL ?? "redis://localhost:6379",
+  url: `redis://${process.env.REDIS_HOST}:6379`,
 });
 
 function redisSessionStrategy() {

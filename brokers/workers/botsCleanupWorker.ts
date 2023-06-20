@@ -1,17 +1,21 @@
 import { Context } from ".keystone/types";
 import { Worker } from "bullmq";
-import { Queues } from "../consts";
+import { connection, Queues } from "../consts";
 const botsCleanupWorkerInit = ({ context }: { context: Context }) =>
-  new Worker(Queues.botsCleanup.name, async () => {
-    const sCtx = context.sudo();
+  new Worker(
+    Queues.botsCleanup.name,
+    async () => {
+      const sCtx = context.sudo();
 
-    const { count } = await sCtx.prisma.bot.deleteMany({
-      where: {
-        AND: [{ roomId: { equals: null } }, { gameId: { equals: null } }],
-      },
-    });
+      const { count } = await sCtx.prisma.bot.deleteMany({
+        where: {
+          AND: [{ roomId: { equals: null } }, { gameId: { equals: null } }],
+        },
+      });
 
-    return { message: "Complete", count };
-  });
+      return { message: "Complete", count };
+    },
+    { connection }
+  );
 
 export default botsCleanupWorkerInit;

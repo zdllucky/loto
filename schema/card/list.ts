@@ -13,7 +13,7 @@ const schema = list({
     },
     filter: {
       query: ({ session }) => ({
-        user: { some: { id: { equals: session?.itemId } } },
+        user: { id: { equals: session?.itemId } },
       }),
     },
   },

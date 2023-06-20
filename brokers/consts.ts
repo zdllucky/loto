@@ -1,3 +1,5 @@
+import { ConnectionOptions } from "bullmq";
+
 export const Queues = {
   roomGenerator: {
     name: "roomGenerator",
@@ -67,7 +69,9 @@ export const Queues = {
   },
 };
 
-export const connection = {
-  host: "localhost",
+console.log("23" + process.env.REDIS_HOST);
+
+export const connection: ConnectionOptions = {
+  host: process.env.REDIS_HOST,
   port: 6379,
 };

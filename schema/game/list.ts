@@ -20,7 +20,7 @@ const schema = list({
     },
     filter: {
       query: ({ session }) => ({
-        user: { some: { id: { equals: session?.itemId } } },
+        users: { some: { id: { equals: session?.itemId } } },
       }),
     },
   },

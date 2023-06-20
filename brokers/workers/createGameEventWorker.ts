@@ -2,16 +2,20 @@ import { Context } from ".keystone/types";
 import { Queue, Worker } from "bullmq";
 import { connection, Queues } from "../consts";
 const createGameEventWorkerInit = ({ context }: { context: Context }) =>
-  new Worker(Queues.createGameEvent.name, async ({ data }) => {
-    const { limit } = data;
-    const sCtx = context.sudo();
-    const createGameProcedureQueue = new Queue(
-      Queues.createGameProcedure.name,
-      { connection }
-    );
+  new Worker(
+    Queues.createGameEvent.name,
+    async ({ data }) => {
+      const { limit } = data;
+      const sCtx = context.sudo();
+      const createGameProcedureQueue = new Queue(
+        Queues.createGameProcedure.name,
+        { connection }
+      );
 
-    const res = await sCtx.prisma.$transaction(async (prisma) => {
-      const [{ room_count }] = await prisma.$queryRaw<[{ room_count: number }]>`
+      const res = await sCtx.prisma.$transaction(async (prisma) => {
+        const [{ room_count }] = await prisma.$queryRaw<
+          [{ room_count: number }]
+        >`
           SELECT COUNT(*) as room_count
           FROM "Room"
           WHERE "Room".id IN (
@@ -33,8 +37,8 @@ const createGameEventWorkerInit = ({ context }: { context: Context }) =>
           )
       `;
 
-      for (let offset = 0; offset < room_count; offset += limit) {
-        const rooms = await prisma.$queryRaw<{ id: string }[]>`
+        for (let offset = 0; offset < room_count; offset += limit) {
+          const rooms = await prisma.$queryRaw<{ id: string }[]>`
           SELECT id
           FROM "Room"
           WHERE "Room".id IN (
@@ -57,19 +61,21 @@ const createGameEventWorkerInit = ({ context }: { context: Context }) =>
           LIMIT ${limit} OFFSET ${offset}
       `;
 
-        await Promise.all(
-          rooms.map(async ({ id }) => {
-            await createGameProcedureQueue.add("createGameProcedure", {
-              roomId: id,
-            });
-          })
-        );
-      }
+          await Promise.all(
+            rooms.map(async ({ id }) => {
+              await createGameProcedureQueue.add("createGameProcedure", {
+                roomId: id,
+              });
+            })
+          );
+        }
 
-      return { room_count };
-    });
+        return { room_count };
+      });
 
-    return { message: "Complete", res };
-  });
+      return { message: "Complete", res };
+    },
+    { connection }
+  );
 
 export default createGameEventWorkerInit;
