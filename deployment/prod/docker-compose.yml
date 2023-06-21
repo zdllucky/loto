@@ -54,8 +54,8 @@ services:
     build:
       context: ../../
       dockerfile: deployment/dockerfiles/frontendDockerfile
-    environment:
-      VITE_BASE_PATH: ${VITE_BASE_PATH}
+      args:
+        VITE_BASE_PATH: ${VITE_BASE_PATH}
     restart: unless-stopped
     volumes:
       - ../caddy/Caddyfile:/etc/caddy/Caddyfile

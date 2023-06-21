@@ -5,6 +5,7 @@
 loto.ponder8.quest {
     root * /usr/share/caddy
     file_server
+    try_files {path} /index.html
 }
 
 admin.loto.ponder8.quest {

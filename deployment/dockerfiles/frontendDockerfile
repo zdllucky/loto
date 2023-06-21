@@ -1,12 +1,16 @@
 FROM node:16-alpine AS build
 
+ARG VITE_BASE_PATH
+
+ENV VITE_BASE_PATH=$VITE_BASE_PATH
+
 WORKDIR /app
 
 COPY client .
 
 RUN npm install
 
-RUN npm run build
+RUN VITE_BASE_PATH=$VITE_BASE_PATH npm run build
 
 FROM caddy:2-alpine AS release
 
