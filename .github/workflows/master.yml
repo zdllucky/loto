@@ -32,10 +32,48 @@ jobs:
           source: "."
           target: "./app"
 
-  deploy:
+  build_backend:
     runs-on: ubuntu-latest
     needs:
       - upload
+    steps:
+      - name: Run Docker Compose Build on remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          script: |
+            cd ./app/deployment/prod
+            export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+            export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+            export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
+            
+            docker compose build backend
+
+  build_frontend:
+    runs-on: ubuntu-latest
+    needs:
+      - upload
+    steps:
+      - name: Run Docker Compose Build on remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USERNAME }}
+          key: ${{ secrets.REMOTE_SSH_KEY }}
+          script: |
+            cd ./app/deployment/prod
+            export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
+            
+            docker compose build frontend
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build_backend
+      - build_frontend
     steps:
       - name: Run Docker Compose Up on remote server
         uses: appleboy/ssh-action@master
@@ -51,4 +89,4 @@ jobs:
             export COOKIE_SECRET=${{ secrets.COOKIE_SECRET }}
             export VITE_BASE_PATH=${{ secrets.VITE_BASE_PATH }}
             
-            docker compose up -d --build --remove-orphans
+            docker compose up -d --remove-orphans
