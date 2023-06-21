@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  upload:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,6 +32,9 @@ jobs:
           source: "."
           target: "./app"
 
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Run Docker Compose Up on remote server
         uses: appleboy/ssh-action@master
         with:
