@@ -1,13 +1,9 @@
-import { BaseKeystoneTypeInfo, ServerConfig } from "@keystone-6/core/types";
-// import { AppConfig, CommonConfig } from "express-zod-api/dist/config-type";
 import { logger } from "./logger";
-import swaggerUi from "swagger-ui-express";
-import { attachRouting, OpenAPI } from "express-zod-api";
+import { attachRouting } from "express-zod-api";
 import contextProviderGenerate from "./middlewares/express/contextProviderGenerate";
 import { Context } from ".keystone/types";
 import express, { json, urlencoded } from "express";
 import routing from "./router";
-import { version, name } from "../package.json";
 import { ExpressAdapter } from "@bull-board/express";
 import { createBullBoard } from "@bull-board/api";
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
@@ -17,9 +13,9 @@ import { connection, Queues } from "../brokers/consts";
 export let config: any;
 
 const extendExpressApp = (app: express.Express, context: Context) => {
-  app.use("/rest", json());
-  app.use("/rest", urlencoded({ extended: true }));
-  app.use("/rest", contextProviderGenerate(context as Context));
+  app.use("/api/rest", json());
+  app.use("/api/rest", urlencoded({ extended: true }));
+  app.use("/api/rest", contextProviderGenerate(context as Context));
 
   config = {
     app,
@@ -40,7 +36,14 @@ const extendExpressApp = (app: express.Express, context: Context) => {
     serverAdapter,
   });
 
-  app.use("/queues", serverAdapter.getRouter());
+  app.use(
+    "/queues",
+    async (req, res, next) =>
+      !(await context.withRequest(req, res)).session?.itemId
+        ? res.redirect("/signin")
+        : next(),
+    serverAdapter.getRouter()
+  );
 
   //   app.use(
   //     "/api/rest/docs",

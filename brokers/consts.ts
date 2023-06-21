@@ -69,9 +69,7 @@ export const Queues = {
   },
 };
 
-console.log("23" + process.env.REDIS_HOST);
-
 export const connection: ConnectionOptions = {
-  host: process.env.REDIS_HOST,
+  host: process.env.REDIS_HOST || "localhost",
   port: 6379,
 };

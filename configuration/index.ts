@@ -11,7 +11,7 @@ const configuration: Partial<Config> = {
   server,
   db,
   extendGraphqlSchema,
-  ui: { isAccessAllowed: isAdmin, basePath: "/admin" },
+  ui: { isAccessAllowed: isAdmin },
 };
 
 export { withAuth, configuration };

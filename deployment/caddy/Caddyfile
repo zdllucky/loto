@@ -5,6 +5,8 @@
 loto.ponder8.quest {
     root * /usr/share/caddy
     file_server
+}
 
+admin.loto.ponder8.quest {
     reverse_proxy backend:3000
 }

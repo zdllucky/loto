@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { denyAll } from "@keystone-6/core/access";
-import { hasSession, isAdmin } from "./_misc/accessHelpers";
+import { hasSession } from "./_misc/accessHelpers";
 import { relationship, select, text } from "@keystone-6/core/fields";
 
 const schema = list({
@@ -29,15 +29,6 @@ const schema = list({
       create: denyAll,
       update: denyAll,
       delete: denyAll,
-    },
-    filter: {
-      query: ({ session }) =>
-        isAdmin || {
-          OR: [
-            { game: { users: { some: { id: { equals: session?.itemId } } } } },
-            { room: { users: { some: { id: { equals: session?.itemId } } } } },
-          ],
-        },
     },
   },
   ui: {

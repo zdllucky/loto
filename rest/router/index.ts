@@ -5,8 +5,10 @@ const d = (r: typeof DependsOnMethod.constructor.arguments) =>
   new DependsOnMethod(r);
 
 const routing: Routing = {
-  rest: {
-    version: d(version),
+  api: {
+    rest: {
+      version: d(version),
+    },
   },
 };
 
