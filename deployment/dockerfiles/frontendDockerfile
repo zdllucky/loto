@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY client .
 
-RUN npm install --registry http://verdaccio:4873
+RUN npm install
 
 RUN npm run build
 
