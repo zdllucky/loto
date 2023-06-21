@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY client .
 
-RUN npm install
+RUN npm install --registry http://localhost:4873
 
 RUN npm run build
 

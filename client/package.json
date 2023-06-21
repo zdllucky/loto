@@ -9,56 +9,59 @@
   },
   "devDependencies": {
     "@alpinejs/persist": "^3.10.5",
+    "@popperjs/core": "^2.11.6",
     "@prettier/plugin-pug": "^2.3.0",
     "@shaun/alpinejs-router": "^1.2.13",
     "alpinejs": "^3.10.5",
     "alpinejs-form-data": "^1.0.3",
-    "eslint-plugin-pug": "^1.2.5",
+    "bootstrap": "^5.3.0",
+    "bootstrap-icons": "^1.10.5",
     "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-pug": "^1.2.5",
+    "jwt-decode": "^3.1.2",
     "normalize.css": "^8.0.1",
     "pug": "^3.0.2",
     "sass": "^1.56.1",
     "svg64": "^1.2.0",
-    "@popperjs/core": "^2.11.6",
-    "bootstrap": "^5.3.0",
-    "bootstrap-icons": "^1.10.5",
     "url-pattern": "^1.0.3",
     "vite": "^4.3.2",
     "vite-plugin-pug": "^0.3.2",
     "vite-plugin-sass-glob-import": "^2.0.0",
     "vite-plugin-singlefile": "^0.13.1",
-    "vite-svg-loader": "^3.6.0",
-    "autosize": "^6.0.1",
-    "jwt-decode": "^3.1.2"
+    "vite-svg-loader": "^3.6.0"
   },
   "eslintConfig": {
-    "overrides": [{
-      "files": ["{**/*,*}.{js,ts,jsx,tsx,html,sass,pug}"],
-      "plugins": [
-        "prettier",
-        "pug"
-      ],
-      "extends": [
-        "plugin:prettier/recommended"
-      ],
-      "rules": {
-        "prettier/prettier": "error",
-        "max-params": "off"
-      },
-      "parserOptions": {
-        "ecmaVersion": 2021,
-        "sourceType": "module"
-      },
-      "globals": {
-        "AndroidFunction": "readonly",
-        "onAlpineInit": "readonly",
-        "webkit": "readonly"
-      },
-      "env": {
-        "es6": true,
-        "browser": true
+    "overrides": [
+      {
+        "files": [
+          "{**/*,*}.{js,ts,jsx,tsx,html,sass,pug}"
+        ],
+        "plugins": [
+          "prettier",
+          "pug"
+        ],
+        "extends": [
+          "plugin:prettier/recommended"
+        ],
+        "rules": {
+          "prettier/prettier": "error",
+          "max-params": "off"
+        },
+        "parserOptions": {
+          "ecmaVersion": 2021,
+          "sourceType": "module"
+        },
+        "globals": {
+          "AndroidFunction": "readonly",
+          "onAlpineInit": "readonly",
+          "webkit": "readonly"
+        },
+        "env": {
+          "es6": true,
+          "browser": true
+        }
       }
-    }]
+    ]
   },
   "prettier": {
     "useTabs": false,
