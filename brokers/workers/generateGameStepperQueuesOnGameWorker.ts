@@ -51,7 +51,15 @@ const generateGameStepperQueuesOnGameWorkerInit = ({
 
       return { gamesCount };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default generateGameStepperQueuesOnGameWorkerInit;

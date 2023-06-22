@@ -17,7 +17,15 @@ const fullFakeRoomCleanupWorkerInit = ({ context }: { context: Context }) =>
 
       return { message: "Complete", data };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default fullFakeRoomCleanupWorkerInit;

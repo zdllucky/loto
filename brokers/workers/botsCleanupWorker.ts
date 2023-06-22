@@ -15,7 +15,15 @@ const botsCleanupWorkerInit = ({ context }: { context: Context }) =>
 
       return { message: "Complete", count };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default botsCleanupWorkerInit;

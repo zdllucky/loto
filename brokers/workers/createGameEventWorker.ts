@@ -75,7 +75,15 @@ const createGameEventWorkerInit = ({ context }: { context: Context }) =>
 
       return { message: "Complete", res };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default createGameEventWorkerInit;

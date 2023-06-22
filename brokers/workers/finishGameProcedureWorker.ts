@@ -72,7 +72,15 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
 
       return { success: true, winner: res.winnerBotLogin ?? res.winnerUserId };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default finishGameProcedureWorkerInit;

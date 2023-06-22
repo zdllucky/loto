@@ -99,7 +99,15 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
 
       return { res };
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 export default createGameProcedureWorkerInit;

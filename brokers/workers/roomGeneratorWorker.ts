@@ -35,7 +35,15 @@ const roomGeneratorWorkerInit = (context: Context) =>
         return { message: "Complete", rooms: roomsData, bots: botsData };
       }
     },
-    { connection }
+    {
+      connection,
+      removeOnComplete: {
+        count: 1000,
+      },
+      removeOnFail: {
+        count: 1000,
+      },
+    }
   );
 
 const getRandomSpeed = () => Math.floor(Math.random() * 3) + 2;

@@ -23,7 +23,7 @@ const db: Config["db"] = {
   provider: "postgresql",
   url:
     process.env.DATABASE_URL ||
-    "postgres://postgres:postgres@localhost:5432/postgres",
+    "postgres://postgres:postgres@localhost:5432/postgres?connection_limit=5&pool_timeout=5",
   extendPrismaSchema: (s) =>
     `${s.replace(exGeneratorClient, generatorClient)}${generatorZod}`,
   async onConnect(context) {
