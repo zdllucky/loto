@@ -1,4 +1,4 @@
-FROM node:16-alpine as dependency_installer
+FROM node:16-alpine as backend_dependency_installer
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ ENV REDIS_HOST=$REDIS_HOST
 
 COPY . .
 
-COPY --from=dependency_installer /app/node_modules ./node_modules
+COPY --from=backend_dependency_installer /app/node_modules ./node_modules
 
 RUN rm -rf client
 
