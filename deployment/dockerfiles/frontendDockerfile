@@ -1,4 +1,14 @@
+FROM node:16-alpine as dependency_installer
+
+WORKDIR /app
+
+COPY package.json package-lock.json .
+
+RUN npm ci --ignore-scripts
+
 FROM node:16-alpine AS build
+
+WORKDIR /app
 
 ARG VITE_BASE_PATH
 
@@ -8,7 +18,7 @@ WORKDIR /app
 
 COPY client .
 
-RUN npm install
+COPY --from=dependency_installer /app/node_modules ./node_modules
 
 RUN VITE_BASE_PATH=$VITE_BASE_PATH npm run build
 
