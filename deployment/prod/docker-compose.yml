@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - ~/data:/var/lib/postgresql/data
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
       interval: 10s
@@ -21,7 +21,7 @@ services:
     image: redis:alpine
     ports:
       - "6379:6379"
-    restart: unless-stopped
+    restart: always
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -49,14 +49,14 @@ services:
       REDIS_HOST: redis
     ports:
       - "3000:3000"
-    restart: unless-stopped
+    restart: always
   frontend:
     build:
       context: ../../
       dockerfile: deployment/dockerfiles/frontendDockerfile
       args:
         VITE_BASE_PATH: ${VITE_BASE_PATH}
-    restart: unless-stopped
+    restart: always
     volumes:
       - ../caddy/Caddyfile:/etc/caddy/Caddyfile
       - ~/caddy_data:/data
