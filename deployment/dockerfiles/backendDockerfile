@@ -18,7 +18,7 @@ ENV DATABASE_URL=$DATABASE_URL
 ENV COOKIE_SECRET=$COOKIE_SECRET
 ENV REDIS_HOST=$REDIS_HOST
 
-COPY ./brokers ./configuration ./deployment ./migrations ./rest ./schema ./keystone.ts ./package.json ./package-lock.json ./schema.prisma ./schema.graphql ./tsconfig.json .
+COPY . .
 
 COPY --from=backend_dependency_installer /app/node_modules ./node_modules
 
