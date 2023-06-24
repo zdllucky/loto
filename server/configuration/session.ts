@@ -13,31 +13,27 @@ export const redis = createClient({
   url: `redis://${process.env.REDIS_HOST || "localhost"}:6379`,
 });
 
-function redisSessionStrategy() {
-  return storedSessions<Session>({
-    maxAge: sessionMaxAge,
-    // the session secret is used to encrypt cookie data
-    secret: sessionSecret,
+const session: Config["session"] = storedSessions<Session>({
+  maxAge: sessionMaxAge,
+  // the session secret is used to encrypt cookie data
+  secret: sessionSecret,
 
-    store: () => ({
-      async get(sessionId) {
-        const result = await redis.get(sessionId);
-        if (!result) return;
+  store: () => ({
+    async get(sessionId) {
+      const result = await redis.get(sessionId);
+      if (!result) return;
 
-        return JSON.parse(result) as Session;
-      },
+      return JSON.parse(result) as Session;
+    },
 
-      async set(sessionId, data) {
-        // we use redis for our Session data, in JSON
-        await redis.setEx(sessionId, sessionMaxAge, JSON.stringify(data));
-      },
+    async set(sessionId, data) {
+      // we use redis for our Session data, in JSON
+      await redis.setEx(sessionId, sessionMaxAge, JSON.stringify(data));
+    },
 
-      async delete(sessionId) {
-        await redis.del(sessionId);
-      },
-    }),
-  });
-}
-
-const session: Config["session"] = redisSessionStrategy();
+    async delete(sessionId) {
+      await redis.del(sessionId);
+    },
+  }),
+});
 export default session;

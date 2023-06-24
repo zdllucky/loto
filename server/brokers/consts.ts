@@ -1,4 +1,4 @@
-import { ConnectionOptions } from "bullmq";
+import type { ConnectionOptions } from "bullmq";
 
 export const Queues = {
   roomGenerator: {

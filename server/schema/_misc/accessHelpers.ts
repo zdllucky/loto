@@ -1,7 +1,8 @@
 export type Session = {
   itemId: string;
   data: {
-    id: string;
+    login: string;
+    createdAt: Date;
     role: "admin" | "user";
   };
 };

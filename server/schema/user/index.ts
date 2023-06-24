@@ -1,5 +1,5 @@
 import schema from "./list";
-import { ExportedExtension } from "../_misc/types";
+import type { ExportedExtension } from "../_misc/types";
 import registerUserWithLoginAndPasswordMutation from "./extensions/registerUserWithLoginAndPasswordMutation";
 
 const extension: ExportedExtension = {

@@ -1,6 +1,6 @@
 import { Lists } from ".keystone/types";
 import { BaseSchemaMeta } from "@keystone-6/core/dist/declarations/src/types/schema/graphql-ts-schema";
-import { Field, OutputType } from "@graphql-ts/schema";
+import type { Field, OutputType } from "@graphql-ts/schema";
 
 export type ExportedSchema = Record<
   string,
