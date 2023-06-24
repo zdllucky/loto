@@ -27,12 +27,20 @@ const roomGeneratorWorkerInit = (context: Context) =>
           login: generateUsername("", 2, 15),
         }));
 
-        await sCtx.prisma.$transaction(async () => {
-          await sCtx.prisma.room.createMany({ data: roomsData });
-          await sCtx.prisma.bot.createMany({ data: botsData });
-        });
-
-        return { message: "Complete", rooms: roomsData, bots: botsData };
+        try {
+          await sCtx.prisma.$transaction(async () => {
+            await sCtx.prisma.room.createMany({ data: roomsData });
+            await sCtx.prisma.bot.createMany({ data: botsData });
+          });
+        } catch (e: any) {
+          if (
+            e.message &&
+            (e.message as string).includes("Unique constraint failed")
+          )
+            return { success: false, message: e.message };
+          else throw e;
+        }
+        return { success: true, rooms: roomsData, bots: botsData };
       }
     },
     {

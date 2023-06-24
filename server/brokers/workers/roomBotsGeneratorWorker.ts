@@ -56,13 +56,21 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
         },
         { add: [], remove: [] }
       );
+      try {
+        await sCtx.prisma.$transaction([
+          sCtx.prisma.bot.deleteMany({ where: { id: { in: bots.remove } } }),
+          sCtx.prisma.bot.createMany({ data: bots.add }),
+        ]);
+      } catch (e: any) {
+        if (
+          e.message &&
+          (e.message as string).includes("Unique constraint failed")
+        )
+          return { success: false, message: e.message };
+        else throw e;
+      }
 
-      await sCtx.prisma.$transaction([
-        sCtx.prisma.bot.createMany({ data: bots.add }),
-        sCtx.prisma.bot.deleteMany({ where: { id: { in: bots.remove } } }),
-      ]);
-
-      return { message: "Complete", bots };
+      return { success: true, bots };
     },
     {
       connection,
