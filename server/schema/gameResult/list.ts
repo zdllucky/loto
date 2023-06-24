@@ -1,7 +1,8 @@
 import { list } from "@keystone-6/core";
 import { hasSession } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
-import { relationship, text, timestamp } from "@keystone-6/core/fields";
+import { relationship, text } from "@keystone-6/core/fields";
+import { createdAt } from "../_misc/commonFields";
 
 const schema = list({
   access: {
@@ -18,7 +19,7 @@ const schema = list({
   fields: {
     winnerBotLogin: text({}),
     winnerUser: relationship({ ref: "User", many: false }),
-    createdAt: timestamp({ defaultValue: { kind: "now" } }),
+    createdAt,
     game: relationship({ ref: "Game.result", many: false }),
   },
 });

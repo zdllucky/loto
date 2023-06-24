@@ -1,15 +1,16 @@
 import { list } from "@keystone-6/core";
-import { allowAll, denyAll } from "@keystone-6/core/access";
-import { relationship, select, timestamp } from "@keystone-6/core/fields";
-import { hasSession } from "../_misc/accessHelpers";
+import { denyAll } from "@keystone-6/core/access";
+import { relationship, select } from "@keystone-6/core/fields";
+import { hasSession, isAdmin } from "../_misc/accessHelpers";
+import { createdAt } from "../_misc/commonFields";
 
 const schema = list({
   access: {
     operation: {
       query: hasSession,
       create: denyAll,
-      update: denyAll,
-      delete: denyAll,
+      update: isAdmin,
+      delete: isAdmin,
     },
   },
   fields: {
@@ -21,23 +22,21 @@ const schema = list({
         { label: "Hard", value: 4 },
       ],
     }),
-    bots: relationship({ ref: "Bot.room", many: true }),
-    users: relationship({ ref: "User.room", many: true }),
-    createdAt: timestamp({
-      defaultValue: { kind: "now" },
-      access: {
-        create: denyAll,
-        update: denyAll,
-        read: allowAll,
+    bots: relationship({
+      ref: "Bot.room",
+      many: true,
+      ui: {
+        labelField: "login",
       },
     }),
-  },
-  ui: {
-    hideCreate: true,
-    listView: { defaultFieldMode: "read" },
-    hideDelete: true,
-    createView: { defaultFieldMode: "hidden" },
-    itemView: { defaultFieldMode: "read" },
+    users: relationship({
+      ref: "User.room",
+      many: true,
+      ui: {
+        labelField: "login",
+      },
+    }),
+    createdAt,
   },
   graphql: {
     omit: { create: true, update: true, delete: true },

@@ -1,7 +1,8 @@
 import { list } from "@keystone-6/core";
-import { integer, relationship, timestamp } from "@keystone-6/core/fields";
+import { integer, relationship } from "@keystone-6/core/fields";
 import { isAdmin } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
+import { createdAt } from "../_misc/commonFields";
 
 const schema = list({
   access: {
@@ -25,7 +26,7 @@ const schema = list({
       isIndexed: true,
     }),
     card: relationship({ ref: "Card", many: false, isFilterable: true }),
-    createdAt: timestamp({ defaultValue: { kind: "now" }, isOrderable: true }),
+    createdAt,
     game: relationship({
       ref: "Game.playerBallBinds",
       many: false,

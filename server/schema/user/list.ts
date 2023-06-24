@@ -1,15 +1,11 @@
 import { list } from "@keystone-6/core";
 import { allowAll, denyAll } from "@keystone-6/core/access";
-import {
-  password,
-  relationship,
-  select,
-  text,
-  timestamp,
-} from "@keystone-6/core/fields";
+import { password, relationship, select, text } from "@keystone-6/core/fields";
 import { hasSession, isAdmin } from "../_misc/accessHelpers";
+import { createdAt } from "../_misc/commonFields";
 
 const schema = list({
+  ui: { labelField: "login" },
   access: {
     operation: {
       query: hasSession,
@@ -53,7 +49,7 @@ const schema = list({
         update: isAdmin,
       },
     }),
-    room: relationship({ ref: "Room.users", many: false }),
+    room: relationship({ ref: "Room.users", many: false, isFilterable: true }),
     game: relationship({ ref: "Game.users", many: false, isFilterable: true }),
     password: password({
       validation: { isRequired: true },
@@ -63,14 +59,7 @@ const schema = list({
         update: isAdmin,
       },
     }),
-    createdAt: timestamp({
-      defaultValue: { kind: "now" },
-      access: {
-        create: denyAll,
-        update: denyAll,
-        read: allowAll,
-      },
-    }),
+    createdAt,
   },
 });
 

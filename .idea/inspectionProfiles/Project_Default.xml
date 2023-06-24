@@ -8,7 +8,7 @@
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
-          <list size="8">
+          <list size="9">
             <item index="0" class="java.lang.String" itemvalue="x-route" />
             <item index="1" class="java.lang.String" itemvalue="x-link" />
             <item index="2" class="java.lang.String" itemvalue="x-link.activity" />
@@ -17,6 +17,7 @@
             <item index="5" class="java.lang.String" itemvalue="x-authredirect" />
             <item index="6" class="java.lang.String" itemvalue="x-authredirect:authed" />
             <item index="7" class="java.lang.String" itemvalue="x-authredirect:unauthed" />
+            <item index="8" class="java.lang.String" itemvalue="css" />
           </list>
         </value>
       </option>

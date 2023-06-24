@@ -28,6 +28,7 @@ model User {
 
   @@index([roomId])
   @@index([gameId])
+  @@index([createdAt])
 }
 
 model Room {
@@ -36,6 +37,8 @@ model Room {
   bots      Bot[]     @relation("Bot_room")
   users     User[]    @relation("User_room")
   createdAt DateTime? @default(now())
+
+  @@index([createdAt])
 }
 
 model Bot {
@@ -43,7 +46,7 @@ model Bot {
   login                   String           @unique @default("")
   room                    Room?            @relation("Bot_room", fields: [roomId], references: [id])
   roomId                  String?          @map("room")
-  accuracy                Int?             @default(9999)
+  accuracy                Int?             @default(9800)
   game                    Game?            @relation("Bot_game", fields: [gameId], references: [id])
   gameId                  String?          @map("game")
   from_PlayerBallBind_bot PlayerBallBind[] @relation("PlayerBallBind_bot")
@@ -66,6 +69,8 @@ model Game {
   balls           Json?               @default("[]")
   playerBallBinds PlayerBallBind[]    @relation("PlayerBallBind_game")
   from_Card_game  Card[]              @relation("Card_game")
+
+  @@index([createdAt])
 }
 
 model PlayerBallBind {
@@ -85,6 +90,7 @@ model PlayerBallBind {
   @@index([botId])
   @@index([number])
   @@index([cardId])
+  @@index([createdAt])
   @@index([gameId])
 }
 
@@ -114,6 +120,7 @@ model GameResult {
   game           Game?     @relation("Game_result")
 
   @@index([winnerUserId])
+  @@index([createdAt])
 }
 
 enum UserRoleType {

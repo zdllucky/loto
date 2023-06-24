@@ -22,6 +22,8 @@ COPY server server
 
 COPY migrations migrations
 
+COPY admin admin
+
 COPY schema.prisma schema.graphql keystone.ts ./
 
 COPY --from=backend_dependency_installer /app/node_modules ./node_modules

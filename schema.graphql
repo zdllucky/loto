@@ -612,6 +612,7 @@ type Mutation {
   registerUserWithLoginAndPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   joinRoom(roomId: ID!): joinRoomResult
   exitRoom: ExitRoomResult
+  exitGame: ExitGameResult!
   selectBall(number: Int!, cardId: ID!): SelectBallResult!
 }
 
@@ -633,6 +634,11 @@ type ExitRoomSuccess {
 
 type ExitRoomFailure {
   message: String!
+}
+
+type ExitGameResult {
+  success: Boolean!
+  message: String
 }
 
 type SelectBallResult {

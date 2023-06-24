@@ -1,27 +1,23 @@
 import { list } from "@keystone-6/core";
-import {
-  integer,
-  relationship,
-  select,
-  json,
-  timestamp,
-} from "@keystone-6/core/fields";
+import { integer, relationship, select, json } from "@keystone-6/core/fields";
 import { hasSession, isAdmin } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
 import { generateRandomArray } from "./_misc/helpers";
+import { createdAt } from "../_misc/commonFields";
 
 const schema = list({
   access: {
     operation: {
       query: hasSession,
       create: denyAll,
-      update: denyAll,
+      update: isAdmin,
       delete: denyAll,
     },
     filter: {
-      query: ({ session }) => ({
-        users: { some: { id: { equals: session?.itemId } } },
-      }),
+      query: ({ session }) =>
+        isAdmin({ session }) || {
+          users: { some: { id: { equals: session?.itemId } } },
+        },
     },
   },
   fields: {
@@ -34,9 +30,19 @@ const schema = list({
       ],
       defaultValue: 2,
       validation: { isRequired: true },
+      ui: {
+        displayMode: "segmented-control",
+        itemView: { fieldMode: "read" },
+        createView: { fieldMode: "hidden" },
+        listView: { fieldMode: "read" },
+      },
+      access: { update: denyAll, create: denyAll },
     }),
     result: relationship({ ref: "GameResult.game", many: false }),
-    users: relationship({ ref: "User.game", many: true }),
+    users: relationship({
+      ref: "User.game",
+      many: true,
+    }),
     bots: relationship({ ref: "Bot.game", many: true }),
     gameStatus: select({
       type: "enum",
@@ -46,8 +52,9 @@ const schema = list({
         { label: "Playing", value: "playing" },
         { label: "Finished", value: "finished" },
       ],
+      access: { create: denyAll },
     }),
-    createdAt: timestamp({ defaultValue: { kind: "now" } }),
+    createdAt,
     step: integer({ defaultValue: 0, validation: { isRequired: true } }),
     balls: json({
       defaultValue: [],

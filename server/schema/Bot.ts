@@ -13,8 +13,9 @@ const schema = list({
     room: relationship({ ref: "Room.bots", many: false }),
     accuracy: select({
       type: "integer",
-      defaultValue: 9999,
+      defaultValue: 9800,
       options: [
+        // Todo: remove this default value
         { label: "99.99%", value: 9999 },
         { label: "99%", value: 9900 },
         { label: "98%", value: 9800 },
@@ -37,6 +38,7 @@ const schema = list({
     createView: { defaultFieldMode: "hidden" },
     hideDelete: true,
     itemView: { defaultFieldMode: "read" },
+    labelField: "login",
   },
   graphql: { omit: { create: true, update: true, delete: true } },
 });
