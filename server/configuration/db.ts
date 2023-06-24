@@ -10,7 +10,7 @@ binaryTargets = ["native", "linux-musl"]`;
 const generatorZod = `
 generator zod {
   provider                 = "zod-prisma"
-  output                   = "./rest/zod"
+  output                   = "./server/rest/zod"
   relationModel            = true
   modelCase                = "PascalCase"
   modelSuffix              = "Model"

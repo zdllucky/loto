@@ -13,18 +13,19 @@ const schema = list({
   access: {
     operation: {
       query: hasSession,
-      create: ({ session }) => !session || isAdmin(session),
+      create: ({ session }) => !session || isAdmin({ session }),
       update: isAdmin,
       delete: isAdmin,
     },
     filter: {
-      query: ({ session }) => ({
-        OR: [
-          { id: { equals: session?.itemId } },
-          { game: { users: { some: { id: { equals: session?.itemId } } } } },
-          { room: { users: { some: { id: { equals: session?.itemId } } } } },
-        ],
-      }),
+      query: ({ session }) =>
+        isAdmin({ session }) || {
+          OR: [
+            { id: { equals: session?.itemId } },
+            { game: { users: { some: { id: { equals: session?.itemId } } } } },
+            { room: { users: { some: { id: { equals: session?.itemId } } } } },
+          ],
+        },
     },
   },
   fields: {
@@ -47,7 +48,7 @@ const schema = list({
       defaultValue: "user",
       validation: { isRequired: true },
       access: {
-        create: denyAll,
+        create: isAdmin,
         read: isAdmin,
         update: isAdmin,
       },

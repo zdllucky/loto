@@ -2,7 +2,7 @@ FROM node:16-alpine as frontend_dependency_installer
 
 WORKDIR /app
 
-COPY client/package.json client/package-lock.json ./
+COPY package.json package-lock.json ./
 
 RUN npm ci --ignore-scripts
 
@@ -16,7 +16,7 @@ ENV VITE_BASE_PATH=$VITE_BASE_PATH
 
 WORKDIR /app
 
-COPY client .
+COPY . .
 
 COPY --from=frontend_dependency_installer /app/node_modules ./node_modules
 
