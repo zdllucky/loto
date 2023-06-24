@@ -1,6 +1,6 @@
 import { list } from "@keystone-6/core";
 import { integer, relationship, timestamp } from "@keystone-6/core/fields";
-import { hasSession, isAdmin } from "../_misc/accessHelpers";
+import { isAdmin } from "../_misc/accessHelpers";
 import { denyAll } from "@keystone-6/core/access";
 
 const schema = list({

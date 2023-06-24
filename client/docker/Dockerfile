@@ -2,7 +2,7 @@ FROM node:16-alpine as frontend_dependency_installer
 
 WORKDIR /app
 
-COPY client/package.json client/package-lock.json .
+COPY client/package.json client/package-lock.json ./
 
 RUN npm ci --ignore-scripts
 
@@ -25,3 +25,4 @@ RUN VITE_BASE_PATH=$VITE_BASE_PATH npm run build
 FROM caddy:2-alpine AS release
 
 COPY --from=build /app/dist /usr/share/caddy
+

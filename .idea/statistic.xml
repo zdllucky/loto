@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Statistic">
+    <option name="fileTypes" value="class;svn-base;svn-work;Extra;gif;png;jpg;jpeg;bmp;tga;tiff;ear;war;zip;jar;iml;iws;ipr;bz2;gz;pyc;graphql;log;db;package-lock.json;ds_store;sql;prisma;svg;toml;" />
+    <option name="excludedDirectories">
+      <list>
+        <option value="$PROJECT_DIR$/node_modules" />
+        <option value="$PROJECT_DIR$/client/node_modules" />
+        <option value="$PROJECT_DIR$/rest/zod" />
+        <option value="$PROJECT_DIR$/.git" />
+        <option value="$PROJECT_DIR$/.idea" />
+        <option value="$PROJECT_DIR$/.keystone" />
+        <option value="$PROJECT_DIR$/client/dist" />
+      </list>
+    </option>
+  </component>
+</project>

@@ -37,8 +37,8 @@ services:
       redis:
         condition: service_healthy
     build:
-      context: ../../
-      dockerfile: deployment/dockerfiles/backendDockerfile
+      context: ../..
+      dockerfile: server/docker/Dockerfile
       args:
         COOKIE_SECRET: ${COOKIE_SECRET}
         DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
@@ -52,8 +52,8 @@ services:
     restart: always
   frontend:
     build:
-      context: ../../
-      dockerfile: deployment/dockerfiles/frontendDockerfile
+      context: ../../client
+      dockerfile: docker/Dockerfile
       args:
         VITE_BASE_PATH: ${VITE_BASE_PATH}
     restart: always

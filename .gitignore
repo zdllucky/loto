@@ -4,5 +4,5 @@ keystone.db
 *.log
 /server/zod/
 /.keystone/
-/rest/zod/*
+/server/rest/zod/*
 /deployment/dev/data/

@@ -34,6 +34,17 @@ const extendExpressApp = (app: express.Express, context: Context) => {
       (queue) => new BullMQAdapter(new Queue(queue.name, { connection }))
     ),
     serverAdapter,
+    options: {
+      uiConfig: {
+        boardTitle: "Lotto",
+        miscLinks: [
+          {
+            text: "Main panel",
+            url: "/",
+          },
+        ],
+      },
+    },
   });
 
   app.use(

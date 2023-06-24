@@ -2,7 +2,7 @@ FROM node:16-alpine as backend_dependency_installer
 
 WORKDIR /app
 
-COPY package.json package-lock.json .
+COPY package.json package-lock.json ./
 
 RUN npm ci --ignore-scripts
 
@@ -18,10 +18,15 @@ ENV DATABASE_URL=$DATABASE_URL
 ENV COOKIE_SECRET=$COOKIE_SECRET
 ENV REDIS_HOST=$REDIS_HOST
 
-COPY . .
+COPY server server
+
+COPY migrations migrations
+
+COPY schema.prisma schema.graphql keystone.ts ./
 
 COPY --from=backend_dependency_installer /app/node_modules ./node_modules
 
+COPY --from=backend_dependency_installer /app/package.json /app/package-lock.json ./
 
 RUN DATABASE_URL=$DATABASE_URL COOKIE_SECRET=$COOKIE_SECRET REDIS_HOST=$REDIS_HOST npm run postinstall
 
