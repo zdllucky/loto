@@ -38,7 +38,7 @@ const generateGameStepperQueuesOnGameWorkerInit = ({
               game.id,
               { gameId: game.id, speed: game.speed },
               {
-                repeat: { every: 16000 / game.speed },
+                repeat: { every: Math.floor(12000 / game.speed), limit: 100 },
                 repeatJobKey: game.id,
                 jobId: game.id,
               }

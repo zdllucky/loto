@@ -22,7 +22,7 @@ export default () => ({
 
         this.refreshIntervalId = setInterval(
           () => this.loadBalls(),
-          16000 / this.speed
+          Math.floor(12000 / this.speed) + 2
         );
       }
     }, 10);

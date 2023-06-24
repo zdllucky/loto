@@ -31,7 +31,7 @@ const gameStepperQueueOnGameWorkerInit = ({
 
         const removeQueue = async () => {
           await gameStepperQueueOnGameQueue.removeRepeatableByKey(
-            `${gameId}:${gameId}:::${16000 / speed}`
+            `${gameId}:${gameId}:::${Math.floor(12000 / speed)}`
           );
         };
 
