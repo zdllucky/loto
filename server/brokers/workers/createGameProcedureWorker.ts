@@ -35,7 +35,7 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
         if (room._count.bots + room._count.users < 5 && room.ownerId === null)
           return { message: "Room does not have enough users" };
 
-        if (room._count.users < 2)
+        if (room._count.bots + room._count.users)
           return { message: "Room does not have enough users" };
 
         // Create the game
