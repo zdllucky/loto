@@ -3,21 +3,55 @@
     .col.text-center.mt-5
       .display-1.fw-bolder.text-warning Game room
   .row.py-5
-    .col.d-flex.flex-column
-      .card
-        .card-body(x-data="waitRoom")
-          span.badge.bg-success.rounded-pill.float-end(
-            x-text="`${room.speed === 2 ? 'Easy' : room.speed === 3 ? 'Med.' : 'Hard'}`",
-            :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
-          )
-          h4.card-title(x-text="`ID: ${room.id}`")
-          h6.card-subtitle.mb-2.text-body-secondary(x-text="'Waiting for other players: ' + room.users.length + '/5'")
-          ul.list-group.mt-3.overflow-hidden
-            template(:key="user.id")&attributes({"x-for": "user in room.users"})
-              li.list-group-item.list-group-item-warning.fw-bold
-                span(x-text="user.login")
-            template&attributes({"x-for": "num in remaining"})
-              li.list-group-item.list-group-item-warning.placeholder-glow
-                span.placeholder.w-50.border-2
+    .col.d-flex.flex-column(x-data="waitRoom", x-id="['roomId', 'password']")
+      template(x-if="!!room")
+        .card
+          .card-body
+            .hstack.align-items-start.gap-1
+              .vstack
+                .card-title.hstack.gap-1
+                  span Room&nbspID:&nbsp&nbsp;
+                  input.form-control.form-control-sm.flex-shrink-1(
+                    type="text",
+                    readonly,
+                    :value="room.id",
+                    :id="$id('roomId')"
+                  )
+                  button.btn.btn-sm.btn-outline-warning(
+                    type="button",
+                    @click="document.getElementById($id('roomId')).select(); document.execCommand('copy')"
+                  ) Copy
+                .template(x-show="room.password")
+                  .card-title.hstack.gap-1
+                    span Password:
+                    input.form-control.form-control-sm.flex-shrink-1(
+                      type="text",
+                      readonly,
+                      :value="room.password",
+                      :id="$id('password')"
+                    )
+                    button.btn.btn-sm.btn-outline-warning(
+                      type="button",
+                      @click="document.getElementById($id('password')).select(); document.execCommand('copy')"
+                    ) Copy
+              span.badge.bg-success.rounded-pill.float-end(
+                x-text="`${room.speed === 2 ? 'Easy' : room.speed === 3 ? 'Med.' : 'Hard'}`",
+                :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
+              )
+            h6.card-subtitle.my-3.text-body-secondary(
+              x-text="'Waiting for other players: ' + room.users.length + '/5'"
+            )
+            ul.list-group.mt-3.overflow-hidden
+              template(:key="user.id")&attributes({"x-for": "user in room.users"})
+                li.list-group-item.list-group-item-warning.fw-bold
+                  span(x-text="user.login")
+              template&attributes({"x-for": "num in remaining"})
+                li.list-group-item.list-group-item-warning.placeholder-glow
+                  span.placeholder.w-50.border-2
 
-          button.btn.btn-md.btn-light.w-100.mt-3(@click="exitRoom") Exit room
+            button.btn.btn-warning.w-100.mt-3(
+              x-show="room.owner.login === Alpine.store('user').login",
+              :disabled="room.users.length < 2",
+              @click="startGame"
+            ) Start game
+            button.btn.btn-sm.w-100.mt-3(@click="exitRoom") Exit room

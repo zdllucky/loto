@@ -45,8 +45,6 @@ Alpine.directive(
   async (el, { expression, value }, { Alpine, cleanup }) => {
     const authed = value === "authed";
 
-    console.log(authed);
-
     function redirectionHandler({ detail }) {
       if (authed === detail.hasAuth) Alpine.$router.push(expression);
     }

@@ -2,9 +2,9 @@ import { graphql } from "@keystone-6/core";
 import { Extension } from "../../_misc/types";
 import { Context } from ".keystone/types";
 import { connection, Queues } from "../../../brokers/consts";
-import { Queue } from "bullmq/dist/esm/classes/queue";
+import { Queue } from "bullmq";
 
-const startPrivateGameMutation: Extension = () => {
+const startGameMutation: Extension = () => {
   const StartPrivateGameResult = graphql.object<{
     success: boolean;
     message: string | undefined;
@@ -44,9 +44,6 @@ const startPrivateGameMutation: Extension = () => {
       if (!user.ownedRoom)
         return { success: false, message: "User is not in a room" };
 
-      if (user.ownedRoom.type !== "private")
-        return { success: false, message: "Room is not private" };
-
       if (user.ownedRoom.users.length < 2)
         return { success: false, message: "Room has not got enough users." };
 
@@ -70,3 +67,5 @@ const startPrivateGameMutation: Extension = () => {
     },
   });
 };
+
+export default startGameMutation;

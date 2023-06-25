@@ -104,6 +104,9 @@ const getRoom = async ({ roomId }) => {
           id
           speed
           type
+          owner {
+            login
+          }
           password
           createdAt
           users {

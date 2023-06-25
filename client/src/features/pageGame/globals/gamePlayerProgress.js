@@ -1,4 +1,4 @@
-import { getGamePlayerProgress } from "../repositories/repoGame.js";
+import Alpine from "alpinejs";
 
 export default () => ({
   playersProgress: [],
@@ -13,7 +13,10 @@ export default () => ({
   },
   async loadProgress() {
     try {
-      this.playersProgress = chunkArray(await getGamePlayerProgress(), 2);
+      this.playersProgress = chunkArray(
+        await Alpine.$repo.games.getGamePlayerProgress(),
+        2
+      );
     } catch (e) {
       this.playersProgress = [];
     }

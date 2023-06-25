@@ -643,6 +643,7 @@ type Mutation {
   exitRoom: ExitRoomResult
   joinPrivateRoom(roomId: ID!, password: String!): JoinPrivateRoomResult!
   exitGame: ExitGameResult!
+  startGame: StartPrivateGameResult!
   selectBall(number: Int!, cardId: ID!): SelectBallResult!
 }
 
@@ -672,6 +673,11 @@ type JoinPrivateRoomResult {
 }
 
 type ExitGameResult {
+  success: Boolean!
+  message: String
+}
+
+type StartPrivateGameResult {
   success: Boolean!
   message: String
 }

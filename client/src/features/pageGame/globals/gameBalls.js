@@ -1,5 +1,4 @@
 import Alpine from "alpinejs";
-import { getGameBalls, getGameParams } from "../repositories/repoGame.js";
 import { getGameResult } from "../repositories/repoResult.js";
 
 export default () => ({
@@ -12,7 +11,7 @@ export default () => ({
       if (Alpine.store("user")?.gameId) {
         clearInterval(intervalId);
 
-        const { speed } = await getGameParams({
+        const { speed } = await Alpine.$repo.games.getGameParams({
           gameId: Alpine.store("user").gameId,
         });
 
@@ -32,7 +31,7 @@ export default () => ({
   },
   async loadBalls() {
     try {
-      const { balls, gameStatus } = await getGameBalls();
+      const { balls, gameStatus } = await Alpine.$repo.games.getGameBalls();
 
       this.balls = balls;
       this.gameStatus = gameStatus;

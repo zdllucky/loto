@@ -26,19 +26,17 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
             _count: { select: { bots: true, users: true } },
             bots: { select: { id: true } },
             users: { select: { id: true } },
+            owner: { select: { id: true } },
           },
         });
 
         if (!room) return { message: "Room does not exist" };
 
-        if (room._count.bots + room._count.users < 5 && room.type === "public")
+        if (room._count.bots + room._count.users < 5 && room.ownerId === null)
           return { message: "Room does not have enough users" };
 
-        if (room._count.users < 2 && room.type === "private")
+        if (room._count.users < 2)
           return { message: "Room does not have enough users" };
-
-        if (room._count.users === 0)
-          return { message: "Room does not have any users" };
 
         // Create the game
         // 1. Create the game

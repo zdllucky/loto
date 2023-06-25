@@ -1,5 +1,5 @@
 import Alpine from "alpinejs";
-export const getGamePlayerProgress = async () => {
+const getGamePlayerProgress = async () => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
@@ -20,7 +20,7 @@ export const getGamePlayerProgress = async () => {
   return (await res.json()).data.gamePlayerProgress;
 };
 
-export const getGameBalls = async () => {
+const getGameBalls = async () => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
@@ -40,7 +40,7 @@ export const getGameBalls = async () => {
   return (await res.json()).data.gameBallSet;
 };
 
-export const getGameParams = async ({ gameId }) => {
+const getGameParams = async ({ gameId }) => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
@@ -64,7 +64,7 @@ export const getGameParams = async ({ gameId }) => {
   return (await res.json()).data.game;
 };
 
-export const exitGame = async () => {
+const exitGame = async () => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
@@ -82,4 +82,33 @@ export const exitGame = async () => {
   });
 
   return (await res.json()).data.exitGame;
+};
+
+const startGame = async () => {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: "Bearer " + Alpine.store("auth").token,
+    },
+    body: JSON.stringify({
+      query: `mutation StartGame {
+          startGame {
+            success
+            message
+          }
+        }`,
+      variables: {},
+    }),
+  });
+
+  return (await res.json()).data.startGame;
+};
+
+Alpine.$repo.games = {
+  exitGame,
+  getGameBalls,
+  getGameParams,
+  getGamePlayerProgress,
+  startGame,
 };
