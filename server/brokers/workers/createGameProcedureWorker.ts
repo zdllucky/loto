@@ -31,7 +31,10 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
 
         if (!room) return { message: "Room does not exist" };
 
-        if (room._count.bots + room._count.users < 5)
+        if (room._count.bots + room._count.users < 5 && room.type === "public")
+          return { message: "Room does not have enough users" };
+
+        if (room._count.users < 2 && room.type === "private")
           return { message: "Room does not have enough users" };
 
         if (room._count.users === 0)
@@ -92,7 +95,7 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           data: cardsCreateData,
         });
 
-        await prisma.room.deleteMany({ where: { id: roomId } });
+        await prisma.room.delete({ where: { id: roomId } });
 
         return { game, gameCards };
       });

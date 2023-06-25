@@ -29,8 +29,9 @@ const joinRoomMutation: Extension = () => {
     resolve: async (rootVal, { roomId }, context: Context) => {
       const sCtx = context.sudo();
 
-      const user = await sCtx.db.User.findOne({
+      const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
+        include: { ownedRoom: { select: { id: true } } },
       });
 
       if (!user)
@@ -45,42 +46,48 @@ const joinRoomMutation: Extension = () => {
           message: "User already in game",
         };
 
-      try {
-        const transactionRes = await sCtx.prisma.$transaction<
-          string | undefined
-        >(async (prisma) => {
-          try {
-            const [{ total }] = await prisma.$queryRaw<[{ total: number }]>`
-                  SELECT COUNT(*) AS total
-                  FROM (SELECT room
-                        FROM "Bot"
-                        WHERE room = ${roomId}
-                        UNION ALL
-                        SELECT room
-                        FROM "User"
-                        WHERE room = ${roomId}) AS unioned
-                  GROUP BY room`;
-
-            if (total >= 5) throw new Error("Room is full");
-
-            await prisma.$executeRaw`UPDATE "User"
-                                       SET room = ${roomId}
-                                       WHERE id = ${user.id}`;
-          } catch (e: any) {
-            console.log(e);
-            return e.message ?? "UnknownError";
-          }
-
-          return undefined;
+      if (user.ownedRoom?.id)
+        await context.graphql.run({
+          query: `mutation { exitRoom { __typename } }`,
         });
 
-        if (typeof transactionRes === "string") throw new Error(transactionRes);
-      } catch (e: any) {
+      const room = await sCtx.prisma.room.findUnique({
+        where: { id: roomId },
+        include: {
+          users: { select: { id: true } },
+          bots: { select: { id: true } },
+        },
+      });
+
+      if (!room)
         return {
           __typename: "JoinRoomFailure",
-          message: e.message ?? "UnknownError",
+          message: "Room not found",
         };
-      }
+
+      if (room.type === "private")
+        return {
+          __typename: "JoinRoomFailure",
+          message: "Room is private",
+        };
+
+      if (room.users.length + room.bots.length >= 5)
+        return {
+          __typename: "JoinRoomFailure",
+          message: "Room is full",
+        };
+
+      const res = await sCtx.prisma.user.update({
+        where: { id: user.id },
+        data: { room: { connect: { id: roomId } } },
+        select: { roomId: true },
+      });
+
+      if (!res.roomId)
+        return {
+          __typename: "JoinRoomFailure",
+          message: "Failed to join room",
+        };
 
       return { __typename: "JoinRoomSuccess", roomId };
     },

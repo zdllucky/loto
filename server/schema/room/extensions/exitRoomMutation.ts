@@ -32,18 +32,45 @@ const exitRoomMutation: Extension = () => {
       if (!userId)
         return { __typename: "ExitRoomFailure", message: "Unauthorized" };
 
-      const user = await sCtx.db.User.findOne({
+      const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
+        select: {
+          id: true,
+          room: {
+            select: {
+              id: true,
+              users: { select: { id: true } },
+              ownerId: true,
+            },
+          },
+        },
       });
 
       if (!user)
         return { __typename: "ExitRoomFailure", message: "User not found" };
 
+      if (!user.room)
+        return {
+          __typename: "ExitRoomFailure",
+          message: "User is not in a room",
+        };
+
       try {
-        await sCtx.db.User.updateOne({
-          where: { id: user.id },
-          data: { room: { disconnect: true } },
-        });
+        if (user.room.users.length === 1)
+          await sCtx.prisma.room.delete({ where: { id: user.room.id } });
+        else
+          await sCtx.prisma.room.update({
+            where: { id: user.room.id },
+            data: {
+              users: { disconnect: { id: userId } },
+              ...{
+                ownerId:
+                  user.room.ownerId === userId
+                    ? user.room.users.find(({ id }) => id !== userId)?.id
+                    : user.room.ownerId,
+              },
+            },
+          });
       } catch (e: any) {
         return {
           __typename: "ExitRoomFailure",

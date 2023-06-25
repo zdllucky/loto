@@ -7,6 +7,7 @@ type User {
   role: UserRoleType
   room: Room
   game: Game
+  ownedRoom: Room
   password: PasswordState
   createdAt: DateTime
 }
@@ -36,6 +37,7 @@ input UserWhereInput {
   role: UserRoleTypeNullableFilter
   room: RoomWhereInput
   game: GameWhereInput
+  ownedRoom: RoomWhereInput
   createdAt: DateTimeNullableFilter
 }
 
@@ -119,11 +121,12 @@ input UserUpdateInput {
   role: UserRoleType
   room: RoomRelateToOneForUpdateInput
   game: GameRelateToOneForUpdateInput
+  ownedRoom: RoomRelateToOneForUpdateInput
   password: String
-  createdAt: DateTime
 }
 
 input RoomRelateToOneForUpdateInput {
+  create: RoomCreateInput
   connect: RoomWhereUniqueInput
   disconnect: Boolean
 }
@@ -144,11 +147,12 @@ input UserCreateInput {
   role: UserRoleType
   room: RoomRelateToOneForCreateInput
   game: GameRelateToOneForCreateInput
+  ownedRoom: RoomRelateToOneForCreateInput
   password: String
-  createdAt: DateTime
 }
 
 input RoomRelateToOneForCreateInput {
+  create: RoomCreateInput
   connect: RoomWhereUniqueInput
 }
 
@@ -160,11 +164,19 @@ input GameRelateToOneForCreateInput {
 type Room {
   id: ID!
   speed: Int
+  type: RoomTypeType
+  password: String
   bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
   botsCount(where: BotWhereInput! = {}): Int
+  owner: User
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
   createdAt: DateTime
+}
+
+enum RoomTypeType {
+  public
+  private
 }
 
 input RoomWhereUniqueInput {
@@ -177,7 +189,10 @@ input RoomWhereInput {
   NOT: [RoomWhereInput!]
   id: IDFilter
   speed: IntNullableFilter
+  type: RoomTypeTypeNullableFilter
+  password: StringFilter
   bots: BotManyRelationFilter
+  owner: UserWhereInput
   users: UserManyRelationFilter
   createdAt: DateTimeNullableFilter
 }
@@ -191,6 +206,13 @@ input IntNullableFilter {
   gt: Int
   gte: Int
   not: IntNullableFilter
+}
+
+input RoomTypeTypeNullableFilter {
+  equals: RoomTypeType
+  in: [RoomTypeType!]
+  notIn: [RoomTypeType!]
+  not: RoomTypeTypeNullableFilter
 }
 
 input BotManyRelationFilter {
@@ -208,7 +230,32 @@ input UserManyRelationFilter {
 input RoomOrderByInput {
   id: OrderDirection
   speed: OrderDirection
+  type: OrderDirection
+  password: OrderDirection
   createdAt: OrderDirection
+}
+
+input RoomCreateInput {
+  speed: Int
+  type: RoomTypeType
+  password: String
+  bots: BotRelateToManyForCreateInput
+  owner: UserRelateToOneForCreateInput
+  users: UserRelateToManyForCreateInput
+}
+
+input BotRelateToManyForCreateInput {
+  connect: [BotWhereUniqueInput!]
+}
+
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
+input UserRelateToManyForCreateInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 type Bot {
@@ -320,7 +367,6 @@ input GameUpdateInput {
   users: UserRelateToManyForUpdateInput
   bots: BotRelateToManyForUpdateInput
   gameStatus: GameGameStatusType
-  createdAt: DateTime
   step: Int
   balls: JSON
   playerBallBinds: PlayerBallBindRelateToManyForUpdateInput
@@ -363,7 +409,6 @@ input GameCreateInput {
   users: UserRelateToManyForCreateInput
   bots: BotRelateToManyForCreateInput
   gameStatus: GameGameStatusType
-  createdAt: DateTime
   step: Int
   playerBallBinds: PlayerBallBindRelateToManyForCreateInput
 }
@@ -371,15 +416,6 @@ input GameCreateInput {
 input GameResultRelateToOneForCreateInput {
   create: GameResultCreateInput
   connect: GameResultWhereUniqueInput
-}
-
-input UserRelateToManyForCreateInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
-}
-
-input BotRelateToManyForCreateInput {
-  connect: [BotWhereUniqueInput!]
 }
 
 input PlayerBallBindRelateToManyForCreateInput {
@@ -425,7 +461,6 @@ input PlayerBallBindUpdateInput {
   bot: BotRelateToOneForUpdateInput
   number: Int
   card: CardRelateToOneForUpdateInput
-  createdAt: DateTime
   game: GameRelateToOneForUpdateInput
 }
 
@@ -456,13 +491,7 @@ input PlayerBallBindCreateInput {
   bot: BotRelateToOneForCreateInput
   number: Int
   card: CardRelateToOneForCreateInput
-  createdAt: DateTime
   game: GameRelateToOneForCreateInput
-}
-
-input UserRelateToOneForCreateInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
 }
 
 input BotRelateToOneForCreateInput {
@@ -554,7 +583,6 @@ input GameResultOrderByInput {
 input GameResultUpdateInput {
   winnerBotLogin: String
   winnerUser: UserRelateToOneForUpdateInput
-  createdAt: DateTime
   game: GameRelateToOneForUpdateInput
 }
 
@@ -566,7 +594,6 @@ input GameResultUpdateArgs {
 input GameResultCreateInput {
   winnerBotLogin: String
   winnerUser: UserRelateToOneForCreateInput
-  createdAt: DateTime
   game: GameRelateToOneForCreateInput
 }
 
@@ -582,6 +609,8 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createRoom(data: RoomCreateInput!): Room
+  createRooms(data: [RoomCreateInput!]!): [Room]
   createGame(data: GameCreateInput!): Game
   createGames(data: [GameCreateInput!]!): [Game]
   updateGame(where: GameWhereUniqueInput!, data: GameUpdateInput!): Game
@@ -612,6 +641,7 @@ type Mutation {
   registerUserWithLoginAndPassword(login: String!, password: String!): UserAuthenticationWithPasswordResult
   joinRoom(roomId: ID!): joinRoomResult
   exitRoom: ExitRoomResult
+  joinPrivateRoom(roomId: ID!, password: String!): JoinPrivateRoomResult!
   exitGame: ExitGameResult!
   selectBall(number: Int!, cardId: ID!): SelectBallResult!
 }
@@ -634,6 +664,11 @@ type ExitRoomSuccess {
 
 type ExitRoomFailure {
   message: String!
+}
+
+type JoinPrivateRoomResult {
+  success: Boolean!
+  message: String
 }
 
 type ExitGameResult {

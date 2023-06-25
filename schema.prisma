@@ -20,6 +20,7 @@ model User {
   roomId                     String?          @map("room")
   game                       Game?            @relation("User_game", fields: [gameId], references: [id])
   gameId                     String?          @map("game")
+  ownedRoom                  Room?            @relation("Room_owner")
   password                   String
   createdAt                  DateTime?        @default(now())
   from_PlayerBallBind_user   PlayerBallBind[] @relation("PlayerBallBind_user")
@@ -32,11 +33,15 @@ model User {
 }
 
 model Room {
-  id        String    @id @default(cuid())
-  speed     Int?
-  bots      Bot[]     @relation("Bot_room")
-  users     User[]    @relation("User_room")
-  createdAt DateTime? @default(now())
+  id        String        @id @default(cuid())
+  speed     Int?          @default(3)
+  type      RoomTypeType? @default(public)
+  password  String        @default("")
+  bots      Bot[]         @relation("Bot_room")
+  owner     User?         @relation("Room_owner", fields: [ownerId], references: [id])
+  ownerId   String?       @unique @map("owner")
+  users     User[]        @relation("User_room")
+  createdAt DateTime?     @default(now())
 
   @@index([createdAt])
 }
@@ -126,6 +131,11 @@ model GameResult {
 enum UserRoleType {
   admin
   user
+}
+
+enum RoomTypeType {
+  public
+  private
 }
 
 enum GameGameStatusType {

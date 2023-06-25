@@ -1,4 +1,11 @@
 import Alpine from "alpinejs";
+import * as bootstrap from "bootstrap";
+import "@popperjs/core";
+
+Object.defineProperty(window, "bootstrap", {
+  writable: false,
+  value: bootstrap,
+});
 
 Alpine.$repo = {};
 

@@ -123,3 +123,18 @@ textarea.field
 .stop-scrolling
   height: 100%
   overflow: hidden
+
+.checkbox-warning
+  &:checked
+    background-color: #ffc107 !important
+    border-color: #ffc107 !important
+
+  &:focus
+    outline: none !important
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.5) !important
+
+.range-warning
+  &::-webkit-slider-thumb, &::-moz-range-thumb, &::-ms-thumb
+    background-color: #ffc107 !important
+
+    border-color: #ffc107 !important

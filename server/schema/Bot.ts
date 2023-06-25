@@ -16,7 +16,6 @@ const schema = list({
       defaultValue: 9800,
       options: [
         // Todo: remove this default value
-        { label: "99.99%", value: 9999 },
         { label: "99%", value: 9900 },
         { label: "98%", value: 9800 },
         { label: "90", value: 9000 },

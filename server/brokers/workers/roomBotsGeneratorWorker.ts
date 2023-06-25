@@ -10,12 +10,13 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
       const sCtx = context.sudo();
 
       if (
-        (await sCtx.db.Room.count()) >
+        (await sCtx.db.Room.count({ where: { type: { equals: "public" } } })) >
         Queues.roomGenerator.options.amount.max * 2
       )
         return { message: "Too many rooms" };
 
       const rooms = await sCtx.query.Room.findMany({
+        where: { type: { equals: "public" } },
         query: "id, botsCount, bots { id }, users { id }, usersCount",
       });
 

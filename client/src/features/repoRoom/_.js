@@ -103,6 +103,8 @@ const getRoom = async ({ roomId }) => {
           }
           id
           speed
+          type
+          password
           createdAt
           users {
             id
@@ -126,9 +128,74 @@ const getRoom = async ({ roomId }) => {
   };
 };
 
+const createRoom = async ({ speed, password, type }) => {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${Alpine.store("auth").token}`,
+    },
+    body: JSON.stringify({
+      query: `mutation createRoom($data: RoomCreateInput!) {
+        createRoom(data: $data) {
+          id
+        }
+      }`,
+
+      variables: {
+        data: {
+          speed,
+          password,
+          type,
+        },
+      },
+    }),
+  });
+
+  const { data } = await res.json();
+
+  if (!data.createRoom) {
+    throw new Error(data.createRoom?.errors?.message || "Can't create room");
+  }
+
+  return data.createRoom;
+};
+
+const joinPrivateRoom = async ({ roomId, password }) => {
+  const res = await fetch(import.meta.env.VITE_BASE_PATH, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      Authorization: `Bearer ${Alpine.store("auth").token}`,
+    },
+    body: JSON.stringify({
+      query: `mutation JoinPrivateRoom($roomId: ID!, $password: String!) {
+          joinPrivateRoom(roomId: $roomId, password: $password) {
+            success
+            message
+          }
+        }`,
+      variables: {
+        roomId,
+        password,
+      },
+    }),
+  });
+
+  const { data } = await res.json();
+
+  if (!data.joinPrivateRoom.success) {
+    throw new Error(data.joinPrivateRoom.message);
+  }
+
+  return data.joinPrivateRoom;
+};
+
 Alpine.$repo.rooms = {
   getRooms,
   selectRoom,
   getRoom,
   exitRoom,
+  createRoom,
+  joinPrivateRoom,
 };

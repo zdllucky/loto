@@ -7,13 +7,10 @@ const fullFakeRoomCleanupWorkerInit = ({ context }: { context: Context }) =>
     async () => {
       const sCtx = context.sudo();
 
-      const data = await sCtx.prisma.$transaction(async (prisma) => {
-        await prisma.$executeRaw`
+      const data = await sCtx.prisma.$executeRaw`
         DELETE FROM "Room" 
-        WHERE id IN (SELECT room FROM "Bot" GROUP BY room HAVING COUNT(*) = 5) 
+        WHERE ("Room".type = 'private' OR id IN (SELECT room FROM "Bot" GROUP BY room HAVING COUNT(*) = 5)) 
           AND (SELECT COUNT(*) FROM "User" WHERE room = "Room".id) = 0`;
-        await prisma.$executeRaw`UPDATE "Bot" SET room = NULL WHERE room NOT IN (SELECT id FROM "Room")`;
-      });
 
       return { message: "Complete", data };
     },

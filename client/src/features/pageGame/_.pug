@@ -4,7 +4,10 @@
       .card.h-100.w-100.bg-warning
         .card-body
           .hstack.gap-2
-            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(:class="{'visually-hidden': !balls.length}" x-text="balls[0]")
+            .rounded-circle.p-4.bg-light.fw-bold.fs-1.shadow-lg(
+              :class="{ 'visually-hidden': !balls.length }",
+              x-text="balls[0]"
+            )
             .vstack.gap-2
               template&attributes({"x-for": "(ball, index) in balls"})
                 template(x-if="index >= 1 && index <= 3")
@@ -18,21 +21,30 @@
               template(:key="index")&attributes({"x-for": "(playerCouple, index) in playersProgress"})
                 .w-100.hstack.h-50.gap-3
                   template(:key="player.id")&attributes({"x-for": "(player, index) in playerCouple"})
-                    .progress.shadow.w-100(role='progressbar' :aria-label='player.login' :aria-valuenow='Math.max(...player.progress)' aria-valuemin='0' aria-valuemax='90')
-                      .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(:style='`width: ${Math.max(...player.progress) / 15 * 100}%;`' x-text="player.login.substring(0, 6) + '...'")
+                    .progress.shadow.w-100(
+                      role="progressbar",
+                      :aria-label="player.login",
+                      :aria-valuenow="Math.max(...player.progress)",
+                      aria-valuemin="0",
+                      aria-valuemax="90"
+                    )
+                      .progress-bar.overflow-visible.bg-warning.fw-bold.text-dark.ps-1.text-truncate(
+                        :style="`width: ${(Math.max(...player.progress) / 15) * 100}%;`",
+                        x-text="player.login.substring(0, 6) + '...'"
+                      )
   .row(x-data="gameCards")
     template(x-if="cards.length !== 0")
-      template(x-if="true" x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})")
+      template(x-if="true", x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})")
         template(:key="card.id")&attributes({"x-for": "card in cards"})
           .col-12.mt-3
             .card.rounded-4
               .card-body
                 table.table.table-bordered.mb-0.lotto-table
                   tbody
-                    template()&attributes({"x-for": "(row, rowIndex) in card.board"})
+                    template&attributes({"x-for": "(row, rowIndex) in card.board"})
                       tr
-                        template()&attributes({"x-for": "(cell, cellIndex) in row"})
+                        template&attributes({"x-for": "(cell, cellIndex) in row"})
                           td(x-bind="gameCardCell")
   .row.mt-3
     .col
-      button(x-bind="exitButton").btn.btn-md.btn-light.w-100 Back
+      button.btn.btn-md.btn-light.w-100(x-bind="exitButton") Back

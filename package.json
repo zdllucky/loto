@@ -40,24 +40,31 @@
     "eslint-plugin-prefer-arrow": "^1.2.3",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-unicorn": "^47.0.0",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "@prettier/plugin-pug": "^2.3.0",
+    "eslint-plugin-pug": "^1.2.5",
+    "eslint-plugin-prettier": "^4.2.1"
   },
   "eslintConfig": {
     "env": {
       "es6": true,
-      "node": true
+      "node": true,
+      "browser": true
     },
     "rules": {
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "import/no-unresolved": "off"
+      "import/no-unresolved": "off",
+      "prettier/prettier": "off",
+      "max-params": "off"
     },
     "extends": [
+      "prettier",
+      "plugin:prettier/recommended",
       "eslint:recommended",
       "plugin:import/recommended",
-      "plugin:@typescript-eslint/recommended",
-      "prettier"
+      "plugin:@typescript-eslint/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -65,15 +72,31 @@
     },
     "root": true,
     "plugins": [
+      "pug",
       "import",
+      "prettier",
       "eslint-plugin-prefer-arrow",
       "eslint-plugin-unicorn",
       "eslint-plugin-react",
       "@typescript-eslint"
     ],
+    "globals": {
+      "AndroidFunction": "readonly",
+      "onAlpineInit": "readonly",
+      "webkit": "readonly"
+    },
     "ignorePatterns": [
       "**/*.d.ts",
       "**/node_modules/**"
+    ]
+  },
+  "prettier": {
+    "useTabs": false,
+    "tabWidth": 2,
+    "singleQuote": false,
+    "jsxSingleQuote": false,
+    "plugins": [
+      "@prettier/plugin-pug"
     ]
   }
 }

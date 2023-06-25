@@ -1,38 +1,32 @@
-.container-fluid(x-authredirect:authed="/" )
+.container-fluid(x-authredirect:authed="/")
   .row
     .col.text-center.mt-5
       .display-1.fw-bolder.text-warning Sign in or Register
   .row
     .col.d-flex.flex-column.py-5
-      form.signInForm.semitransparent-container.container-fluid(x-id="['login', 'password']", x-data="authForm", x-bind="form")
+      form.signInForm.semitransparent-container.container-fluid(
+        x-id="['login', 'password']",
+        x-data="authForm",
+        x-bind="form"
+      )
         .row
           .col
-            input.field(
-              placeholder=" ",
-              :id="$id('login')",
-              x-model="login"
-              type="text",
-            )
+            input.field(placeholder=" ", :id="$id('login')", x-model="login", type="text")
             label(:for="$id('login')") Username
         .row.mt-4
           .col
-            input.field(
-              placeholder=" ",
-              :id="$id('password')",
-              x-model="password"
-              type="password",
-            )
+            input.field(placeholder=" ", :id="$id('password')", x-model="password", type="password")
             label(:for="$id('password')") Password
         .row.mt-4
           .col-6
             button.button-primary.confirm-button.w-100(
               type="submit",
-              value="signIn"
+              value="signIn",
               :disabled="isLoading || !login || !password"
             ) Log in
           .col-6
             button.button-primary.confirm-button.w-100(
               type="submit",
-              :disabled="isLoading || !login || !password"
+              :disabled="isLoading || !login || !password",
               value="register"
             ) Register

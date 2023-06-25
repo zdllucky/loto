@@ -8,8 +8,11 @@ export const createdAt = timestamp({
     update: denyAll,
   },
   isIndexed: true,
+  graphql: {
+    omit: { create: true, update: true },
+  },
   ui: {
-    itemView: { fieldMode: "read" },
+    itemView: { fieldMode: "read", fieldPosition: "sidebar" },
     createView: { fieldMode: "hidden" },
     listView: { fieldMode: "read" },
   },

@@ -27,7 +27,7 @@ const schema = list({
   fields: {
     login: text({
       validation: { isRequired: true },
-      ui: { itemView: { fieldMode: "read" } },
+      ui: { itemView: { fieldMode: "read", fieldPosition: "sidebar" } },
       isIndexed: "unique",
       access: {
         create: allowAll,
@@ -48,9 +48,18 @@ const schema = list({
         read: isAdmin,
         update: isAdmin,
       },
+      ui: {
+        itemView: { fieldPosition: "sidebar" },
+        displayMode: "segmented-control",
+      },
     }),
     room: relationship({ ref: "Room.users", many: false, isFilterable: true }),
     game: relationship({ ref: "Game.users", many: false, isFilterable: true }),
+    ownedRoom: relationship({
+      ref: "Room.owner",
+      many: false,
+      isFilterable: true,
+    }),
     password: password({
       validation: { isRequired: true },
       access: {
