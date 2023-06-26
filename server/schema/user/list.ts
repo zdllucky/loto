@@ -10,7 +10,7 @@ const schema = list({
     operation: {
       query: hasSession,
       create: ({ session }) => !session || isAdmin({ session }),
-      update: isAdmin,
+      update: hasSession,
       delete: isAdmin,
     },
     filter: {
