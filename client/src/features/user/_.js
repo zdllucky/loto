@@ -22,7 +22,7 @@ Alpine.store("user", {
       if (!Alpine.store("auth").token) throw Error("Not authenticated");
       const user = await Alpine.$repo.user.getMe();
 
-      this.lang = user.language !== "unset" ? user.language : "en";
+      this.lang = user.language;
       this.gameId = user.game?.id;
       this.login = user.login;
       this.roomId = user.room?.id;
