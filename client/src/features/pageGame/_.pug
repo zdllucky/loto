@@ -44,9 +44,9 @@
       )
         template(:key="card.id")&attributes({"x-for": "card in cards"})
           .col-12.mt-3
-            .card.rounded-4
+            .card.rounded-4.bg-light
               .card-body
-                table.table.table-bordered.mb-0.lotto-table
+                table.table.table-bordered.mb-0.lotto-table.table-light
                   tbody
                     template&attributes({"x-for": "(row, rowIndex) in card.board"})
                       tr
