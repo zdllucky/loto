@@ -11,11 +11,15 @@
             .vstack.gap-2
               template&attributes({"x-for": "(ball, index) in balls"})
                 template(x-if="index >= 1 && index <= 3")
-                  .rounded-circle.bg-light.fw-bold.text-center.shadow(x-text="ball")
+                  .rounded-circle.bg-light.fw-bold.text-center.shadow(
+                    x-text="ball"
+                  )
     .col.height-120px(x-data="gamePlayerProgress")
       .card.h-100.w-100.bg-dark
         .card-body.w-100.h-100
-          h5.card-title.text-light Player progress
+          h5.card-title.text-light(
+            x-text="$store.loc.pageGame.playersProgress"
+          )
           .h-100.w-100
             .vstack.gap-3.w-100
               template(:key="index")&attributes({"x-for": "(playerCouple, index) in playersProgress"})
@@ -34,7 +38,10 @@
                       )
   .row(x-data="gameCards")
     template(x-if="cards.length !== 0")
-      template(x-if="true", x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})")
+      template(
+        x-if="true",
+        x-data="gameSelectedBalls({cardIds: cards.map(({id}) => id)})"
+      )
         template(:key="card.id")&attributes({"x-for": "card in cards"})
           .col-12.mt-3
             .card.rounded-4
@@ -47,4 +54,8 @@
                           td(x-bind="gameCardCell")
   .row.mt-3
     .col
-      button.btn.btn-md.btn-light.w-100(x-bind="exitButton") Back
+      button.btn.btn-md.btn-light.w-100(
+        x-bind="exitButton",
+        type="button",
+        x-text="$store.loc.pageGame.actions.leave"
+      )

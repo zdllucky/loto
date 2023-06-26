@@ -1,30 +1,45 @@
-template(x-route="/" x-authredirect:unauthed="/sign")
+template(x-route="/", x-authredirect:unauthed="/sign")
   .container-fluid
     .row
       .col.text-center.mt-5
-        .display-1.fw-bolder.text-warning Lotto
+        .display-1.fw-bolder.text-warning(x-text="$store.loc.pageMain.title")
     .row.py-5
       .col.d-flex.flex-column
         .semitransparent-container.container-fluid
-          .row(x-show="$store.user.roomId" x-init="$store.user.refresh()")
+          .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
             .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(x-link href="/room/await") Continue
+              a.btn.btn-lg.btn-warning.w-100(
+                x-link,
+                href="/room/await",
+                x-text="$store.loc.pageMain.actions.continue"
+              )
           .row(x-show="$store.user.gameId")
             .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(x-link href="/game") Continue
+              a.btn.btn-lg.btn-warning.w-100(
+                x-link,
+                href="/game",
+                x-text="$store.loc.pageMain.actions.continue"
+              )
           .row
             .col
-              a.btn.btn-lg.btn-warning.w-100(x-link href="/room/all") Join games
+              a.btn.btn-lg.btn-warning.w-100(
+                x-link,
+                href="/room/all",
+                x-text="$store.loc.pageMain.actions.joinGames"
+              )
           .row
             .col.d-flex.flex-column.pt-4
-              button.btn.btn-lg.btn-light(@click="$store.auth.signOut()") Sign out
+              button.btn.btn-lg.btn-light(
+                @click="$store.auth.signOut()",
+                x-text="$store.loc.pageMain.actions.signOut"
+              )
 template(x-route="/sign")
   include ../pageSign/_
-template(x-route="/room/all" x-authredirect:unauthed="/sign")
-    include ../pageRooms/_
-template(x-route="/room/await" x-authredirect:unauthed="/sign")
+template(x-route="/room/all", x-authredirect:unauthed="/sign")
+  include ../pageRooms/_
+template(x-route="/room/await", x-authredirect:unauthed="/sign")
   include ../pageRoomAwait/_
-template(x-route="/game" x-authredirect:unauthed="/sign")
+template(x-route="/game", x-authredirect:unauthed="/sign")
   include ../pageGame/_
 
 include ../modal/_

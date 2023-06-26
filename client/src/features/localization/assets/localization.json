@@ -1,5 +1,144 @@
 {
+  "en": {
+    "lang": "en",
+    "pageMain": {
+      "title": "Lotto",
+      "actions": {
+        "continue": "Continue",
+        "joinGames": "Join games",
+        "signOut": "Sign out"
+      }
+    },
+    "pageRooms": {
+      "title": "Waiting rooms",
+      "actions": {
+        "join": {
+          "button": "Join",
+          "title": "Join room",
+          "roomId": "Room ID",
+          "password": "Password",
+          "submit": "Join room"
+        },
+        "create": {
+          "button": "＋ Create",
+          "title": "Create room",
+          "difficulty": {
+            "name": "Difficulty",
+            "easy": "Easy",
+            "medium": "Medium",
+            "hard": "Hard"
+          },
+          "includePassword": "With password?",
+          "password": "Password",
+          "submit": "Create room"
+        }
+      }
+    },
+    "pageSign": {
+      "title": "Sign in or Register",
+      "username": "Username",
+      "password": "Password",
+      "buttons": {
+        "signIn": "Sign in",
+        "register": "Register"
+      }
+    },
+    "pageRoomAwait": {
+      "title": "Game room",
+      "roomId": "Room&nbspID:&nbsp ",
+      "password": "Password: ",
+      "progress": "Waiting for players: ",
+      "actions": {
+        "copy": "Copy",
+        "start": "Start game",
+        "leave": "Leave room"
+      }
+    },
+    "pageGame": {
+      "playersProgress": "Players' progress",
+      "actions": {
+        "leave": "Leave game",
+        "ensureLeave": "Are you sure you want to leave the game?"
+      }
+    },
+    "buttons": {
+      "back": "Back"
+    },
+    "badges": {
+      "easy": "Easy",
+      "medium": "Med.",
+      "hard": "Hard"
+    }
+  },
   "ru": {
-    "lang": "ru"
+    "lang": "ru",
+    "pageMain": {
+      "title": "Лото",
+      "actions": {
+        "continue": "Продолжить",
+        "joinGames": "Присоединиться к играм",
+        "signOut": "Выйти"
+      }
+    },
+    "pageRooms": {
+      "title": "Ожидание в комнатах",
+      "actions": {
+        "join": {
+          "button": "Присоедин.",
+          "title": "Присоединиться к комнате",
+          "roomId": "ID комнаты",
+          "password": "Пароль",
+          "submit": "Присоединиться к комнате"
+        },
+        "create": {
+          "button": "＋ Создать",
+          "title": "Создать комнату",
+          "difficulty": {
+            "name": "Сложность",
+            "easy": "Легко",
+            "medium": "Средне",
+            "hard": "Сложно"
+          },
+          "includePassword": "С паролем?",
+          "password": "Пароль",
+          "submit": "Создать комнату"
+        }
+      }
+    },
+    "pageSign": {
+      "title": "Вход / Регистрация",
+      "username": "Имя пользователя",
+      "password": "Пароль",
+      "buttons": {
+        "signIn": "Войти",
+        "register": "Создать"
+      }
+    },
+    "pageRoomAwait": {
+      "title": "Игровая комната",
+      "roomId": "ID&nbsp;комн.:",
+      "password": "Пароль:&nbsp;",
+      "progress": "Ожидание игроков: ",
+      "actions": {
+        "copy": "Копир.",
+        "start": "Начать игру",
+        "leave": "Выйти из комнаты"
+      }
+    },
+    "pageGame": {
+      "playersProgress": "Др. игроки",
+      "actions": {
+        "leave": "Выйти из игры",
+        "ensureLeave": "Вы уверены, что хотите выйти из игры?"
+      }
+    },
+    "buttons": {
+      "back": "Назад"
+    },
+    "badges": {
+      "easy": "Легко",
+      "medium": "Сред.",
+      "hard": "Слож."
+    }
   }
 }

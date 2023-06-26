@@ -1,7 +1,7 @@
 import Alpine from "alpinejs";
 export default () => ({
   async "@click"() {
-    if (confirm("Are you sure you want to exit?")) {
+    if (confirm(Alpine.store("loc").pageGame.actions.ensureLeave)) {
       try {
         const { message, success } = await Alpine.$repo.games.exitGame();
 

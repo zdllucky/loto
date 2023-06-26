@@ -1,7 +1,7 @@
 .container-fluid(x-authredirect:authed="/")
   .row
     .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning Sign in or Register
+      .display-1.fw-bolder.text-warning(x-text="$store.loc.pageSign.title")
   .row
     .col.d-flex.flex-column.py-5
       form.signInForm.semitransparent-container.container-fluid(
@@ -11,22 +11,37 @@
       )
         .row
           .col
-            input.field(placeholder=" ", :id="$id('login')", x-model="login", type="text")
-            label(:for="$id('login')") Username
+            input.field(
+              placeholder=" ",
+              :id="$id('login')",
+              x-model="login",
+              type="text"
+            )
+            label(:for="$id('login')", x-text="$store.loc.pageSign.username")
         .row.mt-4
           .col
-            input.field(placeholder=" ", :id="$id('password')", x-model="password", type="password")
-            label(:for="$id('password')") Password
+            input.field(
+              placeholder=" ",
+              :id="$id('password')",
+              x-model="password",
+              type="password"
+            )
+            label(
+              :for="$id('password')",
+              x-text="$store.loc.pageSign.password"
+            )
         .row.mt-4
           .col-6
             button.button-primary.confirm-button.w-100(
               type="submit",
               value="signIn",
-              :disabled="isLoading || !login || !password"
-            ) Log in
+              :disabled="isLoading || !login || !password",
+              x-text="$store.loc.pageSign.buttons.signIn"
+            )
           .col-6
             button.button-primary.confirm-button.w-100(
               type="submit",
               :disabled="isLoading || !login || !password",
-              value="register"
-            ) Register
+              value="register",
+              x-text="$store.loc.pageSign.buttons.register"
+            )

@@ -1,7 +1,7 @@
 .container-fluid
   .row
     .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning Waiting rooms
+      .display-1.fw-bolder.text-warning(x-text="$store.loc.pageRooms.title")
   .row.py-5
     .col.d-flex.flex-column
       .semitransparent-container.container-fluid(x-data="roomsList")
@@ -18,14 +18,14 @@
                 data-bs-auto-close="outside"
               )
                 i.bi.bi-door-open-fill
-                span.ms-1 Join
+                span.ms-1(x-text="$store.loc.pageRooms.actions.join.button")
               form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
                 style="width: 300px",
                 x-data="joinPrivateRoom",
                 x-id="['roomId', 'password']",
                 @submit.prevent="join()"
               )
-                h5.mb-2 Join room
+                h5.mb-2(x-text="$store.loc.pageRooms.actions.join.title")
                 .mb-3
                   input.field(
                     type="roomId",
@@ -33,7 +33,10 @@
                     x-model="roomId",
                     :id="$id('roomId')"
                   )
-                  label(:for="$id('roomId')") Room ID
+                  label(
+                    :for="$id('roomId')",
+                    x-text="$store.loc.pageRooms.actions.join.roomId"
+                  )
                 .mb-3
                   input.field(
                     type="password",
@@ -41,30 +44,37 @@
                     x-model="password",
                     :id="$id('password')"
                   )
-                  label(:for="$id('password')") Password
+                  label(
+                    :for="$id('password')",
+                    x-text="$store.loc.pageRooms.actions.join.password"
+                  )
 
                 button.btn.btn-warning.w-100(
                   type="submit",
-                  :disabled="isLoading || password?.length <= 4 || !roomId"
-                ) Join room
-
+                  :disabled="isLoading || password?.length <= 4 || !roomId",
+                  x-text="$store.loc.pageRooms.actions.join.submit"
+                )
           .col-auto.ps-0
             .dropdown
               button.btn.btn-warning.btn-sm.fw-bold(
                 type="button",
                 data-bs-toggle="dropdown",
                 aria-expanded="false",
-                data-bs-auto-close="outside"
-              ) &#65291; Create
+                data-bs-auto-close="outside",
+                x-html="$store.loc.pageRooms.actions.create.button"
+              )
               form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
                 style="width: 300px",
                 x-data="createRoom",
                 x-id="['type', 'password']",
                 @submit.prevent="createRoom()"
               )
-                h5.mb-2 Create room
+                h5.mb-2(x-text="$store.loc.pageRooms.actions.create.title")
                 .mb-3
-                  label.form-label(:for="$id('speed')") Difficulty
+                  label.form-label(
+                    :for="$id('speed')",
+                    x-text="$store.loc.pageRooms.actions.create.difficulty.name"
+                  )
                   .btn-group.w-100(
                     role="group",
                     aria-label="Базовая группа переключателей радио",
@@ -77,7 +87,10 @@
                       value="2",
                       :id="$id('easy')"
                     )
-                    label.btn.btn-sm.btn-outline-warning(:for="$id('easy')") Easy
+                    label.btn.btn-sm.btn-outline-warning(
+                      :for="$id('easy')",
+                      x-text="$store.loc.pageRooms.actions.create.difficulty.easy"
+                    )
                     input.btn-check(
                       type="radio",
                       autocomplete="off",
@@ -85,7 +98,10 @@
                       value="3",
                       :id="$id('medium')"
                     )
-                    label.btn.btn-sm.btn-outline-warning(:for="$id('medium')") Medium
+                    label.btn.btn-sm.btn-outline-warning(
+                      :for="$id('medium')",
+                      x-text="$store.loc.pageRooms.actions.create.difficulty.medium"
+                    )
                     input.btn-check(
                       type="radio",
                       autocomplete="off",
@@ -93,7 +109,10 @@
                       value="4",
                       :id="$id('hard')"
                     )
-                    label.btn.btn-sm.btn-outline-warning(:for="$id('hard')") Hard
+                    label.btn.btn-sm.btn-outline-warning(
+                      :for="$id('hard')",
+                      x-text="$store.loc.pageRooms.actions.create.difficulty.hard"
+                    )
                 .mb-3
                   .form-check.form-switch
                     input.form-check-input.checkbox-warning(
@@ -102,7 +121,10 @@
                       x-model="type",
                       :id="$id('type')"
                     )
-                    label.form-check-label(:for="$id('type')") With password?
+                    label.form-check-label(
+                      :for="$id('type')",
+                      x-text="$store.loc.pageRooms.actions.create.includePassword"
+                    )
                 .mb-3(:class="{ 'd-none': !type }")
                   input.field(
                     type="password",
@@ -110,12 +132,16 @@
                     x-model="password",
                     :id="$id('password')"
                   )
-                  label(:for="$id('password')") Password
+                  label(
+                    :for="$id('password')",
+                    x-text="$store.loc.pageRooms.actions.create.password"
+                  )
 
                 button.btn.btn-warning.w-100(
                   type="submit",
-                  :disabled="isLoading || (type && password?.length <= 4)"
-                ) Create room
+                  :disabled="isLoading || (type && password?.length <= 4)",
+                  x-text="$store.loc.pageRooms.actions.create.submit"
+                )
 
         .row.mt-3
           .col
@@ -131,22 +157,20 @@
                 )
                   .ms-2.me-auto.d-flex.flex-column.row-gap-2.w-75
                     .fw-bold.text-truncate(x-text="`ID: ${room.id}`")
-                    .progress(
-                      role="progressbar",
-                      aria-label="Пример информации",
-                      aria-valuenow="4",
-                      aria-valuemin="0",
-                      aria-valuemax="5"
-                    )
+                    .progress(role="progressbar")
                       .progress-bar.overflow-visible.bg-success.progress-bar-striped.progress-bar-animated(
                         :style="`width: calc(${room.botsCount} / 5 * 100%)`",
                         x-text="`${room.botsCount}/5`"
                       )
 
                   span.badge.bg-success.rounded-pill(
-                    x-text="`${room.speed === 2 ? 'Easy' : room.speed === 3 ? 'Med.' : 'Hard'}`",
+                    x-text="$store.loc.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
                     :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
                   )
         .row.mt-3
           .col
-            a.btn.btn-sm.w-100(x-link, href="/") Back
+            a.btn.btn-sm.w-100(
+              x-link,
+              href="/",
+              x-text="$store.loc.buttons.back"
+            )
