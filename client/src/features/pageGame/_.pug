@@ -1,4 +1,4 @@
-.container-fluid.mt-4
+.container-fluid.mt-4(x-authredirect:unauthed="/sign")
   .row
     .col.width-150px.height-120px(x-data="gameBalls")
       .card.h-100.w-100.bg-warning
@@ -18,7 +18,7 @@
       .card.h-100.w-100.bg-dark
         .card-body.w-100.h-100
           h5.card-title.text-light(
-            x-text="$store.loc.pageGame.playersProgress"
+            x-text="$store.loc.l.pageGame.playersProgress"
           )
           .h-100.w-100
             .vstack.gap-3.w-100
@@ -57,5 +57,5 @@
       button.btn.btn-md.btn-light.w-100(
         x-bind="exitButton",
         type="button",
-        x-text="$store.loc.pageGame.actions.leave"
+        x-text="$store.loc.l.pageGame.actions.leave"
       )

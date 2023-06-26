@@ -14,10 +14,15 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
           id: true,
           gameStatus: true,
           resultId: true,
+          speed: true,
           from_Card_game: {
             select: {
               id: true,
-              userId: true,
+              user: {
+                select: {
+                  login: true,
+                },
+              },
               bot: {
                 select: {
                   login: true,
@@ -45,12 +50,16 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
         (card) => card._count.from_PlayerBallBind_card === 15
       );
 
+      const winnerPlayerLogin =
+        winnerCard?.user?.login ?? winnerCard?.bot?.login;
+
       const res = await sCtx.prisma.gameResult.create({
         data: {
           game: { connect: { id: gameId } },
           createdAt: new Date(),
-          winnerBotLogin: winnerCard?.bot?.login ?? undefined,
-          winnerUserId: winnerCard?.userId,
+          winnerPlayerLogin,
+          gameId,
+          gameDifficulty: game.speed,
         },
       });
 
@@ -66,11 +75,12 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
         where: { id: gameId },
         data: {
           bots: { deleteMany: { gameId } },
-          users: { set: [] },
         },
       });
 
-      return { success: true, winner: res.winnerBotLogin ?? res.winnerUserId };
+      await sCtx.prisma.game.delete({ where: { id: gameId } });
+
+      return { success: true, winner: res.winnerPlayerLogin };
     },
     {
       connection,

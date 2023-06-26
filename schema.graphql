@@ -9,6 +9,7 @@ type User {
   game: Game
   ownedRoom: Room
   password: PasswordState
+  language: UserLanguageType
   createdAt: DateTime
 }
 
@@ -19,6 +20,12 @@ enum UserRoleType {
 
 type PasswordState {
   isSet: Boolean!
+}
+
+enum UserLanguageType {
+  unset
+  en
+  ru
 }
 
 scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
@@ -38,6 +45,7 @@ input UserWhereInput {
   room: RoomWhereInput
   game: GameWhereInput
   ownedRoom: RoomWhereInput
+  language: UserLanguageTypeNullableFilter
   createdAt: DateTimeNullableFilter
 }
 
@@ -93,6 +101,13 @@ input UserRoleTypeNullableFilter {
   not: UserRoleTypeNullableFilter
 }
 
+input UserLanguageTypeNullableFilter {
+  equals: UserLanguageType
+  in: [UserLanguageType!]
+  notIn: [UserLanguageType!]
+  not: UserLanguageTypeNullableFilter
+}
+
 input DateTimeNullableFilter {
   equals: DateTime
   in: [DateTime!]
@@ -108,6 +123,7 @@ input UserOrderByInput {
   id: OrderDirection
   login: OrderDirection
   role: OrderDirection
+  language: OrderDirection
   createdAt: OrderDirection
 }
 
@@ -123,6 +139,7 @@ input UserUpdateInput {
   game: GameRelateToOneForUpdateInput
   ownedRoom: RoomRelateToOneForUpdateInput
   password: String
+  language: UserLanguageType
 }
 
 input RoomRelateToOneForUpdateInput {
@@ -149,6 +166,7 @@ input UserCreateInput {
   game: GameRelateToOneForCreateInput
   ownedRoom: RoomRelateToOneForCreateInput
   password: String
+  language: UserLanguageType
 }
 
 input RoomRelateToOneForCreateInput {
@@ -553,10 +571,10 @@ input CardCreateInput {
 
 type GameResult {
   id: ID!
-  winnerBotLogin: String
-  winnerUser: User
+  winnerPlayerLogin: String
   createdAt: DateTime
-  game: Game
+  gameId: String
+  gameDifficulty: Int
 }
 
 input GameResultWhereUniqueInput {
@@ -568,22 +586,24 @@ input GameResultWhereInput {
   OR: [GameResultWhereInput!]
   NOT: [GameResultWhereInput!]
   id: IDFilter
-  winnerBotLogin: StringFilter
-  winnerUser: UserWhereInput
+  winnerPlayerLogin: StringFilter
   createdAt: DateTimeNullableFilter
-  game: GameWhereInput
+  gameId: StringFilter
+  gameDifficulty: IntFilter
 }
 
 input GameResultOrderByInput {
   id: OrderDirection
-  winnerBotLogin: OrderDirection
+  winnerPlayerLogin: OrderDirection
   createdAt: OrderDirection
+  gameId: OrderDirection
+  gameDifficulty: OrderDirection
 }
 
 input GameResultUpdateInput {
-  winnerBotLogin: String
-  winnerUser: UserRelateToOneForUpdateInput
-  game: GameRelateToOneForUpdateInput
+  winnerPlayerLogin: String
+  gameId: String
+  gameDifficulty: Int
 }
 
 input GameResultUpdateArgs {
@@ -592,9 +612,9 @@ input GameResultUpdateArgs {
 }
 
 input GameResultCreateInput {
-  winnerBotLogin: String
-  winnerUser: UserRelateToOneForCreateInput
-  game: GameRelateToOneForCreateInput
+  winnerPlayerLogin: String
+  gameId: String
+  gameDifficulty: Int
 }
 
 """

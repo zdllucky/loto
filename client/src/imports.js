@@ -20,5 +20,3 @@ onAlpineInit(({ plugin }) => {
 });
 
 setTimeout(Alpine.start, 10);
-
-// Treesort function

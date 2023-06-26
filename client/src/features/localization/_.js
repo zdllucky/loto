@@ -3,8 +3,6 @@ import Alpine from "alpinejs";
 
 const getBrowserLang = () => {
   const lang = navigator.language || navigator.userLanguage;
-  // Allow only ru and en languages, return null otherwise
-  // for large russina-speaking countries like Ukraine, Belarus, Kazakhstan, etc. return ru
 
   if (lang === "ru" || lang === "en") {
     return lang;
@@ -15,4 +13,29 @@ const getBrowserLang = () => {
   }
 };
 
-Alpine.store("loc", data[getBrowserLang() ?? "en"]);
+Alpine.store("loc", {
+  l: data[getBrowserLang() ?? "en"],
+  lang: getBrowserLang() ?? "en",
+  init() {
+    const t = setInterval(() => {
+      const lang = Alpine.store("user").lang;
+
+      if (lang) {
+        this.setLanguage(lang);
+        clearInterval(t);
+      }
+    }, 50);
+  },
+  async setLanguage(lang, updateUser = false) {
+    if (updateUser) {
+      try {
+        await Alpine.$repo.user.setLanguage({ language: lang });
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    this.lang = lang;
+    this.l = data[lang !== "unset" ? lang : getBrowserLang() ?? "en"];
+  },
+});

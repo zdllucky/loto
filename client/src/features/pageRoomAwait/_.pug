@@ -1,8 +1,8 @@
-.container-fluid
+.container-fluid(x-authredirect:unauthed="/sign")
   .row
     .col.text-center.mt-5
       .display-1.fw-bolder.text-warning(
-        x-text="$store.loc.pageRoomAwait.title"
+        x-text="$store.loc.l.pageRoomAwait.title"
       )
   .row.py-5
     .col.d-flex.flex-column(x-data="waitRoom", x-id="['roomId', 'password']")
@@ -12,7 +12,7 @@
             .hstack.align-items-start.gap-1
               .vstack
                 .card-title.hstack.gap-1
-                  span(x-html="$store.loc.pageRoomAwait.roomId")
+                  span(x-html="$store.loc.l.pageRoomAwait.roomId")
                   input.form-control.form-control-sm.flex-shrink-1(
                     type="text",
                     readonly,
@@ -22,11 +22,11 @@
                   button.btn.btn-sm.btn-outline-warning(
                     type="button",
                     @click="document.getElementById($id('roomId')).select(); document.execCommand('copy')",
-                    x-text="$store.loc.pageRoomAwait.actions.copy"
+                    x-text="$store.loc.l.pageRoomAwait.actions.copy"
                   )
                 .template(x-show="room.password")
                   .card-title.hstack.gap-1
-                    span(x-html="$store.loc.pageRoomAwait.password")
+                    span(x-html="$store.loc.l.pageRoomAwait.password")
                     input.form-control.form-control-sm.flex-shrink-1(
                       type="text",
                       readonly,
@@ -36,14 +36,14 @@
                     button.btn.btn-sm.btn-outline-warning(
                       type="button",
                       @click="document.getElementById($id('password')).select(); document.execCommand('copy')",
-                      x-text="$store.loc.pageRoomAwait.actions.copy"
+                      x-text="$store.loc.l.pageRoomAwait.actions.copy"
                     )
               span.badge.bg-success.rounded-pill.float-end(
-                x-text="$store.loc.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
+                x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
                 :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
               )
             h6.card-subtitle.my-3.text-body-secondary(
-              x-text="$store.loc.pageRoomAwait.progress + room.users.length + '/5'"
+              x-text="$store.loc.l.pageRoomAwait.progress + room.users.length + '/5'"
             )
             ul.list-group.mt-3.overflow-hidden
               template(:key="user.id")&attributes({"x-for": "user in room.users"})
@@ -55,11 +55,11 @@
 
             button.btn.btn-warning.w-100.mt-3(
               x-show="room.owner?.login === Alpine.store('user').login",
-              :disabled="room.users.length < 2",
+              :disabled="room.users.length < 2 || hideStartButton",
               @click="startGame",
-              x-text="$store.loc.pageRoomAwait.actions.start"
+              x-text="$store.loc.l.pageRoomAwait.actions.start"
             )
             button.btn.btn-sm.w-100.mt-3(
               @click="exitRoom",
-              x-text="$store.loc.pageRoomAwait.actions.leave"
+              x-text="$store.loc.l.pageRoomAwait.actions.leave"
             )

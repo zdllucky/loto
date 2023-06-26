@@ -2,41 +2,35 @@ template(x-route="/", x-authredirect:unauthed="/sign")
   .container-fluid
     .row
       .col.text-center.mt-5
-        .display-1.fw-bolder.text-warning(x-text="$store.loc.pageMain.title")
+        .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageMain.title")
     .row.mt-5
       .col.d-flex.flex-column
         .semitransparent-container.container-fluid
           .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
             .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(
-                x-link,
-                href="/room/await",
-                x-text="$store.loc.pageMain.actions.continue"
-              )
+              a.btn.btn-lg.btn-warning.w-100(x-link, href="/room/await")
+                i.bi.bi-play.me-2
+                span(x-text="$store.loc.l.pageMain.actions.continue")
           .row(x-show="$store.user.gameId")
             .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(
-                x-link,
-                href="/game",
-                x-text="$store.loc.pageMain.actions.continue"
-              )
+              a.btn.btn-lg.btn-warning.w-100(x-link, href="/game")
+                i.bi.bi-play.me-2
+                span(x-text="$store.loc.l.pageMain.actions.continue")
+
+          .row(x-show="!$store.user.gameId && !$store.user.roomId")
+            .col.pb-4
+              a.btn.btn-lg.btn-warning.w-100(x-link, href="/room/all")
+                i.bi.bi-joystick.me-2
+                span(x-text="$store.loc.l.pageMain.actions.joinGames")
           .row
             .col
-              a.btn.btn-lg.btn-warning.w-100(
-                x-link,
-                href="/room/all",
-                x-text="$store.loc.pageMain.actions.joinGames"
-              )
-          .row
-            .col.d-flex.flex-column.pt-4
-              button.btn.btn-lg.btn-light(
-                @click="$store.auth.signOut()",
-                x-text="$store.loc.pageMain.actions.signOut"
-              )
+              a.btn.btn-lg.btn-light.w-100(x-link, href="/profile")
+                i.bi.bi-person-circle.me-2
+                span(x-text="$store.loc.l.pageMain.actions.profile")
     .row.my-5
       .col
-        .card.bg-warning-subtle.bg-gradient.text-warning-emphasis.opacity-75(
-          x-show="$store.loc.lang === 'ru'"
+        .card.bg-black.bg-gradient.text-white.opacity-75(
+          x-show="$store.loc.l.lang === 'ru'"
         )
           .card-header.text-center
             h2 Правила игры в Лото
@@ -56,12 +50,12 @@ template(x-route="/", x-authredirect:unauthed="/sign")
             h5.card-title Дополнительные правила
             p.card-text
               | "Бочонки" могут быть вынуты в произвольном порядке. Если на карточке отмечается номер, которого не было среди "бочонков", отметка не срабатывает.
-        .card.bg-warning-subtle.bg-gradient.text-warning-emphasis.opacity-75(
-          x-show="$store.loc.lang === 'en'"
+        .card.bg-black.bg-gradient.text-white.opacity-75(
+          x-show="$store.loc.l.lang === 'en'"
         )
           .card-header.text-center
             h2 Lotto Game Rules
-          .card-body
+          .card-body.opacity-75
             h5.card-title Basic Rules
             p.card-text
               | "Lotto" is an online game in which players participate, each having 3 game cards.
@@ -86,5 +80,5 @@ template(x-route="/room/await", x-authredirect:unauthed="/sign")
   include ../pageRoomAwait/_
 template(x-route="/game", x-authredirect:unauthed="/sign")
   include ../pageGame/_
-
-include ../modal/_
+template(x-route="/profile", x-authredirect:unauthed="/sign")
+  include ../pageProfile/_

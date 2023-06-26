@@ -4,6 +4,7 @@ Alpine.data("waitRoom", () => ({
   room: undefined,
   remaining: 5,
   _refreshInterval: undefined,
+  hideStartButton: false,
 
   async init() {
     await this.refresh();
@@ -36,8 +37,7 @@ Alpine.data("waitRoom", () => ({
   async startGame() {
     try {
       await Alpine.$repo.games.startGame();
-      await Alpine.store("user").refresh();
-      Alpine.$router.push("/game");
+      this.hideStartButton = true;
     } catch (e) {
       alert(e.message);
 

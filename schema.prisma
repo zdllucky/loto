@@ -22,6 +22,7 @@ model User {
   gameId                     String?          @map("game")
   ownedRoom                  Room?            @relation("Room_owner")
   password                   String
+  language                   UserLanguageType @default(unset)
   createdAt                  DateTime?        @default(now())
   from_PlayerBallBind_user   PlayerBallBind[] @relation("PlayerBallBind_user")
   from_Card_user             Card[]           @relation("Card_user")
@@ -117,20 +118,30 @@ model Card {
 }
 
 model GameResult {
-  id             String    @id @default(cuid())
-  winnerBotLogin String    @default("")
-  winnerUser     User?     @relation("GameResult_winnerUser", fields: [winnerUserId], references: [id])
-  winnerUserId   String?   @map("winnerUser")
-  createdAt      DateTime? @default(now())
-  game           Game?     @relation("Game_result")
+  id                String    @id @default(cuid())
+  winnerBotLogin    String    @default("")
+  winnerPlayerLogin String    @default("")
+  winnerUser        User?     @relation("GameResult_winnerUser", fields: [winnerUserId], references: [id])
+  winnerUserId      String?   @map("winnerUser")
+  createdAt         DateTime? @default(now())
+  game              Game?     @relation("Game_result")
+  gameId            String    @default("")
+  gameDifficulty    Int       @default(2)
 
   @@index([winnerUserId])
   @@index([createdAt])
+  @@index([gameId])
 }
 
 enum UserRoleType {
   admin
   user
+}
+
+enum UserLanguageType {
+  unset
+  en
+  ru
 }
 
 enum RoomTypeType {

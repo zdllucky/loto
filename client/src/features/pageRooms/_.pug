@@ -1,7 +1,7 @@
-.container-fluid
+.container-fluid(x-authredirect:unauthed="/sign")
   .row
     .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(x-text="$store.loc.pageRooms.title")
+      .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageRooms.title")
   .row.py-5
     .col.d-flex.flex-column
       .semitransparent-container.container-fluid(x-data="roomsList")
@@ -18,14 +18,14 @@
                 data-bs-auto-close="outside"
               )
                 i.bi.bi-door-open-fill
-                span.ms-1(x-text="$store.loc.pageRooms.actions.join.button")
+                span.ms-1(x-text="$store.loc.l.pageRooms.actions.join.button")
               form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
                 style="width: 300px",
                 x-data="joinPrivateRoom",
                 x-id="['roomId', 'password']",
                 @submit.prevent="join()"
               )
-                h5.mb-2(x-text="$store.loc.pageRooms.actions.join.title")
+                h5.mb-2(x-text="$store.loc.l.pageRooms.actions.join.title")
                 .mb-3
                   input.field(
                     type="roomId",
@@ -35,7 +35,7 @@
                   )
                   label(
                     :for="$id('roomId')",
-                    x-text="$store.loc.pageRooms.actions.join.roomId"
+                    x-text="$store.loc.l.pageRooms.actions.join.roomId"
                   )
                 .mb-3
                   input.field(
@@ -46,13 +46,13 @@
                   )
                   label(
                     :for="$id('password')",
-                    x-text="$store.loc.pageRooms.actions.join.password"
+                    x-text="$store.loc.l.pageRooms.actions.join.password"
                   )
 
                 button.btn.btn-warning.w-100(
                   type="submit",
                   :disabled="isLoading || password?.length <= 4 || !roomId",
-                  x-text="$store.loc.pageRooms.actions.join.submit"
+                  x-text="$store.loc.l.pageRooms.actions.join.submit"
                 )
           .col-auto.ps-0
             .dropdown
@@ -61,7 +61,7 @@
                 data-bs-toggle="dropdown",
                 aria-expanded="false",
                 data-bs-auto-close="outside",
-                x-html="$store.loc.pageRooms.actions.create.button"
+                x-html="$store.loc.l.pageRooms.actions.create.button"
               )
               form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
                 style="width: 300px",
@@ -69,11 +69,11 @@
                 x-id="['type', 'password']",
                 @submit.prevent="createRoom()"
               )
-                h5.mb-2(x-text="$store.loc.pageRooms.actions.create.title")
+                h5.mb-2(x-text="$store.loc.l.pageRooms.actions.create.title")
                 .mb-3
                   label.form-label(
                     :for="$id('speed')",
-                    x-text="$store.loc.pageRooms.actions.create.difficulty.name"
+                    x-text="$store.loc.l.pageRooms.actions.create.difficulty.name"
                   )
                   .btn-group.w-100(
                     role="group",
@@ -89,7 +89,7 @@
                     )
                     label.btn.btn-sm.btn-outline-warning(
                       :for="$id('easy')",
-                      x-text="$store.loc.pageRooms.actions.create.difficulty.easy"
+                      x-text="$store.loc.l.pageRooms.actions.create.difficulty.easy"
                     )
                     input.btn-check(
                       type="radio",
@@ -100,7 +100,7 @@
                     )
                     label.btn.btn-sm.btn-outline-warning(
                       :for="$id('medium')",
-                      x-text="$store.loc.pageRooms.actions.create.difficulty.medium"
+                      x-text="$store.loc.l.pageRooms.actions.create.difficulty.medium"
                     )
                     input.btn-check(
                       type="radio",
@@ -111,7 +111,7 @@
                     )
                     label.btn.btn-sm.btn-outline-warning(
                       :for="$id('hard')",
-                      x-text="$store.loc.pageRooms.actions.create.difficulty.hard"
+                      x-text="$store.loc.l.pageRooms.actions.create.difficulty.hard"
                     )
                 .mb-3
                   .form-check.form-switch
@@ -123,7 +123,7 @@
                     )
                     label.form-check-label(
                       :for="$id('type')",
-                      x-text="$store.loc.pageRooms.actions.create.includePassword"
+                      x-text="$store.loc.l.pageRooms.actions.create.includePassword"
                     )
                 .mb-3(:class="{ 'd-none': !type }")
                   input.field(
@@ -134,13 +134,13 @@
                   )
                   label(
                     :for="$id('password')",
-                    x-text="$store.loc.pageRooms.actions.create.password"
+                    x-text="$store.loc.l.pageRooms.actions.create.password"
                   )
 
                 button.btn.btn-warning.w-100(
                   type="submit",
                   :disabled="isLoading || (type && password?.length <= 4)",
-                  x-text="$store.loc.pageRooms.actions.create.submit"
+                  x-text="$store.loc.l.pageRooms.actions.create.submit"
                 )
 
         .row.mt-3
@@ -164,7 +164,7 @@
                       )
 
                   span.badge.bg-success.rounded-pill(
-                    x-text="$store.loc.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
+                    x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
                     :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
                   )
         .row.mt-3
@@ -172,5 +172,5 @@
             a.btn.btn-sm.w-100(
               x-link,
               href="/",
-              x-text="$store.loc.buttons.back"
+              x-text="$store.loc.l.buttons.back"
             )

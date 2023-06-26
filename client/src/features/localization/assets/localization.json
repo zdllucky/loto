@@ -6,6 +6,13 @@
       "actions": {
         "continue": "Continue",
         "joinGames": "Join games",
+        "profile": "Profile"
+      }
+    },
+    "pageProfile": {
+      "title": "Profile",
+      "sysLang": "System language",
+      "actions": {
         "signOut": "Sign out"
       }
     },
@@ -45,7 +52,7 @@
     },
     "pageRoomAwait": {
       "title": "Game room",
-      "roomId": "Room&nbspID:&nbsp ",
+      "roomId": "Room  &nbsp;ID:  &nbsp; ",
       "password": "Password: ",
       "progress": "Waiting for players: ",
       "actions": {
@@ -56,6 +63,7 @@
     },
     "pageGame": {
       "playersProgress": "Players' progress",
+      "winnerMessage": "Game finished! Winner: ",
       "actions": {
         "leave": "Leave game",
         "ensureLeave": "Are you sure you want to leave the game?"
@@ -77,6 +85,13 @@
       "actions": {
         "continue": "Продолжить",
         "joinGames": "Присоединиться к играм",
+        "profile": "Профиль"
+      }
+    },
+    "pageProfile": {
+      "title": "Профиль",
+      "sysLang": "Язык системы",
+      "actions": {
         "signOut": "Выйти"
       }
     },
@@ -84,7 +99,7 @@
       "title": "Ожидание в комнатах",
       "actions": {
         "join": {
-          "button": "Присоедин.",
+          "button": "Присоединиться",
           "title": "Присоединиться к комнате",
           "roomId": "ID комнаты",
           "password": "Пароль",
@@ -106,27 +121,28 @@
       }
     },
     "pageSign": {
-      "title": "Вход / Регистрация",
+      "title": "Вход или Регистрация",
       "username": "Имя пользователя",
       "password": "Пароль",
       "buttons": {
         "signIn": "Войти",
-        "register": "Создать"
+        "register": "Зарегистрироваться"
       }
     },
     "pageRoomAwait": {
       "title": "Игровая комната",
-      "roomId": "ID&nbsp;комн.:",
-      "password": "Пароль:&nbsp;",
+      "roomId": "ID&nbsp;комнаты:",
+      "password": "Пароль:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
       "progress": "Ожидание игроков: ",
       "actions": {
-        "copy": "Копир.",
+        "copy": "Копировать",
         "start": "Начать игру",
         "leave": "Выйти из комнаты"
       }
     },
     "pageGame": {
-      "playersProgress": "Др. игроки",
+      "playersProgress": "Прогресс игроков",
+      "winnerMessage": "Игра завершена! Победитель: ",
       "actions": {
         "leave": "Выйти из игры",
         "ensureLeave": "Вы уверены, что хотите выйти из игры?"
@@ -138,7 +154,7 @@
     "badges": {
       "easy": "Легко",
       "medium": "Сред.",
-      "hard": "Слож."
+      "hard": "Сложно"
     }
   }
 }

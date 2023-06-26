@@ -1,0 +1,37 @@
+.container-fluid(x-authredirect:unauthed="/sign")
+  .row
+    .col.text-center.mt-5
+      .display-1.fw-bolder.text-warning(
+        x-text="$store.loc.l.pageProfile.title"
+      )
+  .row
+    .col.d-flex.flex-column.py-5
+      .semitransparent-container.container-fluid
+        template(x-if="!!$store.user.lang")
+          .row.mb-4
+            .col.d-flex.flex-column
+              select.form-select.bg-transparent.text-light(
+                x-data="{ isLoading: false, lang: $store.user.lang }",
+                @change="isLoading = true; await $store.loc.setLanguage($event.target.value, true); isLoading = false",
+                :disabled="isLoading",
+                x-model="lang"
+              )
+                option(
+                  value="unset",
+                  x-text="$store.loc.l.pageProfile.sysLang"
+                )
+                option(value="ru") Русский язык
+                option(value="en") English language
+
+        .row
+          .col
+            button.btn.btn-light.w-100(@click="$store.auth.signOut()")
+              i.bi.bi-box-arrow-right.me-2
+              span(x-text="$store.loc.l.pageProfile.actions.signOut")
+        .row.mt-3
+          .col
+            a.btn.btn-sm.w-100(
+              x-link,
+              href="/",
+              x-text="$store.loc.l.buttons.back"
+            )

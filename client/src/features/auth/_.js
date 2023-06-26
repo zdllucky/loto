@@ -46,7 +46,9 @@ Alpine.directive(
     const authed = value === "authed";
 
     function redirectionHandler({ detail }) {
-      if (authed === detail.hasAuth) Alpine.$router.push(expression);
+      if (authed === detail.hasAuth && expression !== Alpine.$router.path) {
+        Alpine.$router.push(expression);
+      }
     }
 
     redirectionHandler({ detail: { hasAuth: !!Alpine.store("auth").token } });

@@ -22,6 +22,8 @@ const schema = list({
             { room: { users: { some: { id: { equals: session?.itemId } } } } },
           ],
         },
+      update: ({ session }) =>
+        isAdmin({ session }) || { id: { equals: session?.itemId } },
     },
   },
   fields: {
@@ -53,12 +55,32 @@ const schema = list({
         displayMode: "segmented-control",
       },
     }),
-    room: relationship({ ref: "Room.users", many: false, isFilterable: true }),
-    game: relationship({ ref: "Game.users", many: false, isFilterable: true }),
+    room: relationship({
+      ref: "Room.users",
+      many: false,
+      isFilterable: true,
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+      },
+    }),
+    game: relationship({
+      ref: "Game.users",
+      many: false,
+      isFilterable: true,
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+      },
+    }),
     ownedRoom: relationship({
       ref: "Room.owner",
       many: false,
       isFilterable: true,
+      access: {
+        create: isAdmin,
+        update: isAdmin,
+      },
     }),
     password: password({
       validation: { isRequired: true },
@@ -67,6 +89,17 @@ const schema = list({
         read: isAdmin,
         update: isAdmin,
       },
+    }),
+    language: select({
+      options: [
+        { label: "Auto", value: "unset" },
+        { label: "English", value: "en" },
+        { label: "Русский", value: "ru" },
+      ],
+      type: "enum",
+      defaultValue: "unset",
+      isFilterable: true,
+      validation: { isRequired: true },
     }),
     createdAt,
   },

@@ -43,12 +43,12 @@ export default () => ({
             gameId: Alpine.store("user").gameId,
           });
 
-          const shouldExit = confirm(
-            `Game finished! Winner: ${
-              result.winnerBotLogin ?? result.winnerUser.login
+          alert(
+            `${Alpine.store("loc").l.pageGame.winnerMessage}${
+              result.winnerPlayerLogin
             }!`
           );
-          shouldExit && Alpine.$router.push("/");
+          Alpine.$router.push("/");
         }, 2000);
       }
     } catch (e) {

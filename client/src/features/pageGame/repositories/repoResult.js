@@ -10,16 +10,18 @@ export const getGameResult = async ({ gameId }) => {
     body: JSON.stringify({
       query: `query Game($where: GameResultWhereInput!) {
           gameResults(where: $where) {
-            winnerBotLogin
-            winnerUser {
-              login
-            }
+            winnerPlayerLogin
           }
         }`,
       variables: {
+        orderBy: [
+          {
+            createdAt: "desc",
+          },
+        ],
         where: {
-          game: {
-            id: { equals: gameId },
+          gameId: {
+            equals: gameId,
           },
         },
       },

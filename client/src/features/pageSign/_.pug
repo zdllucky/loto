@@ -1,7 +1,7 @@
 .container-fluid(x-authredirect:authed="/")
   .row
     .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(x-text="$store.loc.pageSign.title")
+      .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageSign.title")
   .row
     .col.d-flex.flex-column.py-5
       form.signInForm.semitransparent-container.container-fluid(
@@ -17,7 +17,7 @@
               x-model="login",
               type="text"
             )
-            label(:for="$id('login')", x-text="$store.loc.pageSign.username")
+            label(:for="$id('login')", x-text="$store.loc.l.pageSign.username")
         .row.mt-4
           .col
             input.field(
@@ -28,7 +28,7 @@
             )
             label(
               :for="$id('password')",
-              x-text="$store.loc.pageSign.password"
+              x-text="$store.loc.l.pageSign.password"
             )
         .row.mt-4
           .col-6
@@ -36,12 +36,12 @@
               type="submit",
               value="signIn",
               :disabled="isLoading || !login || !password",
-              x-text="$store.loc.pageSign.buttons.signIn"
+              x-text="$store.loc.l.pageSign.buttons.signIn"
             )
           .col-6
             button.button-primary.confirm-button.w-100(
               type="submit",
               :disabled="isLoading || !login || !password",
               value="register",
-              x-text="$store.loc.pageSign.buttons.register"
+              x-text="$store.loc.l.pageSign.buttons.register"
             )
