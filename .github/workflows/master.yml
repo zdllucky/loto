@@ -12,8 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-
       - name: Clean remote directory
         uses: appleboy/ssh-action@master
         with:
@@ -45,6 +43,7 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
             cd ./app/deployment/prod
+            export FRONTEND_URL=$FRONTEND_URL
             export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             export POSTGRES_DB=${{ secrets.POSTGRES_DB }}
@@ -84,6 +83,7 @@ jobs:
           key: ${{ secrets.REMOTE_SSH_KEY }}
           script: |
             cd ./app/deployment/prod
+            export FRONTEND_URL=$FRONTEND_URL
             export POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             export POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
             export POSTGRES_DB=${{ secrets.POSTGRES_DB }}

@@ -3,8 +3,8 @@
   "version": "1.0.2",
   "private": true,
   "scripts": {
-    "dev": "COOKIE_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone dev --with-migrations",
-    "start": "keystone start",
+    "dev": "NODE_ENV=development COOKIE_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone dev --with-migrations",
+    "start": "NODE_ENV=production keystone start",
     "migrate_start": "npm run migrate && npm run start",
     "build": "keystone build",
     "make_migrations": "keystone prisma migrate dev --create-only",

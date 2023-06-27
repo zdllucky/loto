@@ -40,13 +40,10 @@ services:
       context: ../..
       dockerfile: server/docker/Dockerfile
       args:
+        FRONTEND_URL: ${FRONTEND_URL}
         COOKIE_SECRET: ${COOKIE_SECRET}
         DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
         REDIS_HOST: redis
-    environment:
-      COOKIE_SECRET: ${COOKIE_SECRET}
-      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
-      REDIS_HOST: redis
     ports:
       - "3000:3000"
     restart: always
