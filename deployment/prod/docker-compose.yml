@@ -40,6 +40,7 @@ services:
       context: ../..
       dockerfile: server/docker/Dockerfile
       args:
+        ADMIN_URL: ${ADMIN_URL}
         FRONTEND_URL: ${FRONTEND_URL}
         COOKIE_SECRET: ${COOKIE_SECRET}
         DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}

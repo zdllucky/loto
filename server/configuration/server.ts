@@ -4,7 +4,7 @@ import { Config } from ".keystone/types";
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
-      ? process.env.FRONTEND_URL
+      ? ([process.env.FRONTEND_URL, process.env.ADMIN_URL] as string[])
       : "http://localhost:3333",
   optionsSuccessStatus: 200,
 };

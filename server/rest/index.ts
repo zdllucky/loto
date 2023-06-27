@@ -13,9 +13,12 @@ import { connection, Queues } from "../brokers/consts";
 export let config: any;
 
 const extendExpressApp = (app: express.Express, context: Context) => {
-  app.use("/api/rest", json());
-  app.use("/api/rest", urlencoded({ extended: true }));
-  app.use("/api/rest", contextProviderGenerate(context as Context));
+  app.use(
+    "/api/rest",
+    json(),
+    urlencoded({ extended: true }),
+    contextProviderGenerate(context as Context)
+  );
 
   config = {
     app,

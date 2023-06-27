@@ -3,7 +3,6 @@ import { Config } from ".keystone/types";
 import schema from "../schema";
 import { Extension } from "@keystone-6/core/dist/declarations/src/types/schema/graphql-ts-schema";
 
-// noinspection TypeScriptValidateJSTypes
 const extendGraphqlSchema: Config["extendGraphqlSchema"] = graphql.extend(
   (base) => {
     return Object.entries(schema).reduce(
