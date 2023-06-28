@@ -14,7 +14,7 @@ const server: Config["server"] = {
   cors: {
     preflightContinue: false,
     methods: ["GET", "POST", "OPTIONS", "HEAD"],
-    credentials: true,
+    credentials: false,
     allowedHeaders: ["Content-Type", "Authorization"],
     // ...corsOptions,
     origin: "*",
