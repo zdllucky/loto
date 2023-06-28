@@ -15,6 +15,7 @@ const server: Config["server"] = {
     preflightContinue: false,
     methods: ["GET", "POST", "OPTIONS", "HEAD"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
     ...corsOptions,
   },
 };
