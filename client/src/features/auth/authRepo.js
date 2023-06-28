@@ -14,6 +14,7 @@ mutation AuthenticateUserWithPassword($login: String!, $password: String!) {
 }`,
       variables: { login, password },
     }),
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -46,6 +47,7 @@ export const registerUserWithLoginAndPassword = async (login, password) => {
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     method: "POST",
   });
 
