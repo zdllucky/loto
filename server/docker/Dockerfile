@@ -34,9 +34,19 @@ COPY --from=backend_dependency_installer /app/node_modules ./node_modules
 
 COPY --from=backend_dependency_installer /app/package.json /app/package-lock.json ./
 
-RUN DATABASE_URL=$DATABASE_URL COOKIE_SECRET=$COOKIE_SECRET REDIS_HOST=$REDIS_HOST npm run postinstall
+RUN ADMIN_URL=$ADMIN_URL \
+    FRONTEND_URL=$FRONTEND_URL \
+    DATABASE_URL=$DATABASE_URL \
+    COOKIE_SECRET=$COOKIE_SECRET \
+    REDIS_HOST=$REDIS_HOST \
+    npm run postinstall
 
-RUN DATABASE_URL=$DATABASE_URL COOKIE_SECRET=$COOKIE_SECRET REDIS_HOST=$REDIS_HOST npm run build
+RUN ADMIN_URL=$ADMIN_URL \
+    FRONTEND_URL=$FRONTEND_URL \
+    DATABASE_URL=$DATABASE_URL \
+    COOKIE_SECRET=$COOKIE_SECRET \
+    REDIS_HOST=$REDIS_HOST \
+    npm run build
 
 EXPOSE 3000
 
