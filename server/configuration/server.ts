@@ -13,8 +13,8 @@ const server: Config["server"] = {
   extendExpressApp,
   cors: {
     preflightContinue: false,
-    methods: ["GET", "POST"],
-    credentials: false,
+    methods: ["GET", "POST", "OPTIONS", "HEAD"],
+    credentials: true,
     ...corsOptions,
   },
 };
