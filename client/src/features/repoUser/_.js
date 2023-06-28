@@ -6,7 +6,6 @@ const getMe = async () => {
       "content-type": "application/json",
       Authorization: `Bearer ${Alpine.store("auth").token}`,
     },
-    credentials: "include",
     body: JSON.stringify({
       query: `query AuthenticatedItem {
         authenticatedItem {
@@ -42,7 +41,6 @@ const setLanguage = async ({ language }) => {
       "content-type": "application/json",
       Authorization: `Bearer ${Alpine.store("auth").token}`,
     },
-    credentials: "include",
     body: JSON.stringify({
       query: `mutation Mutation($where: UserWhereUniqueInput!, $data: UserUpdateInput!) {
           updateUser(where: $where, data: $data) {
