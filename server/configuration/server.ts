@@ -17,7 +17,7 @@ const server: Config["server"] = {
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     // ...corsOptions,
-    origin: "*"
+    origin: "*",
   },
 };
 
