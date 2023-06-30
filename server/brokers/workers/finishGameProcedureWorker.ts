@@ -13,8 +13,12 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
         select: {
           id: true,
           gameStatus: true,
-          resultId: true,
           speed: true,
+          users: {
+            select: {
+              id: true,
+            },
+          },
           from_Card_game: {
             select: {
               id: true,
@@ -43,9 +47,6 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
       if (game.gameStatus !== "finished")
         return { success: false, message: "Game has not been finished" };
 
-      if (game.resultId)
-        return { success: false, message: "Game already has result" };
-
       const winnerCard = game.from_Card_game.find(
         (card) => card._count.from_PlayerBallBind_card === 15
       );
@@ -53,15 +54,36 @@ const finishGameProcedureWorkerInit = ({ context }: { context: Context }) =>
       const winnerPlayerLogin =
         winnerCard?.user?.login ?? winnerCard?.bot?.login;
 
-      const res = await sCtx.prisma.gameResult.create({
-        data: {
-          game: { connect: { id: gameId } },
-          createdAt: new Date(),
-          winnerPlayerLogin,
-          gameId,
-          gameDifficulty: game.speed,
-        },
+      let res: any;
+
+      const resultRef = await sCtx.prisma.gameResult.findFirst({
+        where: { gameId },
+        select: { id: true },
       });
+
+      if (resultRef)
+        res = await sCtx.prisma.gameResult.update({
+          where: { id: resultRef.id },
+          data: {
+            winnerPlayerLogin,
+            createdAt: new Date(),
+            players: {
+              connect: game.users,
+            },
+          },
+        });
+      else
+        res = await sCtx.prisma.gameResult.create({
+          data: {
+            createdAt: new Date(),
+            winnerPlayerLogin,
+            gameId,
+            gameDifficulty: game.speed,
+            players: {
+              connect: game.users,
+            },
+          },
+        });
 
       await sCtx.prisma.card.deleteMany({
         where: { gameId },

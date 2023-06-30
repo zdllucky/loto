@@ -309,7 +309,6 @@ input BotOrderByInput {
 type Game {
   id: ID!
   speed: Int
-  result: GameResult
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
   bots(where: BotWhereInput! = {}, orderBy: [BotOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BotWhereUniqueInput): [Bot!]
@@ -338,7 +337,6 @@ input GameWhereInput {
   NOT: [GameWhereInput!]
   id: IDFilter
   speed: IntFilter
-  result: GameResultWhereInput
   users: UserManyRelationFilter
   bots: BotManyRelationFilter
   gameStatus: GameGameStatusTypeNullableFilter
@@ -381,19 +379,12 @@ input GameOrderByInput {
 
 input GameUpdateInput {
   speed: Int
-  result: GameResultRelateToOneForUpdateInput
   users: UserRelateToManyForUpdateInput
   bots: BotRelateToManyForUpdateInput
   gameStatus: GameGameStatusType
   step: Int
   balls: JSON
   playerBallBinds: PlayerBallBindRelateToManyForUpdateInput
-}
-
-input GameResultRelateToOneForUpdateInput {
-  create: GameResultCreateInput
-  connect: GameResultWhereUniqueInput
-  disconnect: Boolean
 }
 
 input UserRelateToManyForUpdateInput {
@@ -423,17 +414,11 @@ input GameUpdateArgs {
 
 input GameCreateInput {
   speed: Int
-  result: GameResultRelateToOneForCreateInput
   users: UserRelateToManyForCreateInput
   bots: BotRelateToManyForCreateInput
   gameStatus: GameGameStatusType
   step: Int
   playerBallBinds: PlayerBallBindRelateToManyForCreateInput
-}
-
-input GameResultRelateToOneForCreateInput {
-  create: GameResultCreateInput
-  connect: GameResultWhereUniqueInput
 }
 
 input PlayerBallBindRelateToManyForCreateInput {
@@ -573,6 +558,8 @@ type GameResult {
   id: ID!
   winnerPlayerLogin: String
   createdAt: DateTime
+  players(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
+  playersCount(where: UserWhereInput! = {}): Int
   gameId: String
   gameDifficulty: Int
 }
@@ -588,6 +575,7 @@ input GameResultWhereInput {
   id: IDFilter
   winnerPlayerLogin: StringFilter
   createdAt: DateTimeNullableFilter
+  players: UserManyRelationFilter
   gameId: StringFilter
   gameDifficulty: IntFilter
 }
@@ -602,6 +590,7 @@ input GameResultOrderByInput {
 
 input GameResultUpdateInput {
   winnerPlayerLogin: String
+  players: UserRelateToManyForUpdateInput
   gameId: String
   gameDifficulty: Int
 }
@@ -613,6 +602,7 @@ input GameResultUpdateArgs {
 
 input GameResultCreateInput {
   winnerPlayerLogin: String
+  players: UserRelateToManyForCreateInput
   gameId: String
   gameDifficulty: Int
 }
@@ -750,6 +740,8 @@ type Query {
   gamePlayerProgress: [Player!]!
   gameBallSet: GameBalls!
   selectedBalls(cardIds: [ID!]!): [CardWithSelectedBalls]!
+  personalStatsRating(offset: Int!): PersonalStatsRating!
+  totalStatsRating(offset: Int!, page: Int!): TotalStatsRating!
 }
 
 type Player {
@@ -766,6 +758,31 @@ type GameBalls {
 type CardWithSelectedBalls {
   cardId: ID!
   balls: [Int!]!
+}
+
+type PersonalStatsRating {
+  winRating: Int
+  skillRating: Float
+  gamesPlayed: Int
+  offset: Int!
+}
+
+type TotalStatsRating {
+  leaders: [UserRating!]
+  selfRating: SelfRating
+  offset: Int!
+  page: Int!
+}
+
+type UserRating {
+  login: String
+  winRating: Int
+  skillRating: Float
+}
+
+type SelfRating {
+  winRating: Int
+  skillRating: Float
 }
 
 union AuthenticatedItem = User

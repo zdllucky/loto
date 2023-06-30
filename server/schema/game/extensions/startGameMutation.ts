@@ -1,6 +1,5 @@
 import { graphql } from "@keystone-6/core";
 import { Extension } from "../../_misc/types";
-import { Context } from ".keystone/types";
 import { connection, Queues } from "../../../brokers/consts";
 import { Queue } from "bullmq";
 
@@ -18,7 +17,7 @@ const startGameMutation: Extension = () => {
 
   return graphql.field({
     type: graphql.nonNull(StartPrivateGameResult),
-    resolve: async (rootVal, _, context: Context) => {
+    resolve: async (rootVal, _, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

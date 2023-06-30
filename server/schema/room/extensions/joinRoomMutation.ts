@@ -1,6 +1,5 @@
 import { graphql } from "@keystone-6/core";
 import { Extension } from "../../_misc/types";
-import { Context } from ".keystone/types";
 
 const joinRoomMutation: Extension = () => {
   const JoinRoomFailure = graphql.object<{ message: string }>()({
@@ -26,7 +25,7 @@ const joinRoomMutation: Extension = () => {
     args: {
       roomId: graphql.arg({ type: graphql.nonNull(graphql.ID) }),
     },
-    resolve: async (rootVal, { roomId }, context: Context) => {
+    resolve: async (rootVal, { roomId }, context) => {
       const sCtx = context.sudo();
 
       const user = await sCtx.prisma.user.findUnique({

@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 import { Prisma } from ".prisma/client";
 
 const gamePlayerProgressQuery: Extension = () => {
@@ -23,7 +22,7 @@ const gamePlayerProgressQuery: Extension = () => {
   return graphql.field({
     type: graphql.nonNull(graphql.list(graphql.nonNull(Player))),
     args: {},
-    resolve: async (rootVal, _, context: Context) => {
+    resolve: async (rootVal, _, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

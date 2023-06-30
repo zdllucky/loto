@@ -1,6 +1,5 @@
 import { graphql } from "@keystone-6/core";
 import { Extension } from "../../_misc/types";
-import { Context } from ".keystone/types";
 
 const exitGameMutation: Extension = () => {
   const ExitGameResult = graphql.object<{
@@ -16,7 +15,7 @@ const exitGameMutation: Extension = () => {
 
   return graphql.field({
     type: graphql.nonNull(ExitGameResult),
-    resolve: async (rootVal, args, context: Context) => {
+    resolve: async (rootVal, args, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;
@@ -35,6 +34,7 @@ const exitGameMutation: Extension = () => {
                 },
               },
               gameStatus: true,
+              speed: true,
             },
           },
         },
@@ -46,6 +46,30 @@ const exitGameMutation: Extension = () => {
 
       if (user.game.gameStatus === "finished")
         return { success: true, message: "Game already finished." };
+
+      await sCtx.prisma.$transaction(async (prisma) => {
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            game: {
+              disconnect: true,
+            },
+          },
+        });
+
+        await prisma.gameResult.create({
+          data: {
+            gameId: user.game?.id,
+            gameDifficulty: user.game?.speed,
+            createdAt: new Date(),
+            players: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        });
+      });
 
       await sCtx.prisma.user.update({
         where: { id: userId },

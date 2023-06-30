@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 import { Prisma } from ".prisma/client";
 
 const selectBallMutation: Extension = () => {
@@ -21,7 +20,7 @@ const selectBallMutation: Extension = () => {
       number: graphql.arg({ type: graphql.nonNull(graphql.Int) }),
       cardId: graphql.arg({ type: graphql.nonNull(graphql.ID) }),
     },
-    resolve: async (rootVal, { number, cardId }, context: Context) => {
+    resolve: async (rootVal, { number, cardId }, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

@@ -1,6 +1,5 @@
 import { graphql } from "@keystone-6/core";
 import { Extension } from "../../_misc/types";
-import { Context } from ".keystone/types";
 
 const joinPrivateRoomMutation: Extension = () => {
   const JoinPrivateRoomResult = graphql.object<{
@@ -20,7 +19,7 @@ const joinPrivateRoomMutation: Extension = () => {
       roomId: graphql.arg({ type: graphql.nonNull(graphql.ID) }),
       password: graphql.arg({ type: graphql.nonNull(graphql.String) }),
     },
-    resolve: async (rootVal, { roomId, password }, context: Context) => {
+    resolve: async (rootVal, { roomId, password }, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

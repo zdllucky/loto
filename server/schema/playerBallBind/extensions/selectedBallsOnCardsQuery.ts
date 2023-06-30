@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 
 const selectedBallsOnCardsQuery: Extension = () => {
   const CardWithSelectedBalls = graphql.object<{
@@ -23,7 +22,7 @@ const selectedBallsOnCardsQuery: Extension = () => {
         type: graphql.nonNull(graphql.list(graphql.nonNull(graphql.ID))),
       }),
     },
-    resolve: async (rootVal, { cardIds }, context: Context) => {
+    resolve: async (rootVal, { cardIds }, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

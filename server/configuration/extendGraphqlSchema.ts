@@ -4,8 +4,8 @@ import schema from "../schema";
 import { Extension } from "@keystone-6/core/dist/declarations/src/types/schema/graphql-ts-schema";
 
 const extendGraphqlSchema: Config["extendGraphqlSchema"] = graphql.extend(
-  (base) => {
-    return Object.entries(schema).reduce(
+  (base) =>
+    Object.entries(schema).reduce(
       (acc, [, value]) => {
         if (value.extension) {
           value.extension.mutation &&
@@ -27,8 +27,7 @@ const extendGraphqlSchema: Config["extendGraphqlSchema"] = graphql.extend(
         mutation: {},
         query: {},
       } as Extension
-    );
-  }
+    )
 );
 
 export default extendGraphqlSchema;

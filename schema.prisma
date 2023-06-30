@@ -13,20 +13,20 @@ generator client {
 }
 
 model User {
-  id                         String           @id @default(cuid())
-  login                      String           @unique @default("")
-  role                       UserRoleType     @default(user)
-  room                       Room?            @relation("User_room", fields: [roomId], references: [id])
-  roomId                     String?          @map("room")
-  game                       Game?            @relation("User_game", fields: [gameId], references: [id])
-  gameId                     String?          @map("game")
-  ownedRoom                  Room?            @relation("Room_owner")
-  password                   String
-  language                   UserLanguageType @default(unset)
-  createdAt                  DateTime?        @default(now())
-  from_PlayerBallBind_user   PlayerBallBind[] @relation("PlayerBallBind_user")
-  from_Card_user             Card[]           @relation("Card_user")
-  from_GameResult_winnerUser GameResult[]     @relation("GameResult_winnerUser")
+  id                       String           @id @default(cuid())
+  login                    String           @unique @default("")
+  role                     UserRoleType     @default(user)
+  room                     Room?            @relation("User_room", fields: [roomId], references: [id])
+  roomId                   String?          @map("room")
+  game                     Game?            @relation("User_game", fields: [gameId], references: [id])
+  gameId                   String?          @map("game")
+  ownedRoom                Room?            @relation("Room_owner")
+  password                 String
+  language                 UserLanguageType @default(unset)
+  createdAt                DateTime?        @default(now())
+  from_PlayerBallBind_user PlayerBallBind[] @relation("PlayerBallBind_user")
+  from_Card_user           Card[]           @relation("Card_user")
+  from_GameResult_players  GameResult[]     @relation("GameResult_players")
 
   @@index([roomId])
   @@index([gameId])
@@ -65,8 +65,6 @@ model Bot {
 model Game {
   id              String              @id @default(cuid())
   speed           Int                 @default(2)
-  result          GameResult?         @relation("Game_result", fields: [resultId], references: [id])
-  resultId        String?             @unique @map("result")
   users           User[]              @relation("User_game")
   bots            Bot[]               @relation("Bot_game")
   gameStatus      GameGameStatusType? @default(waiting)
@@ -119,16 +117,12 @@ model Card {
 
 model GameResult {
   id                String    @id @default(cuid())
-  winnerBotLogin    String    @default("")
   winnerPlayerLogin String    @default("")
-  winnerUser        User?     @relation("GameResult_winnerUser", fields: [winnerUserId], references: [id])
-  winnerUserId      String?   @map("winnerUser")
   createdAt         DateTime? @default(now())
-  game              Game?     @relation("Game_result")
+  players           User[]    @relation("GameResult_players")
   gameId            String    @default("")
   gameDifficulty    Int       @default(2)
 
-  @@index([winnerUserId])
   @@index([createdAt])
   @@index([gameId])
 }

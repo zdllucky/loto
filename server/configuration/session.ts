@@ -2,15 +2,16 @@ import { randomBytes } from "crypto";
 import { storedSessions } from "@keystone-6/core/session";
 import { Config } from ".keystone/types";
 import { Session } from "../schema/_misc/accessHelpers";
-import { createClient } from "@redis/client";
+import Redis from "ioredis";
 
 const sessionSecret: string =
   process.env.COOKIE_SECRET ?? randomBytes(32).toString("hex");
 
 const sessionMaxAge = 60 * 60 * 24 * 30;
 
-export const redis = createClient({
-  url: `redis://${process.env.REDIS_HOST || "localhost"}:6379`,
+export const redis = new Redis({
+  host: process.env.REDIS_HOST || "localhost",
+  port: 6379,
 });
 
 const session: Config["session"] = storedSessions<Session>({
@@ -28,7 +29,7 @@ const session: Config["session"] = storedSessions<Session>({
 
     async set(sessionId, data) {
       // we use redis for our Session data, in JSON
-      await redis.setEx(sessionId, sessionMaxAge, JSON.stringify(data));
+      await redis.setex(sessionId, sessionMaxAge, JSON.stringify(data));
     },
 
     async delete(sessionId) {

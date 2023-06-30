@@ -17,32 +17,13 @@ const schema = list({
     },
   },
   fields: {
-    winnerBotLogin: text({
-      ui: {
-        itemView: { fieldMode: "hidden" },
-        listView: { fieldMode: "hidden" },
-      },
-      graphql: { omit: true },
-    }),
     winnerPlayerLogin: text({}),
-    winnerUser: relationship({
-      ref: "User",
-      many: false,
-      graphql: { omit: true },
-      ui: {
-        itemView: { fieldMode: "hidden" },
-        listView: { fieldMode: "hidden" },
-      },
-    }),
     createdAt,
-    game: relationship({
-      ref: "Game.result",
-      many: false,
-      ui: {
-        itemView: { fieldMode: "hidden" },
-        listView: { fieldMode: "hidden" },
-      },
-      graphql: { omit: true },
+    players: relationship({
+      ref: "User",
+      many: true,
+      isOrderable: true,
+      isFilterable: true,
     }),
     gameId: text({
       isIndexed: true,

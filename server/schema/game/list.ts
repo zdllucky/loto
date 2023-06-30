@@ -38,7 +38,6 @@ const schema = list({
       },
       access: { update: denyAll, create: denyAll },
     }),
-    result: relationship({ ref: "GameResult.game", many: false }),
     users: relationship({
       ref: "User.game",
       many: true,

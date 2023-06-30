@@ -1,5 +1,4 @@
 import Alpine from "alpinejs";
-import { getGameResult } from "../repositories/repoResult.js";
 
 export default () => ({
   balls: [],
@@ -39,7 +38,7 @@ export default () => ({
       if (this.gameStatus === "finished" || this.gameStatus === "undefined") {
         clearInterval(this.refreshIntervalId);
         setTimeout(async () => {
-          const result = await getGameResult({
+          const result = await Alpine.$repo.results.getGameResult({
             gameId: Alpine.store("user").gameId,
           });
 

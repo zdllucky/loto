@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 
 const exitRoomMutation: Extension = () => {
   const ExitRoomFailure = graphql.object<{ message: string }>()({
@@ -24,7 +23,7 @@ const exitRoomMutation: Extension = () => {
       name: "ExitRoomResult",
     }),
     args: {},
-    resolve: async (rootVal, _, context: Context) => {
+    resolve: async (rootVal, _, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;

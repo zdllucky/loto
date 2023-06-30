@@ -23,55 +23,88 @@ template(x-route="/", x-authredirect:unauthed="/sign")
                 i.bi.bi-joystick.me-2
                 span(x-text="$store.loc.l.pageMain.actions.joinGames")
           .row
-            .col
+            .col.pb-4
               a.btn.btn-lg.btn-light.w-100(x-link, href="/profile")
                 i.bi.bi-person-circle.me-2
                 span(x-text="$store.loc.l.pageMain.actions.profile")
-    .row.my-5
-      .col
-        .card.bg-black.bg-gradient.text-white.opacity-75(
-          x-show="$store.loc.l.lang === 'ru'"
-        )
-          .card-header.text-center
-            h2 Правила игры в Лото
-          .card-body.opacity-75
-            h5.card-title Основные правила
-            p.card-text
-              | "Лото" - это онлайн игра, в которой участвуют игроки, имеющие по 3 игровые карточки.
-            hr
-            h5.card-title Игровой процесс
-            p.card-text
-              | В процессе игры объявляются "бочонки" - номера. Игроки должны нажимать на соответствующие объявленным номерам позиции на своих карточках, тем самым их "закрывая".
-            hr
-            h5.card-title Победа в игре
-            p.card-text
-              | Победителем становится игрок, который первым закрыл все номера хотя бы на одной из своих карточек.
-            hr
-            h5.card-title Дополнительные правила
-            p.card-text
-              | "Бочонки" могут быть вынуты в произвольном порядке. Если на карточке отмечается номер, которого не было среди "бочонков", отметка не срабатывает.
-        .card.bg-black.bg-gradient.text-white.opacity-75(
-          x-show="$store.loc.l.lang === 'en'"
-        )
-          .card-header.text-center
-            h2 Lotto Game Rules
-          .card-body.opacity-75
-            h5.card-title Basic Rules
-            p.card-text
-              | "Lotto" is an online game in which players participate, each having 3 game cards.
-            hr
-            h5.card-title Gameplay
-            p.card-text
-              | During the game, "barrels" or "balls" - numbers are announced. Players must click on the positions on their cards corresponding to the announced numbers, thus "closing" them.
-            hr
-            h5.card-title Winning the Game
-            p.card-text
-              | The winner is the player who first closed all the numbers on at least one of their cards.
-            hr
-            h5.card-title Additional Rules
-            p.card-text
-              | "Barrels" can be pulled out in random order. If a number is marked on the card that was not among the "barrels", the mark is considered invalid.
-
+          .row
+            .col
+              a.btn.btn-lg.btn-light.w-100(x-link, href="/rules")
+                i.bi.bi-info-circle.me-2
+                span(x-text="$store.loc.l.pageMain.actions.rules")
+          .row.mt-4
+            .col.text-center
+              h3.display-6.text-warning(
+                x-text="$store.loc.l.pageMain.leaderboard.title"
+              )
+          .row(x-data="leaderboard")
+            .col-12
+              .btn-group.w-100(
+                role="group",
+                x-id="['skillRating', 'winRating']"
+              )
+                input.btn-check(
+                  type="radio",
+                  autocomplete="off",
+                  x-model="rating",
+                  value="skillRating",
+                  :id="$id('skillRating')"
+                )
+                label.btn.btn-sm.btn-outline-warning(
+                  :for="$id('skillRating')",
+                  x-text="$store.loc.l.pageMain.leaderboard.skillRating"
+                )
+                input.btn-check(
+                  type="radio",
+                  autocomplete="off",
+                  x-model="rating",
+                  value="winRating",
+                  :id="$id('winRating')"
+                )
+                label.btn.btn-sm.btn-outline-warning(
+                  :for="$id('winRating')",
+                  x-text="$store.loc.l.pageMain.leaderboard.winRating"
+                )
+            .col-12.mt-3
+              ul.list-group.overflow-hidden
+                template(:key="stat.login")&attributes({ "x-for": "stat, index in rankList.leaders" })
+                  li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent(
+                    :class="{ 'text-light': $store.user.login === stat.login }"
+                  )
+                    span(x-html="`${rankList.page * (index + 1)}.&nbsp;`")
+                    .fw-bold.text-truncate.flex-grow-1(x-text="stat.login")
+                    .badge.bg-warning.text-dark(
+                      x-text="Math.round(stat[rating] * 100) / 100"
+                    )
+                template(
+                  x-if="(rankList.selfRating[rating] && rankList.leaders.findIndex(({login}) => login === $store.user.login) === -1)"
+                )
+                  li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent.border-top-0
+                    span ..&nbsp;&nbsp;
+                    .fw-bold.text-truncate.flex-grow-1(
+                      x-text="$store.user.login"
+                    )
+                    .badge.bg-warning.text-dark(
+                      x-text="Math.round(rankList.selfRating[rating] * 100) / 100"
+                    )
+            .col-12.mt-3.d-flex.gap-2
+              button.btn.btn-sm.btn-warning.flex-grow-1(
+                x-show="!didFail",
+                @click="load(true)",
+                :disabled="rankList.page <= 1 || isLoading",
+                x-text="$store.loc.l.pageMain.leaderboard.prev"
+              )
+              button.btn.btn-sm.btn-warning.flex-grow-1(
+                x-show="!didFail",
+                @click="load(false)",
+                :disabled="(rankList.leaders.length && rankList.leaders.length < 10) || isLoading",
+                x-text="$store.loc.l.pageMain.leaderboard.next"
+              )
+              button.btn.btn-sm.btn-warning.flex-grow-1(
+                x-show="didFail",
+                @click="load()",
+                x-text="$store.loc.l.pageMain.leaderboard.retry"
+              ) Retry
 template(x-route="/sign")
   include ../pageSign/_
 template(x-route="/room/all", x-authredirect:unauthed="/sign")
@@ -82,3 +115,5 @@ template(x-route="/game", x-authredirect:unauthed="/sign")
   include ../pageGame/_
 template(x-route="/profile", x-authredirect:unauthed="/sign")
   include ../pageProfile/_
+template(x-route="/rules", x-authredirect:unauthed="/sign")
+  include ../pageRules/_

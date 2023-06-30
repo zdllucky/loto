@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 
 const registerUserWithLoginAndPasswordMutation: Extension = (base) =>
   graphql.field({
@@ -9,7 +8,7 @@ const registerUserWithLoginAndPasswordMutation: Extension = (base) =>
       login: graphql.arg({ type: graphql.nonNull(graphql.String) }),
       password: graphql.arg({ type: graphql.nonNull(graphql.String) }),
     },
-    async resolve(source, { login, password }, context: Context) {
+    async resolve(source, { login, password }, context) {
       const sudoContext = context.sudo();
 
       try {

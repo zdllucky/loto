@@ -1,12 +1,23 @@
 {
   "en": {
     "lang": "en",
+    "pageRules": {
+      "title": "Game Rules"
+    },
     "pageMain": {
       "title": "Lotto",
       "actions": {
         "continue": "Continue",
         "joinGames": "Join games",
-        "profile": "Profile"
+        "profile": "Profile",
+        "rules": "Game rules"
+      },
+      "leaderboard": {
+        "title": "Leaderboard",
+        "winRating": "Win rating",
+        "skillRating": "Skill rating",
+        "prev": "Previous",
+        "next": "Next"
       }
     },
     "pageProfile": {
@@ -80,12 +91,23 @@
   },
   "ru": {
     "lang": "ru",
+    "pageRules": {
+      "title": "Правила игры"
+    },
     "pageMain": {
       "title": "Лото",
       "actions": {
         "continue": "Продолжить",
         "joinGames": "Присоединиться к играм",
-        "profile": "Профиль"
+        "profile": "Профиль",
+        "rules": "Правила игры"
+      },
+      "leaderboard": {
+        "title": "Таблица лидеров",
+        "winRating": "Рейтинг побед",
+        "skillRating": "Рейтинг навыка",
+        "prev": "Назад",
+        "next": "Далее"
       }
     },
     "pageProfile": {

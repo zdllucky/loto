@@ -7,8 +7,9 @@ import extendGraphqlSchema from "./extendGraphqlSchema";
 import ui from "./ui";
 import lists from "../schema";
 import { config } from "@keystone-6/core";
+import type { Session } from "../schema/_misc/accessHelpers";
 
-const configuration: Config = {
+const configuration: Config<Session> = {
   session,
   server,
   db,

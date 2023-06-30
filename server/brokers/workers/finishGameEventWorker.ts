@@ -15,14 +15,14 @@ const finishGameEventWorkerInit = ({
 
       return await sCtx.prisma.$transaction(async (prisma) => {
         const finishedGamesCount = await prisma.game.count({
-          where: { gameStatus: "finished", resultId: null },
+          where: { gameStatus: "finished" },
         });
 
         let offset = 0;
 
         while (offset < finishedGamesCount) {
           const games = await prisma.game.findMany({
-            where: { gameStatus: "finished", resultId: null },
+            where: { gameStatus: "finished" },
             skip: offset,
             take: 20,
           });

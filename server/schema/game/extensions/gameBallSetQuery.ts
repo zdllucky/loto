@@ -1,6 +1,5 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
-import { Context } from ".keystone/types";
 
 const gameBallSetQuery: Extension = () => {
   const GameBalls = graphql.object<{ balls: number[]; gameStatus: string }>()({
@@ -16,7 +15,7 @@ const gameBallSetQuery: Extension = () => {
   return graphql.field({
     type: graphql.nonNull(GameBalls),
     args: {},
-    resolve: async (rootVal, _, context: Context) => {
+    resolve: async (rootVal, _, context) => {
       const sCtx = context.sudo();
 
       const game = await sCtx.prisma.game.findFirst({
