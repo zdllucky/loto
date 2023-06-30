@@ -12,6 +12,7 @@ const sessionMaxAge = 60 * 60 * 24 * 30;
 export const redis = new Redis({
   host: process.env.REDIS_HOST || "localhost",
   port: 6379,
+  lazyConnect: true,
 });
 
 const session: Config["session"] = storedSessions<Session>({
