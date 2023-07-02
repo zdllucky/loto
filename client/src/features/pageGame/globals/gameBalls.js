@@ -19,7 +19,7 @@ export default () => ({
         await this.loadBalls();
 
         this.refreshIntervalId = setInterval(
-          () => this.loadBalls(),
+          () => document.hidden || this.loadBalls(),
           Math.floor(12000 / this.speed) + 2
         );
       }

@@ -768,7 +768,8 @@ type PersonalStatsRating {
 }
 
 type TotalStatsRating {
-  leaders: [UserRating!]
+  winRating: [UserRating!]
+  skillRating: [UserRating!]
   selfRating: SelfRating
   offset: Int!
   page: Int!
@@ -776,8 +777,7 @@ type TotalStatsRating {
 
 type UserRating {
   login: String
-  winRating: Int
-  skillRating: Float
+  stat: Float
 }
 
 type SelfRating {

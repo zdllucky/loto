@@ -6,7 +6,10 @@ export default () => ({
   _refreshInterval: undefined,
   async init() {
     await this.refresh();
-    this._refreshInterval = setInterval(() => this.refresh(), 5000);
+    this._refreshInterval = setInterval(
+      () => document.hidden || this.refresh(),
+      5000
+    );
   },
   destroy() {
     clearInterval(this._refreshInterval);

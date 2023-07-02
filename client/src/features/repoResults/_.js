@@ -74,10 +74,9 @@ const getTotalStatsRating = async ({ offset, page } = {}) => {
     body: JSON.stringify({
       query: `query TotalStatsRating($offset: Int!, $page: Int!) {
           totalStatsRating(offset: $offset, page: $page) {
-            leaders {
+            skillRating {
               login
-              skillRating
-              winRating
+              stat
             }
             selfRating {
               winRating
@@ -85,6 +84,10 @@ const getTotalStatsRating = async ({ offset, page } = {}) => {
             }
             offset
             page
+            winRating {
+              login
+              stat
+            }
           }
         }`,
       variables: {

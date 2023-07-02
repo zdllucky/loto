@@ -1,8 +1,10 @@
 import Alpine from "alpinejs";
 
+const initialRankList = { skillRating: [], winRating: [], selfRating: {} };
+
 Alpine.data("leaderboard", () => ({
   rating: "skillRating",
-  rankList: { leaders: [], selfRating: {} },
+  rankList: initialRankList,
   isLoading: false,
   didFail: false,
   async init() {
@@ -16,7 +18,7 @@ Alpine.data("leaderboard", () => ({
     } catch (e) {
       this.didFail = true;
 
-      this.rankList = { leaders: [], selfRating: {} };
+      this.rankList = initialRankList;
     }
   },
   async load(order) {
@@ -39,7 +41,7 @@ Alpine.data("leaderboard", () => ({
     } catch (e) {
       this.didFail = true;
 
-      this.rankList = { leaders: [], selfRating: {} };
+      this.rankList = { initialRankList, page: this.rankList.page };
     }
   },
 }));

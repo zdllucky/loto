@@ -6,6 +6,10 @@ import { redisCache } from "../../../configuration/db";
 
 type UserRating = {
   login: string | null;
+  stat: number | null;
+};
+
+type SelfRating = {
   winRating: number | null;
   skillRating: number | null;
 };
@@ -15,12 +19,11 @@ const totalStatsRatingQuery: Extension = () => {
     name: "UserRating",
     fields: {
       login: graphql.field({ type: graphql.String }),
-      winRating: graphql.field({ type: graphql.Int }),
-      skillRating: graphql.field({ type: graphql.Float }),
+      stat: graphql.field({ type: graphql.Float }),
     },
   });
 
-  const SelfRating = graphql.object<Omit<UserRating, "login">>()({
+  const SelfRating = graphql.object<SelfRating>()({
     name: "SelfRating",
     fields: {
       winRating: graphql.field({ type: graphql.Int }),
@@ -29,14 +32,18 @@ const totalStatsRatingQuery: Extension = () => {
   });
 
   const TotalStatsRating = graphql.object<{
-    leaders: UserRating[];
-    selfRating: Omit<UserRating, "login"> | null;
+    winRating: UserRating[];
+    skillRating: UserRating[];
+    selfRating: SelfRating | null;
     offset: number;
     page: number;
   }>()({
     name: "TotalStatsRating",
     fields: {
-      leaders: graphql.field({
+      winRating: graphql.field({
+        type: graphql.list(graphql.nonNull(UserRating)),
+      }),
+      skillRating: graphql.field({
         type: graphql.list(graphql.nonNull(UserRating)),
       }),
       selfRating: graphql.field({ type: SelfRating }),
@@ -75,7 +82,8 @@ const totalStatsRatingQuery: Extension = () => {
 
       if (selfRating.gamesPlayed === null)
         return {
-          leaders: [],
+          winRating: [],
+          skillRating: [],
           selfRating: null,
           offset,
           page,
@@ -88,11 +96,14 @@ const totalStatsRatingQuery: Extension = () => {
       dateOffset.setSeconds(0);
       dateOffset.setMilliseconds(0);
 
+      const topUserRatingKey = `topUserRating:${page}:${dateOffset.toISOString()}`;
+
       const topUserRating = await redisCache.wrap(
-        "topUserRating",
+        topUserRatingKey,
         async () => {
           process.env.NODE_ENV === "development" &&
-            console.log("topUserRatingQuery");
+            console.log(topUserRatingKey);
+
           return await sCtx.prisma.$queryRaw<UserRating[]>`
             WITH q AS (
                 SELECT
@@ -104,7 +115,6 @@ const totalStatsRatingQuery: Extension = () => {
                 WHERE
                         G."createdAt" > ${dateOffset.toISOString()}::TIMESTAMP
                 GROUP BY "User"."login"
-                LIMIT 10 OFFSET ${(page - 1) * 10}
               ),
               w AS (
                 SELECT
@@ -116,21 +126,41 @@ const totalStatsRatingQuery: Extension = () => {
                 WHERE
                         GR."createdAt" > ${dateOffset.toISOString()}::TIMESTAMP
                 GROUP BY "User"."login"
-                LIMIT 10 OFFSET ${(page - 1) * 10}
-              )
-              SELECT
-                q.login as login,
-                w.sum::integer as "winRating",
-                w.sum / (1 + CAST(q.count AS FLOAT) - w.wincount) as "skillRating"
-              FROM q
-              JOIN w on q.login = w.login;
+                ORDER BY sum DESC
+              ),
+            e AS (SELECT 
+              w.login as login,
+              w.sum / (1 + CAST(q.count AS FLOAT) - w.wincount) as "stat"
+                FROM q
+                JOIN w on q.login = w.login
+                ORDER BY "stat" DESC
+                LIMIT 10 OFFSET ${(page - 1) * 10})
+            
+            SELECT * FROM e
+            UNION ALL
+            SELECT * FROM (VALUES ('__separator', -1)) as t(login, stat)
+            UNION ALL
+            SELECT login, sum::integer as stat FROM w LIMIT 10 OFFSET ${
+              (page - 1) * 10
+            };
+            
       `;
         },
         process.env.NODE_ENV === "production" ? 60 * 60 * 1000 : 5 * 1000
       );
 
+      const skillRating = topUserRating.slice(
+        0,
+        topUserRating.findIndex(
+          ({ login, stat }) => login === "__separator" && stat === -1
+        )
+      );
+
+      const winRating = topUserRating.slice(skillRating.length + 1);
+
       return {
-        leaders: topUserRating,
+        winRating,
+        skillRating,
         selfRating,
         offset,
         page,

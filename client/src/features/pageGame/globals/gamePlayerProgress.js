@@ -6,7 +6,10 @@ export default () => ({
   init() {
     this.loadProgress();
 
-    this.refreshIntervalId = setInterval(() => this.loadProgress(), 5000);
+    this.refreshIntervalId = setInterval(
+      () => document.hidden || this.loadProgress(),
+      5000
+    );
   },
   destroy() {
     clearInterval(this.refreshIntervalId);

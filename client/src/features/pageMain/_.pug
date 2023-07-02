@@ -67,17 +67,17 @@ template(x-route="/", x-authredirect:unauthed="/sign")
                 )
             .col-12.mt-3
               ul.list-group.overflow-hidden
-                template(:key="stat.login")&attributes({ "x-for": "stat, index in rankList.leaders" })
+                template(:key="stat.login")&attributes({ "x-for": "stat, index in rankList[rating]" })
                   li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent(
                     :class="{ 'text-light': $store.user.login === stat.login }"
                   )
                     span(x-html="`${rankList.page * (index + 1)}.&nbsp;`")
                     .fw-bold.text-truncate.flex-grow-1(x-text="stat.login")
                     .badge.bg-warning.text-dark(
-                      x-text="Math.round(stat[rating] * 100) / 100"
+                      x-text="Math.round(stat.stat * 100) / 100"
                     )
                 template(
-                  x-if="(rankList.selfRating[rating] && rankList.leaders.findIndex(({login}) => login === $store.user.login) === -1)"
+                  x-if="(rankList.selfRating[rating] && rankList[rating].findIndex(({login}) => login === $store.user.login) === -1)"
                 )
                   li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent.border-top-0
                     span ..&nbsp;&nbsp;
@@ -97,7 +97,7 @@ template(x-route="/", x-authredirect:unauthed="/sign")
               button.btn.btn-sm.btn-warning.flex-grow-1(
                 x-show="!didFail",
                 @click="load(false)",
-                :disabled="(rankList.leaders.length && rankList.leaders.length < 10) || isLoading",
+                :disabled="(rankList[rating].length && rankList[rating].length < 10) || isLoading",
                 x-text="$store.loc.l.pageMain.leaderboard.next"
               )
               button.btn.btn-sm.btn-warning.flex-grow-1(

@@ -8,7 +8,10 @@ Alpine.data("waitRoom", () => ({
 
   async init() {
     await this.refresh();
-    this._refreshInterval = setInterval(() => this.refresh(), 1000);
+    this._refreshInterval = setInterval(
+      () => document.hidden || this.refresh(),
+      1000
+    );
   },
   destroy() {
     clearInterval(this._refreshInterval);
