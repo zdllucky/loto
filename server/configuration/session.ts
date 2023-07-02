@@ -15,26 +15,28 @@ export const redis = new Redis({
   lazyConnect: true,
 });
 
+const s = (str: string) => `session:${str}`;
+
 const session: Config["session"] = storedSessions<Session>({
   maxAge: sessionMaxAge,
-  // the session secret is used to encrypt cookie data
   secret: sessionSecret,
 
   store: () => ({
     async get(sessionId) {
-      const result = await redis.get(sessionId);
+      const result =
+        (await redis.get(s(sessionId))) || (await redis.get(sessionId));
       if (!result) return;
 
       return JSON.parse(result) as Session;
     },
 
     async set(sessionId, data) {
-      // we use redis for our Session data, in JSON
-      await redis.setex(sessionId, sessionMaxAge, JSON.stringify(data));
+      await redis.setex(s(sessionId), sessionMaxAge, JSON.stringify(data));
     },
 
     async delete(sessionId) {
-      await redis.del(sessionId);
+      // TODO: delete old session implementation after August'23 begins
+      await redis.del(s(sessionId), sessionId);
     },
   }),
 });
