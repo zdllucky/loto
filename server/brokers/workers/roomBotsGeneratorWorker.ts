@@ -85,11 +85,9 @@ const roomBotsGeneratorWorkerInit = (context: Context) =>
   );
 
 const randomBotAccuracy = () => {
-  const accuracySelect = Math.floor(Math.random() * 3) + 1;
+  const accuracySelect = Math.floor(Math.random() * 2) + 2;
 
   switch (accuracySelect) {
-    case 1:
-      return 9900;
     case 2:
       return 9800;
     case 3:
