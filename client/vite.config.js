@@ -7,6 +7,9 @@ import svgLoader from "vite-svg-loader";
 export default defineConfig(({ mode }) => {
   process.env = Object.assign(process.env, loadEnv(mode, process.cwd(), ""));
 
+  /**
+   * @type {import('vite').UserConfigExport}
+   */
   return {
     plugins: [
       pugPlugin({ pretty: process.env.NODE_ENV !== "production" }),
@@ -15,6 +18,7 @@ export default defineConfig(({ mode }) => {
       viteSingleFile({ removeViteModuleLoader: true }),
     ],
     base: "./",
+    publicDir: "./src/public",
     build: {
       target: "es2017",
       emptyOutDir: true,

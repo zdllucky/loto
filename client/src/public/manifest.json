@@ -1,0 +1,18 @@
+{
+  "name": "Lotto Online: Play with friends",
+  "short_name": "Lotto Online",
+  "version": "1.0.0",
+  "description": "Classic lotto game with friends online",
+  "icons": [
+    { "src": "/img/icn/favicon.ico", "type": "image/x-icon", "sizes": "16x16 32x32" },
+    { "src": "/img/icn/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/img/icn/icon-512.png", "type": "image/png", "sizes": "512x512" },
+    { "src": "/img/icn/icon-192-maskable.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
+    { "src": "/img/icn/icon-512-maskable.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ],
+  "start_url": "/?source=pwa",
+  "id": "quest.ponder8.loto",
+  "background_color": "#231F20",
+  "theme_color": "#231F20",
+  "display": "fullscreen"
+}
