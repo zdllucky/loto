@@ -14,5 +14,6 @@
   "id": "quest.ponder8.loto",
   "background_color": "#231F20",
   "theme_color": "#231F20",
-  "display": "fullscreen"
+  "display": "fullscreen",
+  "orientation": "portrait"
 }

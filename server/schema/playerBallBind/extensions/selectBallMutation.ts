@@ -77,7 +77,7 @@ const selectBallMutation: Extension = () => {
         return { success: false, message: "Card not found for current game" };
 
       if (user.from_PlayerBallBind_user.length > 0)
-        return { success: false, message: "Ball already selected" };
+        return { success: true, message: "Ball already selected" };
 
       const balls = user.game.balls as Prisma.JsonArray;
 
