@@ -12,8 +12,8 @@
   ],
   "start_url": "/?source=pwa",
   "id": "quest.ponder8.loto",
-  "background_color": "#231F20",
-  "theme_color": "#231F20",
+  "background_color": "#dee2e6",
+  "theme_color": "#dee2e6",
   "display": "fullscreen",
   "orientation": "portrait"
 }

@@ -18,13 +18,14 @@
     "jwt-decode": "^3.1.2",
     "normalize.css": "^8.0.1",
     "pug": "^3.0.2",
-    "sass": "^1.56.1",
+    "sass": "^1.63.6",
     "svg64": "^1.2.0",
     "url-pattern": "^1.0.3",
     "vite": "^4.3.2",
     "vite-plugin-pug": "^0.3.2",
     "vite-plugin-sass-glob-import": "^2.0.0",
     "vite-plugin-singlefile": "^0.13.1",
-    "vite-svg-loader": "^3.6.0"
+    "vite-svg-loader": "^3.6.0",
+    "bootswatch": "^5.3.0"
   }
 }

@@ -1,0 +1,12 @@
+mixin navbar(title='""', logo='$store.loc.l.app.title')
+  .p-3.sticky-top
+    nav.navbar.navbar-expand-md
+      .container-fluid.position-relative
+        ul.navbar-nav.w-100.flex-row
+          block
+          if title
+            li.nav-item(x-text=title)
+          span.me-end
+        .navbar-brand.fw-bold.justify-self-center.position-absolute.w-100.text-center.pe-4(
+          x-text=logo
+        )

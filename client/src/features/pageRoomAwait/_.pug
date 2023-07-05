@@ -1,65 +1,83 @@
-.container-fluid(x-authredirect:unauthed="/sign")
-  .row
-    .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(
-        x-text="$store.loc.l.pageRoomAwait.title"
-      )
-  .row.py-5
-    .col.d-flex.flex-column(x-data="waitRoom", x-id="['roomId', 'password']")
-      template(x-if="!!room")
-        .card
-          .card-body
-            .hstack.align-items-start.gap-1
-              .vstack
-                .card-title.hstack.gap-1
-                  span(x-html="$store.loc.l.pageRoomAwait.roomId")
+include ../componentNavbar/_
+
+.vstack.h-100(
+  x-authredirect:unauthed="/sign",
+  x-data="waitRoom",
+  x-id="['roomId', 'password']"
+)
+  +navbar("", logo="$store.loc.l.pageRoomAwait.title")
+    li.nav-item.me-auto
+      button.nav-link.py-0(@click="exitRoom")
+        i.bi.bi-chevron-compact-left
+        span(x-text="$store.loc.l.pageRooms.title")
+    +profileButton.nav-link.py-0
+      i.bi.bi-person-circle.me-1
+      span(x-text="$store.loc.l.pageMain.actions.profile")
+  template(x-if="!!room")
+    .container-fluid.pt-5
+      .row
+        .col-12
+          .card.bg-danger-subtle
+            .card-body
+              .hstack.gap-1
+                span(x-html="$store.loc.l.pageRoomAwait.roomId")
+                input.form-control.form-control-sm.flex-shrink-1(
+                  type="text",
+                  readonly,
+                  :value="room.id",
+                  :id="$id('roomId')"
+                )
+                button.btn.btn-sm.btn-outline-danger(
+                  type="button",
+                  @click="document.getElementById($id('roomId')).select(); document.execCommand('copy')",
+                  x-text="$store.loc.l.pageRoomAwait.actions.copy"
+                )
+              template(x-if="room.password")
+                .hstack.gap-1.mt-2
+                  span(x-html="$store.loc.l.pageRoomAwait.password")
                   input.form-control.form-control-sm.flex-shrink-1(
                     type="text",
                     readonly,
-                    :value="room.id",
-                    :id="$id('roomId')"
+                    :value="room.password",
+                    :id="$id('password')"
                   )
-                  button.btn.btn-sm.btn-outline-warning(
+                  button.btn.btn-sm.btn-outline-danger(
                     type="button",
-                    @click="document.getElementById($id('roomId')).select(); document.execCommand('copy')",
+                    @click="document.getElementById($id('password')).select(); document.execCommand('copy')",
                     x-text="$store.loc.l.pageRoomAwait.actions.copy"
                   )
-                .template(x-show="room.password")
-                  .card-title.hstack.gap-1
-                    span(x-html="$store.loc.l.pageRoomAwait.password")
-                    input.form-control.form-control-sm.flex-shrink-1(
-                      type="text",
-                      readonly,
-                      :value="room.password",
-                      :id="$id('password')"
-                    )
-                    button.btn.btn-sm.btn-outline-warning(
-                      type="button",
-                      @click="document.getElementById($id('password')).select(); document.execCommand('copy')",
-                      x-text="$store.loc.l.pageRoomAwait.actions.copy"
-                    )
-              span.badge.bg-success.rounded-pill.float-end(
-                x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
-                :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
-              )
-            h6.card-subtitle.my-3.text-body-secondary(
-              x-text="$store.loc.l.pageRoomAwait.progress + room.users.length + '/5'"
-            )
-            ul.list-group.mt-3.overflow-hidden
-              template(:key="user.id")&attributes({"x-for": "user in room.users"})
-                li.list-group-item.list-group-item-warning.fw-bold
-                  span(x-text="user.login")
-              template&attributes({"x-for": "num in remaining"})
-                li.list-group-item.list-group-item-warning.placeholder-glow
-                  span.placeholder.w-50.border-2
-
-            button.btn.btn-warning.w-100.mt-3(
-              x-show="room.owner?.login === Alpine.store('user').login",
-              :disabled="room.users.length < 2 || hideStartButton",
-              @click="startGame",
-              x-text="$store.loc.l.pageRoomAwait.actions.start"
-            )
-            button.btn.btn-sm.w-100.mt-3(
-              @click="exitRoom",
-              x-text="$store.loc.l.pageRoomAwait.actions.leave"
-            )
+              .hstack.gap-2.justify-content-stretch.mt-3
+                button.btn.btn-danger.flex-grow-1(
+                  type="button",
+                  x-show="room.owner?.login === Alpine.store('user').login",
+                  :disabled="room.users.length < 2 || hideStartButton",
+                  @click="startGame"
+                )
+                  i.bi.bi-joystick.me-1
+                  span(x-text="$store.loc.l.pageRoomAwait.actions.start")
+                button.btn.btn-outline-dark(
+                  type="button",
+                  :class="{ 'flex-grow-1': room.owner?.login !== Alpine.store('user').login }",
+                  @click="exitRoom",
+                  x-text="$store.loc.l.pageRoomAwait.actions.leave"
+                )
+      .row.mt-4.mb-2.align-items-end
+        .col
+          span(
+            x-text="$store.loc.l.pageRoomAwait.progress + room.users.length + '/5'"
+          )
+        .col-auto
+          span.badge.bg-success.float-end(
+            x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
+            :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
+          )
+      .row
+        .col-12
+          ul.list-group.overflow-hidden
+            template(:key="user.id")&attributes({"x-for": "user in room.users"})
+              li.list-group-item
+                i.bi.bi-person-fill.me-1
+                span(x-text="user.login")
+            template&attributes({"x-for": "num in remaining"})
+              li.list-group-item.placeholder-glow
+                span.placeholder.w-50.border-2

@@ -1,119 +1,111 @@
-template(x-route="/", x-authredirect:unauthed="/sign")
-  .container-fluid
-    .row
-      .col.text-center.mt-5
-        .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageMain.title")
-    .row.mt-5
-      .col.d-flex.flex-column
-        .semitransparent-container.container-fluid
-          .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
-            .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(x-link, href="/room/await")
-                i.bi.bi-play.me-2
-                span(x-text="$store.loc.l.pageMain.actions.continue")
-          .row(x-show="$store.user.gameId")
-            .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(x-link, href="/game")
-                i.bi.bi-play.me-2
-                span(x-text="$store.loc.l.pageMain.actions.continue")
+include ../componentNavbar/_
+include ../componentProfile/_
 
-          .row(x-show="!$store.user.gameId && !$store.user.roomId")
-            .col.pb-4
-              a.btn.btn-lg.btn-warning.w-100(x-link, href="/room/all")
-                i.bi.bi-joystick.me-2
-                span(x-text="$store.loc.l.pageMain.actions.joinGames")
-          .row
-            .col.pb-4
-              a.btn.btn-lg.btn-light.w-100(x-link, href="/profile")
-                i.bi.bi-person-circle.me-2
-                span(x-text="$store.loc.l.pageMain.actions.profile")
-          .row
-            .col
-              a.btn.btn-lg.btn-light.w-100(x-link, href="/rules")
-                i.bi.bi-info-circle.me-2
-                span(x-text="$store.loc.l.pageMain.actions.rules")
-          .row.mt-4
-            .col.text-center
-              h3.display-6.text-warning(
-                x-text="$store.loc.l.pageMain.leaderboard.title"
-              )
-          .row(x-data="leaderboard")
-            .col-12
-              .btn-group.w-100(
-                role="group",
-                x-id="['skillRating', 'winRating']"
-              )
-                input.btn-check(
-                  type="radio",
-                  autocomplete="off",
-                  x-model="rating",
-                  value="skillRating",
-                  :id="$id('skillRating')"
-                )
-                label.btn.btn-sm.btn-outline-warning(
-                  :for="$id('skillRating')",
-                  x-text="$store.loc.l.pageMain.leaderboard.skillRating"
-                )
-                input.btn-check(
-                  type="radio",
-                  autocomplete="off",
-                  x-model="rating",
-                  value="winRating",
-                  :id="$id('winRating')"
-                )
-                label.btn.btn-sm.btn-outline-warning(
-                  :for="$id('winRating')",
-                  x-text="$store.loc.l.pageMain.leaderboard.winRating"
-                )
-            .col-12.mt-3
-              ul.list-group.overflow-hidden
-                template(:key="stat.login")&attributes({ "x-for": "stat, index in rankList[rating]" })
-                  li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent(
-                    :class="{ 'text-light': $store.user.login === stat.login }"
-                  )
-                    span(x-html="`${rankList.page * (index + 1)}.&nbsp;`")
-                    .fw-bold.text-truncate.flex-grow-1(x-text="stat.login")
-                    .badge.bg-warning.text-dark(
-                      x-text="Math.round(stat.stat * 100) / 100"
-                    )
-                template(
-                  x-if="(rankList.selfRating[rating] && rankList[rating].findIndex(({login}) => login === $store.user.login) === -1)"
-                )
-                  li.list-group-item.list-group-item-warning.d-flex.justify-content-between.align-items-center.bg-transparent.border-top-0
-                    span ..&nbsp;&nbsp;
-                    .fw-bold.text-truncate.flex-grow-1(
-                      x-text="$store.user.login"
-                    )
-                    .badge.bg-warning.text-dark(
-                      x-text="Math.round(rankList.selfRating[rating] * 100) / 100"
-                    )
-            .col-12.mt-3.d-flex.gap-2
-              button.btn.btn-sm.btn-warning.flex-grow-1(
-                x-show="!didFail",
-                @click="load(true)",
-                :disabled="rankList.page <= 1 || isLoading",
-                x-text="$store.loc.l.pageMain.leaderboard.prev"
-              )
-              button.btn.btn-sm.btn-warning.flex-grow-1(
-                x-show="!didFail",
-                @click="load(false)",
-                :disabled="(rankList[rating].length && rankList[rating].length < 10) || isLoading",
-                x-text="$store.loc.l.pageMain.leaderboard.next"
-              )
-              button.btn.btn-sm.btn-warning.flex-grow-1(
+template(x-route="/")
+  .vstack.h-100(x-authredirect:unauthed="/sign")
+    +navbar
+      li.nav-item.ms-auto
+        +profileButton.nav-link.py-0
+          i.bi.bi-person-circle.me-1
+          span(x-text="$store.loc.l.pageMain.actions.profile")
+    .container-fluid.mt-5.h-100
+      .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link, href="/room/await")
+            i.bi.bi-play.me-2
+            span(x-text="$store.loc.l.pageMain.actions.continue")
+      .row(x-show="$store.user.gameId")
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link, href="/game")
+            i.bi.bi-play.me-2
+            span(x-text="$store.loc.l.pageMain.actions.continue")
+
+      .row(x-show="!$store.user.gameId && !$store.user.roomId")
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link, href="/room/all")
+            i.bi.bi-joystick.me-2
+            span(x-text="$store.loc.l.pageMain.actions.joinGames")
+      .row
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link, href="/rules")
+            i.bi.bi-info-circle.me-2
+            span(x-text="$store.loc.l.pageMain.actions.rules")
+    .container-fluid.pb-3
+      .card.mt-5(x-data="leaderboard")
+        .card-body
+          .hstack.align-items-center.gap-2.mb-2
+            h4.card-title.me-auto(
+              x-text="$store.loc.l.pageMain.leaderboard.title"
+            )
+            .hstack.gap-2
+              button.btn.btn-sm.btn-danger.w-100(
                 x-show="didFail",
                 @click="load()",
                 x-text="$store.loc.l.pageMain.leaderboard.retry"
-              ) Retry
+              )
+                i.bi.bi-arrow-repeat
+              button.btn.btn-sm.btn-danger(
+                x-show="!didFail",
+                @click="load(true)",
+                :disabled="rankList.page <= 1 || isLoading"
+              )
+                i.bi.bi-chevron-compact-left
+              button.btn.btn-sm.btn-danger(
+                x-show="!didFail",
+                @click="load(false)",
+                :disabled="(rankList[rating].length && rankList[rating].length < 10) || isLoading"
+              )
+                i.bi.bi-chevron-compact-right
+          .btn-group.w-100(role="group", x-id="['skillRating', 'winRating']")
+            input.btn-check(
+              type="radio",
+              autocomplete="off",
+              x-model="rating",
+              value="skillRating",
+              :id="$id('skillRating')"
+            )
+            label.btn.btn-sm.btn-outline-dark(
+              :for="$id('skillRating')",
+              x-text="$store.loc.l.pageMain.leaderboard.skillRating"
+            )
+            input.btn-check(
+              type="radio",
+              autocomplete="off",
+              x-model="rating",
+              value="winRating",
+              :id="$id('winRating')"
+            )
+            label.btn.btn-sm.btn-outline-dark(
+              :for="$id('winRating')",
+              x-text="$store.loc.l.pageMain.leaderboard.winRating"
+            )
+          ul.list-group.overflow-hidden.mt-2
+            template(:key="stat.login")&attributes({ "x-for": "stat, index in [...rankList[rating], ]" })
+              li.list-group-item.d-flex.justify-content-between.align-items-center(
+                :class="{ 'text-success': $store.user.login === stat.login }"
+              )
+                span(x-html="`${rankList.page * (index + 1)}.&nbsp;`")
+                .fw-bold.text-truncate.flex-grow-1(x-text="stat.login")
+                .badge.bg-success(x-text="Math.round(stat.stat * 100) / 100")
+            template(
+              x-if="(rankList.selfRating[rating] && rankList[rating].findIndex(({login}) => login === $store.user.login) === -1)"
+            )
+              li.list-group-item.d-flex.justify-content-between.align-items-center.bg-transparent.border-top-0
+                span ..&nbsp;&nbsp;
+                .fw-bold.text-truncate.flex-grow-1(x-text="$store.user.login")
+                .badge.bg-success(
+                  x-text="Math.round(rankList.selfRating[rating] * 100) / 100"
+                )
+
 template(x-route="/sign")
   include ../pageSign/_
-template(x-route="/room/all", x-authredirect:unauthed="/sign")
+template(x-route="/room/all")
   include ../pageRooms/_
-template(x-route="/room/await", x-authredirect:unauthed="/sign")
+template(x-route="/room/await")
   include ../pageRoomAwait/_
-template(x-route="/game", x-authredirect:unauthed="/sign")
+template(x-route="/game")
   include ../pageGame/_
-template(x-route="/profile", x-authredirect:unauthed="/sign")
-  include ../pageProfile/_
-template(x-route="/rules", x-authredirect:unauthed="/sign")
+template(x-route="/rules")
   include ../pageRules/_
+
++profile

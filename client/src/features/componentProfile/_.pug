@@ -1,0 +1,73 @@
+mixin profileButton
+  div(x-authredirect:unauthed="/sign")
+    if block
+      button(
+        type="button",
+        data-bs-toggle="offcanvas",
+        data-bs-target="#profileToggle",
+        aria-controls="profileToggle"
+      )&attributes(attributes)
+        block
+    else
+      button.btn.btn-danger.w-100(
+        type="button",
+        data-bs-toggle="offcanvas",
+        data-bs-target="#profileToggle",
+        aria-controls="profileToggle"
+      )
+        i.bi.bi-person-circle.me-1
+        span(x-text="$store.loc.l.pageMain.actions.profile")
+mixin profile
+  #profileToggle.offcanvas.offcanvas-end(
+    tabindex="-1",
+    aria-labelledby="profileToggleLabel"
+  )
+    .offcanvas-header
+      h5#profileToggleLabel.offcanvas-title(
+        x-text="$store.loc.l.pageProfile.title"
+      )
+      button.btn-close(
+        type="button",
+        data-bs-dismiss="offcanvas",
+        :aria-label="$store.loc.l.buttons.back"
+      )
+    .offcanvas-body
+      .container-fluid.px-0
+        .row.mb-4
+          .col
+            .display-1.text-truncate(x-text="$store.user.login")
+            hr
+        template(x-if="!!$store.user.lang")
+          .row.mb-3
+            .col.d-flex.flex-column
+              select.form-select(
+                x-data="{ isLoading: false, lang: $store.user.lang }",
+                @change="isLoading = true; await $store.loc.setLanguage($event.target.value, true); isLoading = false",
+                :disabled="isLoading",
+                x-model="lang"
+              )
+                option(
+                  value="unset",
+                  x-text="$store.loc.l.pageProfile.sysLang"
+                )
+                option(value="ru") Русский язык
+                option(value="en") English language
+
+        .row.mb-3
+          .col
+            button.btn.btn-danger.w-100(
+              @click="$store.auth.signOut()",
+              data-bs-dismiss="offcanvas",
+              type="button"
+            )
+              i.bi.bi-box-arrow-right.me-2
+              span(x-text="$store.loc.l.pageProfile.actions.signOut")
+        .row
+          .col
+            .form-check.form-switch
+              input#darkMode.form-check-input(
+                type="checkbox",
+                role="switch",
+                @change="toggleDarkMode()"
+              )
+              label.form-check-label(for="darkMode") Dark mode

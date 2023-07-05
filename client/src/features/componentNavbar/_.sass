@@ -1,0 +1,13 @@
+.top-3
+  top: 1rem
+
+[data-bs-theme=light] .navbar
+  @extend .bg-light
+[data-bs-theme=dark] .navbar *
+  @extend .text-body
+
+.navbar
+  .navbar-nav
+    min-height: 1.5rem
+  .navbar-brand
+    pointer-events: none

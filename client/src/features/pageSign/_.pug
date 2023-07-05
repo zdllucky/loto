@@ -1,47 +1,50 @@
-.container-fluid(x-authredirect:authed="/")
-  .row
-    .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageSign.title")
-  .row
-    .col.d-flex.flex-column.py-5
-      form.signInForm.semitransparent-container.container-fluid(
-        x-id="['login', 'password']",
-        x-data="authForm",
-        x-bind="form"
-      )
-        .row
-          .col
-            input.field(
-              placeholder=" ",
-              :id="$id('login')",
-              x-model="login",
-              type="text"
-            )
-            label(:for="$id('login')", x-text="$store.loc.l.pageSign.username")
-        .row.mt-4
-          .col
-            input.field(
-              placeholder=" ",
-              :id="$id('password')",
-              x-model="password",
-              type="password"
-            )
-            label(
-              :for="$id('password')",
-              x-text="$store.loc.l.pageSign.password"
-            )
-        .row.mt-4
-          .col-6
-            button.button-primary.confirm-button.w-100(
-              type="submit",
-              value="signIn",
-              :disabled="isLoading || !login || !password",
-              x-text="$store.loc.l.pageSign.buttons.signIn"
-            )
-          .col-6
-            button.button-primary.confirm-button.w-100(
-              type="submit",
-              :disabled="isLoading || !login || !password",
-              value="register",
-              x-text="$store.loc.l.pageSign.buttons.register"
-            )
+include ../componentNavbar/_
+
+.d-flex.flex-column.h-100(x-authredirect:authed="/")
+  +navbar("$store.loc.l.pageSign.title")
+  form.container-fluid.h-100.d-flex.flex-column.align-items-center.px-1.justify-content-end(
+    x-id="['login', 'password']",
+    x-data="authForm",
+    x-bind="form"
+  )
+    .row.w-100
+      .col
+        label.form-label(
+          :for="$id('login')",
+          x-text="$store.loc.l.pageSign.username"
+        )
+        input.form-control(
+          :placeholder="$store.loc.l.pageSign.charPlaceholder.replace('%n', 5)",
+          autocapitalize="off",
+          autofocus,
+          :id="$id('login')",
+          x-model="login",
+          type="text"
+        )
+    .row.mt-3.w-100
+      .col
+        label.form-label(
+          :for="$id('password')",
+          x-text="$store.loc.l.pageSign.password"
+        )
+        input.form-control(
+          :placeholder="$store.loc.l.pageSign.charPlaceholder.replace('%n', 8)",
+          :id="$id('password')",
+          x-model="password",
+          type="password"
+        )
+    .row.mt-3.pb-5.w-100
+      .col-6
+        button.btn.btn-danger.w-100(
+          type="submit",
+          value="signIn",
+          :disabled="isLoading || !login || !password",
+          x-text="$store.loc.l.pageSign.buttons.signIn"
+        )
+      .col-6
+        button.btn.btn-danger.w-100(
+          type="submit",
+          :disabled="isLoading || !login || !password",
+          value="register",
+          x-text="$store.loc.l.pageSign.buttons.register"
+        )

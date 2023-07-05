@@ -3,7 +3,6 @@ import Alpine from "alpinejs";
 import router from "@shaun/alpinejs-router";
 import formData from "alpinejs-form-data";
 import "bootstrap-icons/font/bootstrap-icons.scss";
-import "bootstrap/scss/bootstrap.scss";
 import "./imports.sass";
 
 Object.defineProperty(window, "Alpine", {

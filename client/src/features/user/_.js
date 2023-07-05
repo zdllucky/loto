@@ -12,14 +12,21 @@ Alpine.store("user", {
     if (Alpine.store("auth").token) {
       this.refresh();
     }
-    window.addEventListener("authchange", () => this.refresh());
+    window.addEventListener("authchange", async ({ detail: { hasAuth } }) => {
+      await this.refresh(!hasAuth);
+    });
   },
   destroy() {
-    window.removeEventListener("authchange", () => this.refresh());
+    window.removeEventListener(
+      "authchange",
+      async ({ detail: { hasAuth } }) => {
+        await this.refresh(!hasAuth);
+      }
+    );
   },
-  async refresh() {
+  async refresh(doCleanup = false) {
     try {
-      if (!Alpine.store("auth").token) throw Error("Not authenticated");
+      if (doCleanup || !Alpine.store("auth").token) throw Error("unauthed");
       const user = await Alpine.$repo.user.getMe();
 
       this.lang = user.language;
@@ -28,7 +35,7 @@ Alpine.store("user", {
       this.roomId = user.room?.id;
       this.createdAt = user.createdAt;
     } catch (e) {
-      Alpine.store("auth").signOut();
+      e.message === "unauthed" || Alpine.store("auth").signOut();
 
       this.lang = undefined;
       this.gameId = undefined;

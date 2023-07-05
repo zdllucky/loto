@@ -1,46 +1,43 @@
-.container-fluid(x-authredirect:unauthed="/sign")
-  .row
-    .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageRules.title")
-  .row.mt-5
-    .col.d-flex.flex-column
-      .semitransparent-container.container-fluid
-        .row.text-warning.opacity-75
-          .col(x-show="$store.loc.l.lang === 'ru'")
+.vstack.h-100(x-authredirect:unauthed="/sign")
+  +navbar
+    li.nav-item.me-auto
+      a.nav-link.py-0(x-link, href="/")
+        i.bi.bi-chevron-compact-left
+        span(x-text="$store.loc.l.pageMain.title")
+    li.nav-item
+      +profileButton.nav-link.py-0
+        i.bi.bi-person-circle.me-1
+        span(x-text="$store.loc.l.pageMain.actions.profile")
+  .container-fluid.mt-5
+    .row
+      .col
+        .card
+          .card-body(x-show="$store.loc.l.lang === 'ru'")
             p.card-text
               | "Лото" - это онлайн игра, в которой участвуют игроки, имеющие по 3 игровые карточки.
-            hr
-            h5.card-title Игровой процесс
+            h4.card-title Игровой процесс
             p.card-text
               | В процессе игры объявляются "бочонки" - номера. Игроки должны нажимать на соответствующие объявленным номерам позиции на своих карточках, тем самым их "закрывая".
-            hr
-            h5.card-title Победа в игре
+
+            h4.card-title Победа в игре
             p.card-text
               | Победителем становится игрок, который первым закрыл все номера хотя бы на одной из своих карточек.
-            hr
-            h5.card-title Дополнительные правила
+
+            h4.card-title Дополнительные правила
             p.card-text
               | "Бочонки" могут быть вынуты в произвольном порядке. Если на карточке отмечается номер, которого не было среди "бочонков", отметка не срабатывает.
-          .col(x-show="$store.loc.l.lang === 'en'")
-            h5.card-title Basic Rules
+          .card-body(x-show="$store.loc.l.lang === 'en'")
             p.card-text
               | "Lotto" is an online game in which players participate, each having 3 game cards.
-            hr
-            h5.card-title Gameplay
+
+            h4.card-title Gameplay
             p.card-text
               | During the game, "barrels" or "balls" - numbers are announced. Players must click on the positions on their cards corresponding to the announced numbers, thus "closing" them.
-            hr
-            h5.card-title Winning the Game
+
+            h4.card-title Winning the Game
             p.card-text
               | The winner is the player who first closed all the numbers on at least one of their cards.
-            hr
-            h5.card-title Additional Rules
+
+            h4.card-title Additional Rules
             p.card-text
               | "Barrels" can be pulled out in random order. If a number is marked on the card that was not among the "barrels", the mark is considered invalid.
-        .row.mt-3
-          .col
-            a.btn.btn-sm.w-100(
-              x-link,
-              href="/",
-              x-text="$store.loc.l.buttons.back"
-            )

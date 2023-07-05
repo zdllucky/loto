@@ -1,11 +1,14 @@
 {
   "en": {
     "lang": "en",
+    "app": {
+      "title": "Lotto"
+    },
     "pageRules": {
       "title": "Game Rules"
     },
     "pageMain": {
-      "title": "Lotto",
+      "title": "Main",
       "actions": {
         "continue": "Continue",
         "joinGames": "Join games",
@@ -28,7 +31,7 @@
       }
     },
     "pageRooms": {
-      "title": "Waiting rooms",
+      "title": "Rooms",
       "actions": {
         "join": {
           "button": "Join",
@@ -47,14 +50,15 @@
             "hard": "Hard"
           },
           "includePassword": "With password?",
-          "password": "Password",
+          "password": "Enter password...",
           "submit": "Create room"
         }
       }
     },
     "pageSign": {
-      "title": "Sign in or Register",
+      "title": "Sign in / up",
       "username": "Username",
+      "charPlaceholder": "At least %n characters",
       "password": "Password",
       "buttons": {
         "signIn": "Sign in",
@@ -62,7 +66,7 @@
       }
     },
     "pageRoomAwait": {
-      "title": "Game room",
+      "title": "Waiting...",
       "roomId": "Room  &nbsp;ID:  &nbsp; ",
       "password": "Password: ",
       "progress": "Waiting for players: ",
@@ -81,7 +85,8 @@
       }
     },
     "buttons": {
-      "back": "Back"
+      "back": "Back",
+      "signOut": "Sign out"
     },
     "badges": {
       "easy": "Easy",
@@ -91,11 +96,14 @@
   },
   "ru": {
     "lang": "ru",
+    "app": {
+      "title": "Лото"
+    },
     "pageRules": {
       "title": "Правила игры"
     },
     "pageMain": {
-      "title": "Лото",
+      "title": "Главная",
       "actions": {
         "continue": "Продолжить",
         "joinGames": "Присоединиться к играм",
@@ -118,7 +126,7 @@
       }
     },
     "pageRooms": {
-      "title": "Ожидание в комнатах",
+      "title": "Комнаты",
       "actions": {
         "join": {
           "button": "Присоединиться",
@@ -137,24 +145,25 @@
             "hard": "Сложно"
           },
           "includePassword": "С паролем?",
-          "password": "Пароль",
+          "password": "Введите пароль...",
           "submit": "Создать комнату"
         }
       }
     },
     "pageSign": {
-      "title": "Вход или Регистрация",
+      "title": "Вход",
       "username": "Имя пользователя",
       "password": "Пароль",
+      "charPlaceholder": "Не менее %n символов",
       "buttons": {
         "signIn": "Войти",
         "register": "Зарегистрироваться"
       }
     },
     "pageRoomAwait": {
-      "title": "Игровая комната",
+      "title": "Ожидание",
       "roomId": "ID&nbsp;комнаты:",
-      "password": "Пароль:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+      "password": "Пароль:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
       "progress": "Ожидание игроков: ",
       "actions": {
         "copy": "Копировать",
@@ -171,7 +180,8 @@
       }
     },
     "buttons": {
-      "back": "Назад"
+      "back": "Назад",
+      "signOut": "Выйти"
     },
     "badges": {
       "easy": "Легко",

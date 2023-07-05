@@ -1,5 +1,5 @@
 .dropdown-center
-  button.btn.btn-warning.btn-sm.fw-bold(
+  button.btn.btn-danger.btn-sm(
     type="button",
     data-bs-toggle="dropdown",
     aria-expanded="false",
@@ -7,7 +7,7 @@
   )
     i.bi.bi-door-open-fill
     span.ms-1(x-text="$store.loc.l.pageRooms.actions.join.button")
-  form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
+  form.dropdown-menu.p-3.mt-1.shadow-lg.bg-light-subtle(
     style="width: 300px",
     x-data="joinPrivateRoom",
     x-id="['roomId', 'password']",
@@ -15,29 +15,20 @@
   )
     h5.mb-2(x-text="$store.loc.l.pageRooms.actions.join.title")
     .mb-3
-      input.field(
+      input.form-control.form-control-sm(
         type="roomId",
-        placeholder=" ",
+        :placeholder="$store.loc.l.pageRooms.actions.join.roomId",
         x-model="roomId",
         :id="$id('roomId')"
       )
-      label(
-        :for="$id('roomId')",
-        x-text="$store.loc.l.pageRooms.actions.join.roomId"
-      )
     .mb-3
-      input.field(
+      input.form-control.form-control-sm(
         type="password",
-        placeholder=" ",
+        :placeholder="$store.loc.l.pageRooms.actions.join.password",
         x-model="password",
         :id="$id('password')"
       )
-      label(
-        :for="$id('password')",
-        x-text="$store.loc.l.pageRooms.actions.join.password"
-      )
-
-    button.btn.btn-warning.w-100(
+    button.btn.btn-danger.w-100(
       type="submit",
       :disabled="isLoading || password?.length <= 4 || !roomId",
       x-text="$store.loc.l.pageRooms.actions.join.submit"

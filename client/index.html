@@ -27,7 +27,7 @@
 
     <!-- Meta Tags Generated with https://metatags.io -->
 </head>
-<body data-bs-theme="dark">
+<body x-data="{mode: 'light', toggleDarkMode() {this.mode = this.mode === 'light' ? 'dark' : 'light'}}" :data-bs-theme="mode">
     <script type="module" src="./src/imports.pre.js"></script>
     <pug src="./src/features/pageMain/_.pug"></pug>
     <script type="module" src="./src/imports.js"></script>

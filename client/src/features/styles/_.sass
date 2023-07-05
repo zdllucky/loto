@@ -1,9 +1,23 @@
+$danger: #e5735b
+
+$font-family-sans-serif:      Neucha, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default
+$headings-font-family:        $font-family-sans-serif !default
+
+@import "~bootswatch/dist/sketchy/variables.scss"
+@import "~bootstrap/scss/bootstrap.scss"
+@import "~bootstrap-icons/font/bootstrap-icons.scss"
+@import "~bootswatch/dist/sketchy/bootswatch.scss"
+
+
+
 @import '_colors.sass'
 @import '_components.sass'
 @import '_fonts.sass'
 
 html, body
-  scroll-behavior: smooth
+  scroll-behavior: auto
+  overflow-scrolling: auto
+  @extend .h-100
 
   &::-webkit-scrollbar, *::-webkit-scrollbar
     display: none
@@ -23,13 +37,13 @@ body
   //overflow-x: hidden
   padding: 0 calc((max(560px, 100vw) - 560px) / 2)
 
-  background-color: $bg
-  background-repeat: repeat-y
-  background-position: top center
   background-size: 100vh max(calc(560px * 2.94), 100%)
 
   & > *
     position: relative
+
+  &[data-bs-theme=light]
+    background-color: $gray-300
 
 //noinspection CssInvalidPseudoSelector
 input::-webkit-contacts-auto-fill-button

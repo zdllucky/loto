@@ -1,24 +1,74 @@
-.width-150px
-  max-width: 174px
-  width: 174px
-
 .height-120px
   height: 120px
   max-height: 120px
 
 .lotto-table
-  table-layout: fixed
-  width: auto
+  overflow: hidden
 
-  tr
+  .hstack
+    //position: relative
+
+    &:first-of-type > .card
+      border-top: 0
 
     height: calc((min(100vw, 560px) - 58px) / 9)
-    td
-      width: calc((min(100vw, 560px) - 58px) / 9)
-      padding: calc(((min(100vw, 560px) - 58px) / 9 - 24px) / 2) 0 0
+    .card
+      //position: absolute
+      width: calc((min(100vw, 560px) - 58px) / 9 + 7.75px)
+      padding: calc(((min(100vw, 560px) - 58px) / 9 - 20px) / 2) calc(((min(100vw, 560px) - 58px) / 9 - 26px) / 2) 0 0
+      &:last-of-type
+        width: calc((min(100vw, 560px) - 58px) / 9 + 1.5px)
+        padding-right: 0
+        border-right: 0
+        margin-right: -2px
+
+      &:first-of-type
+        padding-right: 0
+        border-left: 0
+        margin-left: -2px
       text-align: center
+      @extend .h-100
+      margin: -3px -4px
+      border-bottom: 0
+
       overflow: hidden
 
       &.hoverable:hover
         background-color: #f5f5f5
         cursor: pointer
+
+.barrel-lg
+  background: url('/img/barrel.svg')
+  background-size: contain
+  //border: 1px solid #000
+  background-repeat: no-repeat
+  width: 88px
+  height: 108px
+  text-align: center
+  font-size: 50px
+  padding-top: 10px
+  z-index: 10
+
+.barrel-shadow
+  height: 60px
+  width: 67px
+  background: #0005
+  border-radius: 180px 180px
+  margin-top: 20px
+  margin-left: 20px
+  margin-bottom: -98px
+  margin-right: -0px
+  box-shadow: 0 0 1px 5px #0005
+  z-index: 0
+
+.barrel-sm
+  background: #FFFFFF
+  border-radius: 50%
+  height: 30px
+  width: 33px
+  text-align: center
+  border: 2px double #000
+  border-right-width: 3px
+  border-bottom-width: 5px
+  padding-top: 2px
+  box-shadow: .5px 1.5px 0px 0px #000000

@@ -1,46 +1,42 @@
-.container-fluid(x-authredirect:unauthed="/sign")
-  .row
-    .col.text-center.mt-5
-      .display-1.fw-bolder.text-warning(x-text="$store.loc.l.pageRooms.title")
-  .row.py-5
-    .col.d-flex.flex-column
-      .semitransparent-container.container-fluid(x-data="roomsList")
-        .row.justify-content-end
-          .col-auto
-            button.btn.btn-sm.btn-outline-warning
-              i.bi.bi-arrow-repeat(aria-hidden="true")
-          .col-auto.ps-0
-            include ./components/joinPrivateRoom
-          .col-auto.ps-0
-            include ./components/createRoom
-        .row.mt-3
-          .col
-            .list-group.overflow-hidden
-              template(:key="room.id", x-data="selectRoom")&attributes({"x-for": "room in rooms"})
-                button.list-group-item.list-group-item-warning.list-group-item-action.d-flex.justify-content-between.align-items-center(
-                  x-data="{ hover: false }",
-                  @click="selectRoom(room.id)",
-                  :disabled="isLoading",
-                  :class="{ active: hover, 'bg-transparent': !hover }",
-                  @mouseover="hover = true",
-                  @mouseout="hover = false"
-                )
-                  .ms-2.me-auto.d-flex.flex-column.row-gap-2.w-75
-                    .fw-bold.text-truncate(x-text="`ID: ${room.id}`")
-                    .progress(role="progressbar")
-                      .progress-bar.overflow-visible.bg-success.progress-bar-striped.progress-bar-animated(
-                        :style="`width: calc(${room.botsCount} / 5 * 100%)`",
-                        x-text="`${room.botsCount}/5`"
-                      )
+include ../componentNavbar/_
 
-                  span.badge.bg-success.rounded-pill(
-                    x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
-                    :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
-                  )
-        .row.mt-3
-          .col
-            a.btn.btn-sm.w-100(
-              x-link,
-              href="/",
-              x-text="$store.loc.l.buttons.back"
+.vstack.h-100(x-authredirect:unauthed="/sign")
+  +navbar("", logo="$store.loc.l.pageRooms.title")
+    li.nav-item.me-auto
+      a.nav-link.py-0(x-link, href="/")
+        i.bi.bi-chevron-compact-left
+        span(x-text="$store.loc.l.pageMain.title")
+    +profileButton.nav-link.py-0
+      i.bi.bi-person-circle.me-1
+      span(x-text="$store.loc.l.pageMain.actions.profile")
+  .container-fluid.mt-5(x-data="roomsList")
+    .row.justify-content-end.pb-2.col-gap-0
+      .col-auto.pe-0
+        button.btn.btn-sm.btn-outline-danger(
+          :disabled="isLoading",
+          @click="refresh()"
+        )
+          i.bi.bi-arrow-repeat(aria-hidden="true")
+      .col-auto.py-0
+        include ./components/joinPrivateRoom
+      .col-auto.ps-0
+        include ./components/createRoom
+    .row
+      .col
+        .list-group.overflow-hidden
+          template(:key="room.id", x-data="selectRoom")&attributes({"x-for": "room in rooms"})
+            button.list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center.gap-2(
+              @click="selectRoom(room.id)",
+              :disabled="isLoading"
             )
+              .ms-2.me-auto.d-flex.flex-column.row-gap-2.w-75
+                .text-truncate(x-text="`ID: ${room.id}`")
+                .progress(role="progressbar")
+                  .progress-bar.overflow-visible.progress-bar-striped.bg-danger.progress-bar-animated(
+                    :style="`width: calc(${room.botsCount} / 5 * 100%)`",
+                    x-text="`${room.botsCount}/5`"
+                  )
+              span.badge(
+                x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
+                :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
+              )

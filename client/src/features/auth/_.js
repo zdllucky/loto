@@ -47,7 +47,7 @@ Alpine.directive(
 
     function redirectionHandler({ detail }) {
       if (authed === detail.hasAuth && expression !== Alpine.$router.path) {
-        Alpine.$router.push(expression);
+        Alpine.$router.replace(expression);
       }
     }
 

@@ -1,12 +1,12 @@
 .dropdown
-  button.btn.btn-warning.btn-sm.fw-bold(
+  button.btn.btn-danger.btn-sm.fw-bold(
     type="button",
     data-bs-toggle="dropdown",
     aria-expanded="false",
     data-bs-auto-close="outside",
     x-html="$store.loc.l.pageRooms.actions.create.button"
   )
-  form.dropdown-menu.p-3.mt-1.shadow-lg.bg-warning-subtle.bg-gradient(
+  form.dropdown-menu.p-3.mt-1.shadow-lg.bg-light-subtle(
     style="width: 300px",
     x-data="createRoom",
     x-id="['type', 'password']",
@@ -30,7 +30,7 @@
           value="2",
           :id="$id('easy')"
         )
-        label.btn.btn-sm.btn-outline-warning(
+        label.btn.btn-sm.btn-outline-danger(
           :for="$id('easy')",
           x-text="$store.loc.l.pageRooms.actions.create.difficulty.easy"
         )
@@ -41,7 +41,7 @@
           value="3",
           :id="$id('medium')"
         )
-        label.btn.btn-sm.btn-outline-warning(
+        label.btn.btn-sm.btn-outline-danger(
           :for="$id('medium')",
           x-text="$store.loc.l.pageRooms.actions.create.difficulty.medium"
         )
@@ -52,13 +52,13 @@
           value="4",
           :id="$id('hard')"
         )
-        label.btn.btn-sm.btn-outline-warning(
+        label.btn.btn-sm.btn-outline-danger(
           :for="$id('hard')",
           x-text="$store.loc.l.pageRooms.actions.create.difficulty.hard"
         )
     .mb-3
       .form-check.form-switch
-        input.form-check-input.checkbox-warning(
+        input.form-check-input.checkbox-danger(
           type="checkbox",
           role="switch",
           x-model="type",
@@ -68,19 +68,15 @@
           :for="$id('type')",
           x-text="$store.loc.l.pageRooms.actions.create.includePassword"
         )
-    .mb-3(:class="{ 'd-none': !type }")
-      input.field(
+    .mb-3(x-show="type")
+      input.form-control.form-control-sm(
         type="password",
-        placeholder=" ",
+        :placeholder="$store.loc.l.pageRooms.actions.create.password",
         x-model="password",
         :id="$id('password')"
       )
-      label(
-        :for="$id('password')",
-        x-text="$store.loc.l.pageRooms.actions.create.password"
-      )
 
-    button.btn.btn-warning.w-100(
+    button.btn.btn-danger.w-100(
       type="submit",
       :disabled="isLoading || (type && password?.length <= 4)",
       x-text="$store.loc.l.pageRooms.actions.create.submit"
