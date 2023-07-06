@@ -23,7 +23,7 @@ include ../componentNavbar/_
         include ./components/createRoom
     .row
       .col
-        .list-group.overflow-hidden
+        .list-group.overflow-hidden(x-autoanimate)
           template(:key="room.id", x-data="selectRoom")&attributes({"x-for": "room in rooms"})
             button.list-group-item.list-group-item-action.d-flex.justify-content-between.align-items-center.gap-2(
               @click="selectRoom(room.id)",

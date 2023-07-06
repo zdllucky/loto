@@ -9,12 +9,14 @@
   },
   "devDependencies": {
     "@alpinejs/persist": "^3.10.5",
+    "@formkit/auto-animate": "^0.7.0",
     "@popperjs/core": "^2.11.6",
     "@shaun/alpinejs-router": "^1.2.13",
     "alpinejs": "^3.10.5",
     "alpinejs-form-data": "^1.0.3",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.10.5",
+    "bootswatch": "^5.3.0",
     "jwt-decode": "^3.1.2",
     "normalize.css": "^8.0.1",
     "pug": "^3.0.2",
@@ -25,7 +27,6 @@
     "vite-plugin-pug": "^0.3.2",
     "vite-plugin-sass-glob-import": "^2.0.0",
     "vite-plugin-singlefile": "^0.13.1",
-    "vite-svg-loader": "^3.6.0",
-    "bootswatch": "^5.3.0"
+    "vite-svg-loader": "^3.6.0"
   }
 }

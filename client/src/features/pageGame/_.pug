@@ -4,14 +4,13 @@
       .card.h-100.w-100.bg-danger
         .card-body.py-2.px-2
           .hstack.gap-2
-            div
-              .barrel-shadow
-              .barrel-lg(
-                :class="{ 'visually-hidden': !balls.length }",
-                x-text="balls[0]"
-              )
-            .vstack.gap-1
-              template&attributes({"x-for": "(ball, index) in balls"})
+            .hstack(x-autoanimate)
+              template(:key="ball")&attributes({"x-for": "ball in balls.slice(0,1)"})
+                div
+                  .barrel-shadow
+                  .barrel-lg(x-text="ball")
+            .vstack.gap-1(x-autoanimate)
+              template(:key="ball")&attributes({"x-for": "(ball, index) in balls"})
                 template(x-if="index >= 1 && index <= 3")
                   .barrel-sm(x-text="ball")
 
