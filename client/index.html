@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html x-data lang="ru">
-<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="icon" href="/img/icn/favicon.ico" sizes="any">
-    <link rel="apple-touch-icon" href="/img/icn/apple-touch-icon.png">
-    <link rel="manifest" href="/manifest.json">
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="icon" href="/img/icn/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/img/icn/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
     <!-- Primary Meta Tags -->
     <title>Lotto Online</title>
     <meta name="title" content="Lotto Online: Play with friends" />
@@ -15,21 +18,39 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://loto.ponder8.quest" />
     <meta property="og:title" content="Lotto Online: Play with friends" />
-    <meta property="og:description" content="Classic lotto game with friends online" />
-    <meta property="og:image" content="https://loto.ponder8.quest/img/icn/icon-512-maskable.png" />
+    <meta
+      property="og:description"
+      content="Classic lotto game with friends online"
+    />
+    <meta
+      property="og:image"
+      content="https://loto.ponder8.quest/img/icn/icon-512-maskable.png"
+    />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://loto.ponder8.quest" />
     <meta property="twitter:title" content="Lotto Online: Play with friends" />
-    <meta property="twitter:description" content="Classic lotto game with friends online" />
-    <meta property="twitter:image" content="https://loto.ponder8.quest/img/icn/icon-512-maskable.png" />
+    <meta
+      property="twitter:description"
+      content="Classic lotto game with friends online"
+    />
+    <meta
+      property="twitter:image"
+      content="https://loto.ponder8.quest/img/icn/icon-512-maskable.png"
+    />
 
     <!-- Meta Tags Generated with https://metatags.io -->
-</head>
-<body x-data="{mode: 'light', toggleDarkMode() {this.mode = this.mode === 'light' ? 'dark' : 'light'}}" :data-bs-theme="mode">
+  </head>
+  <body
+    :data-bs-theme="$store.user.theme === 'system'
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light'
+        : $store.user.theme"
+  >
     <script type="module" src="./src/imports.pre.js"></script>
     <pug src="./src/features/router/_.pug"></pug>
     <script type="module" src="./src/imports.js"></script>
-</body>
+  </body>
 </html>

@@ -1,0 +1,32 @@
+div(x-data="modalContainer")
+  template(:key="modal.id")&attributes({"x-for": "modal in modals"})
+    template(x-teleport="body")
+      .modal.fade(
+        :id="`modal-${modal.id}`",
+        x-init="new bootstrap.Modal(document.getElementById(`modal-${modal.id}`), {backdrop: modal.closeable || 'static', keyboard: modal.closeable}).show()",
+        @hidden-bs-modal.dot.once="_clearModal",
+        tabindex="-1",
+        role="dialog",
+        :aria-labelledby="`label-${modal.id}`",
+        aria-hidden="true"
+      )
+        .modal-dialog(role="document")
+          .modal-content
+            .modal-header
+              h5.modal-title(:id="`label-${modal.id}`", x-text="modal.title")
+              template(x-if="modal.closeable")
+                button.btn-close(
+                  type="button",
+                  data-bs-dismiss="modal",
+                  aria-label="Close"
+                )
+            .modal-body(x-html="modal.body", x-show="modal.body")
+            .modal-footer(x-show="modal.buttons?.length")
+              template&attributes({"x-for": "button in modal.buttons"})
+                button(
+                  type="button",
+                  data-bs-dismiss="modal",
+                  x-text="button.title",
+                  :class="`btn ${button.classList ?? 'btn-primary'}`",
+                  @click="$dispatch(`modal-${modal.id}`, { action: 'pressed', buttonName: button.name })"
+                )

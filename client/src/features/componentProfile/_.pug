@@ -31,16 +31,30 @@ mixin profile
         data-bs-dismiss="offcanvas",
         :aria-label="$store.loc.l.buttons.back"
       )
-    .offcanvas-body
+    .offcanvas-body(x-id="['lang', 'theme']")
       .container-fluid.px-0
         .row.mb-4
           .col
-            .display-1.text-truncate(x-text="$store.user.login")
+            .hstack.justify-content-between
+              .display-1.text-truncate.mb-0(x-text="$store.user.login")
+
+              button.btn.btn-sm.btn-dark(
+                @click="$store.auth.signOut()",
+                data-bs-dismiss="offcanvas",
+                type="button"
+              )
+                i.bi.bi-box-arrow-right.me-2
+                span(x-text="$store.loc.l.pageProfile.actions.signOut")
             hr
         template(x-if="!!$store.user.lang")
           .row.mb-3
             .col.d-flex.flex-column
+              label.form-label(
+                :for="$id('lang')",
+                x-text="$store.loc.l.pageProfile.sysLang"
+              )
               select.form-select(
+                :id="$id('lang')",
                 x-data="{ isLoading: false, lang: $store.user.lang }",
                 @change="isLoading = true; await $store.loc.setLanguage($event.target.value, true); isLoading = false",
                 :disabled="isLoading",
@@ -55,19 +69,46 @@ mixin profile
 
         .row.mb-3
           .col
-            button.btn.btn-danger.w-100(
-              @click="$store.auth.signOut()",
-              data-bs-dismiss="offcanvas",
-              type="button"
-            )
-              i.bi.bi-box-arrow-right.me-2
-              span(x-text="$store.loc.l.pageProfile.actions.signOut")
-        .row
-          .col
-            .form-check.form-switch
-              input#darkMode.form-check-input(
-                type="checkbox",
-                role="switch",
-                @change="toggleDarkMode()"
+            .mb-3
+              label.form-label(
+                :for="$id('theme')",
+                x-text="$store.loc.l.pageProfile.theme.label"
               )
-              label.form-check-label(for="darkMode") Dark mode
+              .btn-group.w-100(
+                role="group",
+                :aria-label="$store.loc.l.pageProfile.theme.label",
+                x-id="['system', 'light', 'dark']"
+              )
+                input.btn-check(
+                  type="radio",
+                  autocomplete="off",
+                  x-model="$store.user.theme",
+                  value="system",
+                  :id="$id('system')"
+                )
+                label.btn.btn-sm.btn-outline-danger(
+                  :for="$id('system')",
+                  x-text="$store.loc.l.pageProfile.theme.system"
+                )
+                input.btn-check(
+                  type="radio",
+                  autocomplete="off",
+                  x-model="$store.user.theme",
+                  value="light",
+                  :id="$id('light')"
+                )
+                label.btn.btn-sm.btn-outline-danger(
+                  :for="$id('light')",
+                  x-text="$store.loc.l.pageProfile.theme.light"
+                )
+                input.btn-check(
+                  type="radio",
+                  autocomplete="off",
+                  x-model="$store.user.theme",
+                  value="dark",
+                  :id="$id('dark')"
+                )
+                label.btn.btn-sm.btn-outline-danger(
+                  :for="$id('dark')",
+                  x-text="$store.loc.l.pageProfile.theme.dark"
+                )

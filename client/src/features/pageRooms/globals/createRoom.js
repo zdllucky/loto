@@ -14,7 +14,7 @@ export default () => ({
         speed: Number(this.speed),
       });
       await Alpine.store("user").refresh();
-      Alpine.$router.push("/room/await");
+      Alpine.$router.replace("/room/await");
     } catch (e) {
       alert(e.message ?? "Something went wrong");
     } finally {

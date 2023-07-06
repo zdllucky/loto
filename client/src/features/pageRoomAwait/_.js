@@ -32,9 +32,9 @@ Alpine.data("waitRoom", () => ({
     } catch (e) {
       await Alpine.store("user").refresh();
 
-      if (Alpine.store("user").gameId) return Alpine.$router.push("/game");
+      if (Alpine.store("user").gameId) return Alpine.$router.replace("/game");
 
-      if (!Alpine.store("user").login) Alpine.$router.push("/");
+      if (!Alpine.store("user").login) Alpine.$router.replace("/");
     }
   },
   async startGame() {
@@ -44,18 +44,18 @@ Alpine.data("waitRoom", () => ({
     } catch (e) {
       alert(e.message);
 
-      Alpine.$router.push("/");
+      Alpine.$router.replace("/");
     }
   },
   async exitRoom() {
     try {
       await Alpine.$repo.rooms.exitRoom();
-      Alpine.$router.push("/room/all");
+      Alpine.$router.replace("/room/all");
       await Alpine.store("user").refresh();
     } catch (e) {
       alert(e.message);
 
-      Alpine.$router.push("/");
+      Alpine.$router.replace("/");
     }
   },
 }));

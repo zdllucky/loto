@@ -19,6 +19,7 @@
         x-text="$store.loc.l.pageRooms.actions.create.difficulty.name"
       )
       .btn-group.w-100(
+        :id="$id('speed')",
         role="group",
         aria-label="Базовая группа переключателей радио",
         x-id="['easy', 'medium', 'hard']"
@@ -70,7 +71,8 @@
         )
     .mb-3(x-show="type")
       input.form-control.form-control-sm(
-        type="password",
+        type="text",
+        style="-webkit-text-security: disc",
         :placeholder="$store.loc.l.pageRooms.actions.create.password",
         x-model="password",
         :id="$id('password')"

@@ -23,7 +23,8 @@
       )
     .mb-3
       input.form-control.form-control-sm(
-        type="password",
+        type="text",
+        style="-webkit-text-security: disc",
         :placeholder="$store.loc.l.pageRooms.actions.join.password",
         x-model="password",
         :id="$id('password')"

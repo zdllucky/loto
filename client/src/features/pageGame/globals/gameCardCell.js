@@ -10,9 +10,10 @@ export default () => ({
       .find(({ cardId }) => cardId === this.card.id)
       ?.balls?.includes?.(this.cell);
     return {
-      "bg-dark": selected,
-      "text-light": selected,
-      hoverable: !!this.cell,
+      "bg-danger-subtle": selected,
+      "border-color-danger": selected,
+      "text-danger": selected,
+      hoverable: !!this.cell || !selected,
       "bg-success-subtle": this.clickedBalls.find(
         ({ number, cardId }) => number === this.cell && cardId === this.card.id
       ),

@@ -28,7 +28,13 @@
       "sysLang": "System language",
       "actions": {
         "signOut": "Sign out"
-      }
+      },
+        "theme": {
+            "label": "Theme",
+            "light": "Light",
+            "dark": "Dark",
+            "system": "System"
+        }
     },
     "pageRooms": {
       "title": "Rooms",
@@ -123,6 +129,12 @@
       "sysLang": "Язык системы",
       "actions": {
         "signOut": "Выйти"
+      },
+      "theme": {
+        "label": "Тема",
+        "light": "Светлая",
+        "dark": "Темная",
+        "system": "Cистемная"
       }
     },
     "pageRooms": {

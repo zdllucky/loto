@@ -6,6 +6,12 @@ Alpine.store("user", {
   roomId: undefined,
   gameId: undefined,
   lang: undefined,
+  theme: Alpine.$persist(
+    window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light"
+  ).as("user_theme"),
   _refresher: undefined,
 
   init() {

@@ -7,7 +7,7 @@ export default () => ({
       this.isLoading = true;
       await Alpine.$repo.rooms.selectRoom({ roomId });
       await Alpine.store("user").refresh();
-      Alpine.$router.push("/room/await");
+      Alpine.$router.replace("/room/await");
     } catch (e) {
       alert(e.message ?? "Something went wrong");
     } finally {

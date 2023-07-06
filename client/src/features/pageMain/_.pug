@@ -9,23 +9,23 @@ include ../componentNavbar/_
   .container-fluid.mt-5.h-100
     .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
       .col.pb-3
-        a.btn.btn-danger.w-100(x-link, href="/room/await")
+        a.btn.btn-danger.w-100(x-link.replace, href="/room/await")
           i.bi.bi-play.me-2
           span(x-text="$store.loc.l.pageMain.actions.continue")
     .row(x-show="$store.user.gameId")
       .col.pb-3
-        a.btn.btn-danger.w-100(x-link, href="/game")
+        a.btn.btn-danger.w-100(x-link.replace, href="/game")
           i.bi.bi-play.me-2
           span(x-text="$store.loc.l.pageMain.actions.continue")
 
     .row(x-show="!$store.user.gameId && !$store.user.roomId")
       .col.pb-3
-        a.btn.btn-danger.w-100(x-link, href="/room/all")
+        a.btn.btn-danger.w-100(x-link.replace, href="/room/all")
           i.bi.bi-joystick.me-2
           span(x-text="$store.loc.l.pageMain.actions.joinGames")
     .row
       .col.pb-3
-        a.btn.btn-danger.w-100(x-link, href="/rules")
+        a.btn.btn-danger.w-100(x-link.replace, href="/rules")
           i.bi.bi-info-circle.me-2
           span(x-text="$store.loc.l.pageMain.actions.rules")
   .container-fluid.pb-3

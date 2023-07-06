@@ -47,7 +47,7 @@ export default () => ({
               result.winnerPlayerLogin
             }!`
           );
-          Alpine.$router.push("/");
+          Alpine.$router.replace("/");
         }, 2000);
       }
     } catch (e) {

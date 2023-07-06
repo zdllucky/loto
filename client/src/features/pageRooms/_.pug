@@ -3,7 +3,7 @@ include ../componentNavbar/_
 .vstack.h-100(x-authredirect:unauthed="/sign")
   +navbar("", logo="$store.loc.l.pageRooms.title")
     li.nav-item.me-auto
-      a.nav-link.py-0(x-link, href="/")
+      a.nav-link.py-0(x-link.replace, href="/")
         i.bi.bi-chevron-compact-left
         span(x-text="$store.loc.l.pageMain.title")
     +profileButton.nav-link.py-0

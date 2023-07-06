@@ -25,21 +25,3 @@ Object.defineProperty(window, "addOnceEventListener", {
     addEventListener(event, listenerFn, options);
   },
 });
-
-// Append console.error to the body
-//
-// const consoleError = console.error;
-//
-// console.error = (...args) => {
-//   consoleError(...args);
-//
-//   const error = args[0];
-//
-//   if (error instanceof Error) {
-//     const errorElement = document.createElement("div");
-//     errorElement.classList.add("error");
-//     errorElement.innerText = error.message;
-//
-//     document.body.appendChild(errorElement);
-//   }
-// };

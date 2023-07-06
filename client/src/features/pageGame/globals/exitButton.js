@@ -1,4 +1,5 @@
 import Alpine from "alpinejs";
+
 export default () => ({
   async "@click"() {
     if (confirm(Alpine.store("loc").l.pageGame.actions.ensureLeave)) {
@@ -11,7 +12,7 @@ export default () => ({
       } catch (e) {
         alert(e.message);
       } finally {
-        Alpine.$router.push("/");
+        Alpine.$router.replace("/");
       }
     }
   },
