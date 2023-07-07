@@ -71,5 +71,6 @@ export const Queues = {
 
 export const connection: ConnectionOptions = {
   host: process.env.REDIS_HOST || "localhost",
+  password: process.env.REDIS_PASSWORD || undefined,
   port: 6379,
 };
