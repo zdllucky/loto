@@ -6,23 +6,25 @@ include ../componentNavbar/_
       +profileButton.nav-link.py-0
         i.bi.bi-person-circle.me-1
         span(x-text="$store.loc.l.pageMain.actions.profile")
-  .container-fluid.mt-5.h-100
-    .row(x-show="$store.user.roomId", x-init="$store.user.refresh()")
-      .col.pb-3
-        a.btn.btn-danger.w-100(x-link.replace, href="/room/await")
-          i.bi.bi-play.me-2
-          span(x-text="$store.loc.l.pageMain.actions.continue")
-    .row(x-show="$store.user.gameId")
-      .col.pb-3
-        a.btn.btn-danger.w-100(x-link.replace, href="/game")
-          i.bi.bi-play.me-2
-          span(x-text="$store.loc.l.pageMain.actions.continue")
-
-    .row(x-show="!$store.user.gameId && !$store.user.roomId")
-      .col.pb-3
-        a.btn.btn-danger.w-100(x-link.replace, href="/room/all")
-          i.bi.bi-joystick.me-2
-          span(x-text="$store.loc.l.pageMain.actions.joinGames")
+  .container-fluid.mt-5.h-100(x-autoanimate)
+    template(x-if="$store.user.roomId")
+      .row
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link.replace, href="/room/await")
+            i.bi.bi-play.me-2
+            span(x-text="$store.loc.l.pageMain.actions.continue")
+    template(x-if="$store.user.gameId")
+      .row
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link.replace, href="/game")
+            i.bi.bi-play.me-2
+            span(x-text="$store.loc.l.pageMain.actions.continue")
+    template(x-if="!$store.user.gameId && !$store.user.roomId")
+      .row
+        .col.pb-3
+          a.btn.btn-danger.w-100(x-link.replace, href="/room/all")
+            i.bi.bi-joystick.me-2
+            span(x-text="$store.loc.l.pageMain.actions.joinGames")
     .row
       .col.pb-3
         a.btn.btn-danger.w-100(x-link.replace, href="/rules")
@@ -78,7 +80,7 @@ include ../componentNavbar/_
             :for="$id('winRating')",
             x-text="$store.loc.l.pageMain.leaderboard.winRating"
           )
-        ul.list-group.overflow-hidden.mt-2
+        ul.list-group.overflow-hidden.mt-2(x-autoanimate)
           template(:key="stat.login")&attributes({ "x-for": "stat, index in [...rankList[rating], ]" })
             li.list-group-item.d-flex.justify-content-between.align-items-center(
               :class="{ 'text-success': $store.user.login === stat.login }"

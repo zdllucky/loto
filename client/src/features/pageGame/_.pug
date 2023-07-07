@@ -23,7 +23,7 @@
           .h-100.w-100
             .vstack.gap-2.w-100
               template(:key="index")&attributes({"x-for": "(playerCouple, index) in playersProgress"})
-                .w-100.hstack.h-50.gap-2
+                .w-100.hstack.h-50.gap-2(x-autoanimate)
                   template(:key="player.id")&attributes({"x-for": "(player, index) in playerCouple"})
                     .progress.shadow.w-100(
                       role="progressbar",
@@ -36,7 +36,7 @@
                         :style="`width: ${(Math.max(...player.progress) / 15) * 100}%;`",
                         x-text="player.login.substring(0, 6) + '...'"
                       )
-  .row(x-data="gameCards")
+  .row(x-data="gameCards", x-autoanimate)
     template(x-if="cards.length !== 0")
       template(
         x-if="true",

@@ -13,9 +13,9 @@ include ../componentNavbar/_
     +profileButton.nav-link.py-0
       i.bi.bi-person-circle.me-1
       span(x-text="$store.loc.l.pageMain.actions.profile")
-  template(x-if="!!room")
-    .container-fluid.pt-5
-      .row
+  .container-fluid.pt-5
+    .row(x-autoanimate)
+      template(x-if="!!room")
         .col-12
           .card.bg-danger-subtle
             .card-body
@@ -61,23 +61,24 @@ include ../componentNavbar/_
                   @click="exitRoom",
                   x-text="$store.loc.l.pageRoomAwait.actions.leave"
                 )
-      .row.mt-4.mb-2.align-items-end
+    .row.mt-4.mb-2.align-items-end
+      template(x-if="!!room")
         .col
           span(
             x-text="$store.loc.l.pageRoomAwait.progress + room.users.length + '/5'"
           )
-        .col-auto
-          span.badge.bg-success.float-end(
-            x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
-            :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
-          )
-      .row
-        .col-12
-          ul.list-group.overflow-hidden(x-autoanimate)
-            template(:key="user.id")&attributes({"x-for": "user in room.users"})
-              li.list-group-item
-                i.bi.bi-person-fill.me-1
-                span(x-text="user.login")
-            template(:key="num")&attributes({"x-for": "num in remaining"})
-              li.list-group-item.placeholder-glow
-                span.placeholder.w-50.border-2
+      .col-auto
+        span.badge.bg-success.float-end(
+          x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
+          :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
+        )
+    .row
+      .col-12
+        ul.list-group.overflow-hidden(x-autoanimate)
+          template(:key="user.id")&attributes({"x-for": "user in room.users"})
+            li.list-group-item
+              i.bi.bi-person-fill.me-1
+              span(x-text="user.login")
+          template(:key="num", x-autoanimate)&attributes({"x-for": "num in remaining"})
+            li.list-group-item.placeholder-glow
+              span.placeholder.w-50.border-2

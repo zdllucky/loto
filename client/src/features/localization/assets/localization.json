@@ -73,7 +73,7 @@
     },
     "pageRoomAwait": {
       "title": "Waiting...",
-      "roomId": "Room  &nbsp;ID:  &nbsp; ",
+      "roomId": "Room&nbsp;ID:&nbsp;",
       "password": "Password: ",
       "progress": "Waiting for players: ",
       "actions": {
