@@ -11,7 +11,11 @@ Object.defineProperty(window, "Alpine", {
   value: Alpine,
 });
 Alpine.directive("autoanimate", (el, { expression }, { evaluate }) => {
-  autoAnimate(el, (expression && evaluate(expression)) || undefined);
+  autoAnimate(
+    el,
+    (expression && expression !== "x-autoanimate" && evaluate(expression)) ||
+      undefined
+  );
 });
 
 onAlpineInit(({ plugin }) => {

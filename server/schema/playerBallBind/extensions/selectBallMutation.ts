@@ -25,7 +25,7 @@ const selectBallMutation: Extension = () => {
 
       const userId = context.session?.itemId;
 
-      if (!userId) return { success: false, message: "Unauthorized" };
+      if (!userId) return { success: false, message: "server.unauthorized" };
 
       const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
@@ -60,24 +60,28 @@ const selectBallMutation: Extension = () => {
         },
       });
 
-      if (!user) return { success: false, message: "User not found" };
+      if (!user) return { success: false, message: "server.userNotFound" };
 
-      if (!user.game) return { success: false, message: "Game not found" };
+      if (!user.game)
+        return { success: false, message: "server.game.notFound" };
 
       if (user.game.gameStatus === "finished")
-        return { success: false, message: "Game finished" };
+        return { success: false, message: "server.game.finishedAlready" };
 
       if (user.game.gameStatus === "waiting")
-        return { success: false, message: "Game not started yet" };
+        return { success: false, message: "server.game.notStartedYet" };
 
       if (user.from_Card_user.length === 0)
-        return { success: false, message: "Card with this number not found" };
+        return {
+          success: false,
+          message: "server.game.cards.notFoundForNumber",
+        };
 
       if (user.game.id !== user.from_Card_user[0].gameId)
-        return { success: false, message: "Card not found for current game" };
+        return { success: false, message: "server.game.cards.notFoundForGame" };
 
       if (user.from_PlayerBallBind_user.length > 0)
-        return { success: true, message: "Ball already selected" };
+        return { success: true, message: "server.game.balls.alreadySelected" };
 
       const balls = user.game.balls as Prisma.JsonArray;
 
@@ -86,7 +90,7 @@ const selectBallMutation: Extension = () => {
           .slice(Math.max(0, user.game.step - 5), user.game.step)
           .includes(number)
       )
-        return { success: false, message: "Can't select ball now!" };
+        return { success: false, message: "server.game.balls.cantSelectNow" };
 
       const res = await sCtx.prisma.playerBallBind.create({
         data: {
@@ -112,9 +116,10 @@ const selectBallMutation: Extension = () => {
         });
       }
 
-      if (!res) return { success: false, message: "Failed to select ball" };
+      if (!res)
+        return { success: false, message: "server.game.balls.failedToSelect" };
 
-      return { success: true, message: "Selected!" };
+      return { success: true, message: "server.game.balls.selected" };
     },
   });
 };

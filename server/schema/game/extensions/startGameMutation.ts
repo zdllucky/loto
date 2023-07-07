@@ -4,11 +4,11 @@ import { connection, Queues } from "../../../brokers/consts";
 import { Queue } from "bullmq";
 
 const startGameMutation: Extension = () => {
-  const StartPrivateGameResult = graphql.object<{
+  const StartGameResult = graphql.object<{
     success: boolean;
     message: string | undefined;
   }>()({
-    name: "StartPrivateGameResult",
+    name: "StartGameResult",
     fields: {
       success: graphql.field({ type: graphql.nonNull(graphql.Boolean) }),
       message: graphql.field({ type: graphql.String }),
@@ -16,13 +16,13 @@ const startGameMutation: Extension = () => {
   });
 
   return graphql.field({
-    type: graphql.nonNull(StartPrivateGameResult),
+    type: graphql.nonNull(StartGameResult),
     resolve: async (rootVal, _, context) => {
       const sCtx = context.sudo();
 
       const userId = context.session?.itemId;
 
-      if (!userId) return { success: false, message: "Unauthorized" };
+      if (!userId) return { success: false, message: "server.unauthorized" };
 
       const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
@@ -38,16 +38,16 @@ const startGameMutation: Extension = () => {
         },
       });
 
-      if (!user) return { success: false, message: "User not found" };
+      if (!user) return { success: false, message: "server.userNotFound" };
 
       if (!user.ownedRoom)
-        return { success: false, message: "User is not in a room" };
+        return { success: false, message: "server.room.notFound" };
 
       if (user.ownedRoom.users.length < 2)
-        return { success: false, message: "Room has not got enough users." };
+        return { success: false, message: "server.room.tooFewUsers" };
 
       if (user.ownedRoom.users.length > 5)
-        return { success: false, message: "Room has too many users" };
+        return { success: false, message: "server.room.tooManyUsers" };
 
       const createGameProcedureQueue = new Queue(
         Queues.createGameProcedure.name,
@@ -60,7 +60,7 @@ const startGameMutation: Extension = () => {
 
       return {
         success: true,
-        message: `Game create event sent`,
+        message: `server.game.startRequestSent`,
         roomId: user.ownedRoom.id,
       };
     },

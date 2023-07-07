@@ -10,7 +10,7 @@ export default () => ({
           throw new Error(message);
         }
       } catch (e) {
-        alert(e.message);
+        alert(Alpine.store("loc").t(e.message));
       } finally {
         Alpine.$router.replace("/");
       }

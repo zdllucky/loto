@@ -28,6 +28,14 @@ const joinRoomMutation: Extension = () => {
     resolve: async (rootVal, { roomId }, context) => {
       const sCtx = context.sudo();
 
+      const userId = context.session?.itemId;
+
+      if (!userId)
+        return {
+          __typename: "JoinRoomFailure",
+          message: "server.unauthorized",
+        };
+
       const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
         include: { ownedRoom: { select: { id: true } } },
@@ -36,13 +44,13 @@ const joinRoomMutation: Extension = () => {
       if (!user)
         return {
           __typename: "JoinRoomFailure",
-          message: "User not found",
+          message: "server.userNotFound",
         };
 
       if (user.gameId)
         return {
           __typename: "JoinRoomFailure",
-          message: "User already in game",
+          message: "server.game.userAlreadyInGame",
         };
 
       if (user.ownedRoom?.id)
@@ -61,19 +69,19 @@ const joinRoomMutation: Extension = () => {
       if (!room)
         return {
           __typename: "JoinRoomFailure",
-          message: "Room not found",
+          message: "server.room.notFound",
         };
 
       if (room.type === "private")
         return {
           __typename: "JoinRoomFailure",
-          message: "Room is private",
+          message: "server.room.isPrivate",
         };
 
       if (room.users.length + room.bots.length >= 5)
         return {
           __typename: "JoinRoomFailure",
-          message: "Room is full",
+          message: "server.room.full",
         };
 
       const res = await sCtx.prisma.user.update({
@@ -85,7 +93,7 @@ const joinRoomMutation: Extension = () => {
       if (!res.roomId)
         return {
           __typename: "JoinRoomFailure",
-          message: "Failed to join room",
+          message: "server.room.failedToJoin",
         };
 
       return { __typename: "JoinRoomSuccess", roomId };

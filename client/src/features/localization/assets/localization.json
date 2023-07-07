@@ -1,6 +1,51 @@
 {
   "en": {
     "lang": "en",
+    "server": {
+      "unauthorized": "Unauthorized",
+      "userNotFound": "User not found",
+      "game": {
+        "notPlayer": "You are not a player of this game",
+        "finishedAlready": "Game has already finished",
+        "exitAndFinish": "You have left the game and it has finished",
+        "exit": "You have left the game",
+        "startRequestSent": "Game is about to begin shortly",
+        "userAlreadyInGame": "You have joined game already",
+        "notFound": "No active game found",
+        "notStartedYet": "Game has not started yet",
+        "cards": {
+          "notFoundForNumber": "No such number in card",
+          "notFoundForGame": "No such card in game"
+        },
+        "balls": {
+          "cantSelectNow": "Can't select this ball now",
+          "alreadySelected": "Ball has already been selected",
+          "failedToSelect": "Failed to select ball",
+          "selected": "Ball selected"
+        }
+      },
+      "room": {
+        "notFound": "Room not found",
+        "isPrivate": "Can't join, room is private",
+        "full": "Room is full",
+        "tooFewUsers": "Too few players in the room",
+        "tooManyUsers": "Too many players in the room",
+        "wrongPassword": "Wrong password, try again",
+        "notInRoom": "You are not in this room",
+        "failedToExit": "Failed to exit room",
+        "failedToJoin": "Failed to join room",
+        "notPrivate": "Can't join, room is not private",
+        "alreadyInRoom": "You are already in this room",
+        "joined": "Joined room, waiting for the game to begin"
+      },
+      "user": {
+        "wrongLoginLength": "Login must be between 5 and 32 characters",
+        "wrongLoginChars": "Login must contain only letters, numbers and underscores",
+        "wrongPasswordLength": "Password must be between 8 and 32 characters",
+        "failedToRegister": "Failed to register, please try again",
+        "loginTaken": "Login is already taken, please pick up another one"
+      }
+    },
     "app": {
       "title": "Lotto"
     },
@@ -102,6 +147,51 @@
   },
   "ru": {
     "lang": "ru",
+    "server": {
+      "unauthorized": "Вы не авторизованы",
+      "userNotFound": "Пользователь не найден",
+      "game": {
+        "notPlayer": "Вы не являетесь участником этой игры",
+        "finishedAlready": "Игра уже закончилась",
+        "exitAndFinish": "Вы вышли из игры, и она закончилась",
+        "exit": "Вы покинули игру",
+        "startRequestSent": "Игра начнется в ближайшее время",
+        "userAlreadyInGame": "Вы уже присоединились к игре",
+        "notFound": "Активная игра не найдена",
+        "notStartedYet": "Игра еще не началась",
+        "cards": {
+          "notFoundForNumber": "Такого номера нет на карточке",
+          "notFoundForGame": "Такой карточки нет в игре"
+        },
+        "balls": {
+          "cantSelectNow": "Сейчас невозможно отметить этот номер",
+          "alreadySelected": "Этот номер уже был отмечен",
+          "failedToSelect": "Не удалось отметить номер",
+          "selected": "Номер отмечен"
+        }
+      },
+      "room": {
+        "notFound": "Комната не найдена",
+        "isPrivate": "Невозможно присоединиться, комната закрыта",
+        "full": "В комнате нет свободных мест",
+        "tooFewUsers": "В комнате слишком мало игроков",
+        "tooManyUsers": "В комнате слишком много игроков",
+        "wrongPassword": "Неверный пароль, попробуйте еще раз",
+        "notInRoom": "Вы не в этой комнате",
+        "failedToExit": "Не удалось покинуть комнату",
+        "failedToJoin": "Не удалось присоединиться к комнате",
+        "notPrivate": "Невозможно присоединиться, комната открыта",
+        "alreadyInRoom": "Вы уже находитесь в этой комнате",
+        "joined": "Вы присоединились к комнате, ожидайте начала игры"
+      },
+      "user": {
+        "wrongLoginLength": "Логин должен быть от 5 до 32 символов",
+        "wrongLoginChars": "Логин должен содержать только латинские буквы, цифры и знак \"_\"",
+        "wrongPasswordLength": "Пароль должен быть от 8 до 32 символов",
+        "failedToRegister": "Не удалось зарегистрироваться, попробуйте еще раз",
+        "loginTaken": "Этот логин уже занят, пожалуйста, выберите другой"
+      }
+    },
     "app": {
       "title": "Лото"
     },
@@ -199,6 +289,152 @@
       "easy": "Легко",
       "medium": "Сред.",
       "hard": "Сложно"
+    }
+  },
+  "kk": {
+    "lang": "kk",
+    "server": {
+      "unauthorized": "Авторизация жасалмаған",
+      "userNotFound": "Пайдаланушы табылмады",
+      "game": {
+        "notPlayer": "Сіз бұл ойынның ойыншысы емессіз",
+        "finishedAlready": "Ойын аяқталды",
+        "exitAndFinish": "Сіз ойыннан шықтыңыз және ол аяқталды",
+        "exit": "Сіз ойыннан шықтыңыз",
+        "startRequestSent": "Ойын жақын арада басталады",
+        "userAlreadyInGame": "Сіз ойынға қосылдыңыз",
+        "notFound": "Белсенді ойын табылмады",
+        "notStartedYet": "Ойын әлі басталмаған",
+        "cards": {
+          "notFoundForNumber": "Бұл нөмір карточкада жоқ",
+          "notFoundForGame": "Бұл карточка ойында жоқ"
+        },
+        "balls": {
+          "cantSelectNow": "Қазір бұл нөмірді таңдау мүмкін емес",
+          "alreadySelected": "Бұл нөмір әлден таңдалды",
+          "failedToSelect": "Нөмірді таңдау сәтсіз аяқталды",
+          "selected": "Нөмір таңдалды"
+        }
+      },
+      "room": {
+        "notFound": "Бөлме табылмады",
+        "isPrivate": "Қосылу мүмкін емес, бөлме жеке",
+        "full": "Бөлмеде бос орын жоқ",
+        "tooFewUsers": "Бөлмеде ойыншылар жеткіліксіз",
+        "tooManyUsers": "Бөлмеде ойыншылар тым көп",
+        "wrongPassword": "Құпия сөз қате, қайталап көріңіз",
+        "notInRoom": "Сіз бұл бөлмеде емессіз",
+        "failedToExit": "Бөлмеден шығу сәтсіз аяқталды",
+        "failedToJoin": "Бөлмеге қосылу сәтсіз аяқталды",
+        "notPrivate": "Қосылу мүмкін емес, бөлме ашық",
+        "alreadyInRoom": "Сіз бұл бөлмеде тұрасыз",
+        "joined": "Бөлмеге қосылдыңыз, ойын басталуын күтіңіз"
+      },
+      "user": {
+        "wrongLoginLength": "Логин 5-тен 32 символға дейін болуы керек",
+        "wrongLoginChars": "Логин тек латын әріптері, сандары және \"_\" белгісін қамтиды",
+        "wrongPasswordLength": "Құпия сөз 8-ден 32 символға дейін болуы керек",
+        "failedToRegister": "Тіркелу сәтсіз аяқталды",
+        "loginTaken": "Бұл логин алынған, басқа таңдаңыз"
+      }
+    },
+    "app": {
+      "title": "Лото"
+    },
+    "pageRules": {
+      "title": "Ойын ережелері"
+    },
+    "pageMain": {
+      "title": "Басты бет",
+      "actions": {
+        "continue": "Жалғастыру",
+        "joinGames": "Ойынға қосылу",
+        "profile": "Профиль",
+        "rules": "Ойын ережелері"
+      },
+      "leaderboard": {
+        "title": "Басшылар кестесі",
+        "winRating": "Жеңіс рейтингі",
+        "skillRating": "Дағды рейтингі",
+        "prev": "Артқа",
+        "next": "Алға"
+      }
+    },
+    "pageProfile": {
+      "title": "Профиль",
+      "sysLang": "Жүйе тілі",
+      "actions": {
+        "signOut": "Шығу"
+      },
+      "theme": {
+        "label": "Тема",
+        "light": "Жарық",
+        "dark": "Қараңғы",
+        "system": "Жүйелік"
+      }
+    },
+    "pageRooms": {
+      "title": "Бөлмелер",
+      "actions": {
+        "join": {
+          "button": "Қосылу",
+          "title": "Бөлмеге қосылу",
+          "roomId": "Бөлме ID-і",
+          "password": "Құпия сөз",
+          "submit": "Бөлмеге қосылу"
+        },
+        "create": {
+          "button": "＋ Жасау",
+          "title": "Бөлме жасау",
+          "difficulty": {
+            "name": "Қиындық",
+            "easy": "Оңай",
+            "medium": "Орташа",
+            "hard": "Қиын"
+          },
+          "includePassword": "Құпия сөзбен?",
+          "password": "Құпия сөзді енгізіңіз...",
+          "submit": "Бөлме жасау"
+        }
+      }
+    },
+    "pageSign": {
+      "title": "Кіру",
+      "username": "Пайдаланушы аты",
+      "password": "Құпия сөз",
+      "charPlaceholder": "%n символдан кем емес",
+      "buttons": {
+        "signIn": "Кіру",
+        "register": "Тіркелу"
+      }
+    },
+    "pageRoomAwait": {
+      "title": "Күтуде",
+      "roomId": "Бөлме&nbsp;ID-і:",
+      "password": "Құпия сөз:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+      "progress": "Ойыншыларды күту: ",
+      "actions": {
+        "copy": "Көшіру",
+        "start": "Ойынды бастау",
+        "leave": "Бөлмеден шығу"
+      }
+    },
+    "pageGame": {
+      "playersProgress": "Ойыншылардың прогрессі",
+      "winnerMessage": "Ойын аяқталды! Жеңімпаз: ",
+      "actions": {
+        "leave": "Ойыннан шығу",
+        "ensureLeave": "Сіз ойыннан шығуға сенімдісіз бе?"
+      }
+    },
+    "buttons": {
+      "back": "Артқа",
+      "signOut": "Шығу"
+    },
+    "badges": {
+      "easy": "Оңай",
+      "medium": "Орташа",
+      "hard": "Қиын"
     }
   }
 }

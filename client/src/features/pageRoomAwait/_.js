@@ -42,7 +42,7 @@ Alpine.data("waitRoom", () => ({
       await Alpine.$repo.games.startGame();
       this.hideStartButton = true;
     } catch (e) {
-      alert(e.message);
+      alert(Alpine.store("loc").t(e.message));
 
       Alpine.$router.replace("/");
     }
@@ -53,7 +53,7 @@ Alpine.data("waitRoom", () => ({
       Alpine.$router.replace("/room/all");
       await Alpine.store("user").refresh();
     } catch (e) {
-      alert(e.message);
+      alert(Alpine.store("loc").t(e.message));
 
       Alpine.$router.replace("/");
     }

@@ -20,7 +20,7 @@ const exitGameMutation: Extension = () => {
 
       const userId = context.session?.itemId;
 
-      if (!userId) return { success: false, message: "Unauthorized" };
+      if (!userId) return { success: false, message: "server.unauthorized" };
 
       const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
@@ -40,12 +40,13 @@ const exitGameMutation: Extension = () => {
         },
       });
 
-      if (!user) return { success: false, message: "User not found" };
+      if (!user) return { success: false, message: "server.userNotFound" };
 
-      if (!user.game) return { success: false, message: "User not in game" };
+      if (!user.game)
+        return { success: false, message: "server.game.notPlayer" };
 
       if (user.game.gameStatus === "finished")
-        return { success: true, message: "Game already finished." };
+        return { success: true, message: "server.game.finishedAlready" };
 
       await sCtx.prisma.$transaction(async (prisma) => {
         await prisma.user.update({
@@ -88,10 +89,10 @@ const exitGameMutation: Extension = () => {
           },
         });
 
-        return { success: true, message: "Exited. Game finished." };
+        return { success: true, message: "server.game.exitAndFinish" };
       }
 
-      return { success: true, message: "Exited." };
+      return { success: true, message: "server.game.exit" };
     },
   });
 };

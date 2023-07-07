@@ -95,6 +95,7 @@ const schema = list({
         { label: "Auto", value: "unset" },
         { label: "English", value: "en" },
         { label: "Русский", value: "ru" },
+        { label: "Қазақша", value: "kk" },
       ],
       type: "enum",
       defaultValue: "unset",

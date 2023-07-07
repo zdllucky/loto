@@ -9,7 +9,7 @@ export default () => ({
       await Alpine.store("user").refresh();
       Alpine.$router.replace("/room/await");
     } catch (e) {
-      alert(e.message ?? "Something went wrong");
+      alert(Alpine.store("loc").t(e.message));
     } finally {
       this.isLoading = false;
     }

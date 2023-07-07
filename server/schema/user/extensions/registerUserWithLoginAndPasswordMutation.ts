@@ -11,13 +11,42 @@ const registerUserWithLoginAndPasswordMutation: Extension = (base) =>
     async resolve(source, { login, password }, context) {
       const sudoContext = context.sudo();
 
+      if (login.length < 5 || login.length > 32)
+        return {
+          __typename: "UserAuthenticationWithPasswordFailure",
+          message: "server.user.wrongLoginLength",
+        };
+
+      if (new RegExp(/[^a-zA-Z0-9_]/).test(login))
+        return {
+          __typename: "UserAuthenticationWithPasswordFailure",
+          message: "server.user.wrongLoginChars",
+        };
+
+      if (password.length < 8 || password.length > 32)
+        return {
+          __typename: "UserAuthenticationWithPasswordFailure",
+          message: "server.user.wrongPasswordLength",
+        };
+
+      if (
+        await sudoContext.prisma.user.findUnique({
+          where: { login },
+        })
+      )
+        return {
+          __typename: "UserAuthenticationWithPasswordFailure",
+          message: "server.user.loginTaken",
+        };
+
       try {
         await sudoContext.query.User.createOne({
           data: { login, password },
         });
       } catch (e: any) {
         return {
-          message: e?.message ?? "Undefined error",
+          __typename: "UserAuthenticationWithPasswordFailure",
+          message: "server.user.failedToRegister",
         };
       }
       const res = await context.graphql.run({

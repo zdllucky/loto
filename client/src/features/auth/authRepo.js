@@ -1,3 +1,5 @@
+import Alpine from "alpinejs";
+
 export const authenticateUserWithPassword = async (login, password) => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     body: JSON.stringify({
@@ -53,5 +55,5 @@ export const registerUserWithLoginAndPassword = async (login, password) => {
 
   if (data.sessionToken) {
     return data.sessionToken;
-  } else throw new Error(data.message ?? "Unknown error");
+  } else throw new Error(Alpine.store("loc").t(data.message));
 };

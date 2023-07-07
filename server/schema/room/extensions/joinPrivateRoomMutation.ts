@@ -24,7 +24,7 @@ const joinPrivateRoomMutation: Extension = () => {
 
       const userId = context.session?.itemId;
 
-      if (!userId) return { success: false, message: "Unauthorized" };
+      if (!userId) return { success: false, message: "server.unauthorized" };
 
       const user = await sCtx.prisma.user.findUnique({
         where: { id: context.session?.itemId },
@@ -35,10 +35,10 @@ const joinPrivateRoomMutation: Extension = () => {
         },
       });
 
-      if (!user) return { success: false, message: "User not found" };
+      if (!user) return { success: false, message: "server.userNotFound" };
 
       if (user.gameId)
-        return { success: false, message: "User is already in a game" };
+        return { success: false, message: "server.game.userAlreadyInGame" };
 
       const room = await sCtx.prisma.room.findUnique({
         where: { id: roomId },
@@ -49,19 +49,19 @@ const joinPrivateRoomMutation: Extension = () => {
         },
       });
 
-      if (!room) return { success: false, message: "Room not found" };
+      if (!room) return { success: false, message: "server.room.notFound" };
 
       if (room.type !== "private")
-        return { success: false, message: "Room is not private" };
+        return { success: false, message: "server.room.notPrivate" };
 
       if (room.password !== password)
-        return { success: false, message: "Wrong password" };
+        return { success: false, message: "server.room.wrongPassword" };
 
       if (room.users.length >= 5)
-        return { success: false, message: "Room is full" };
+        return { success: false, message: "server.room.full" };
 
       if (room.users.find((u) => u.id === userId))
-        return { success: false, message: "User is already in the room" };
+        return { success: false, message: "server.room.alreadyInRoom" };
 
       if (user.ownedRoom?.id)
         await context.graphql.run({
@@ -77,7 +77,7 @@ const joinPrivateRoomMutation: Extension = () => {
         },
       });
 
-      return { success: true, message: "Joined successfully" };
+      return { success: true, message: "server.room.joined" };
     },
   });
 };
