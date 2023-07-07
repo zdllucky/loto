@@ -1,4 +1,5 @@
 import Alpine from "alpinejs";
+
 const getGamePlayerProgress = async () => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
@@ -20,7 +21,7 @@ const getGamePlayerProgress = async () => {
   return (await res.json()).data.gamePlayerProgress;
 };
 
-const getGameBalls = async () => {
+const getGameBalls = async ({ gameId }) => {
   const res = await fetch(import.meta.env.VITE_BASE_PATH, {
     method: "POST",
     headers: {
@@ -28,12 +29,13 @@ const getGameBalls = async () => {
       Authorization: "Bearer " + Alpine.store("auth").token,
     },
     body: JSON.stringify({
-      query: `query Query {
-        gameBallSet {
+      query: `query GameBallSet($gameId: ID) {
+        gameBallSet(gameId: $gameId) {
           balls
           gameStatus
         }
       }`,
+      variables: { gameId },
     }),
   });
 

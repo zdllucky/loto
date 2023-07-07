@@ -738,7 +738,7 @@ type Query {
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
   gamePlayerProgress: [Player!]!
-  gameBallSet: GameBalls!
+  gameBallSet(gameId: ID): GameBalls!
   selectedBalls(cardIds: [ID!]!): [CardWithSelectedBalls]!
   personalStatsRating(offset: Int!): PersonalStatsRating!
   totalStatsRating(offset: Int!, page: Int!): TotalStatsRating!

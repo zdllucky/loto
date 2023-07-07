@@ -1,5 +1,6 @@
 import { Extension } from "../../_misc/types";
 import { graphql } from "@keystone-6/core";
+import { redisCache } from "../../../configuration/db";
 
 const gameBallSetQuery: Extension = () => {
   const GameBalls = graphql.object<{ balls: number[]; gameStatus: string }>()({
@@ -14,9 +15,22 @@ const gameBallSetQuery: Extension = () => {
 
   return graphql.field({
     type: graphql.nonNull(GameBalls),
-    args: {},
-    resolve: async (rootVal, _, context) => {
+    args: {
+      gameId: graphql.arg({ type: graphql.ID }),
+    },
+    resolve: async (rootVal, { gameId }, context) => {
       const sCtx = context.sudo();
+
+      /** Checking cache set on [worker]{@link gameStepperQueueOnGameWorkerInit } */
+      // TODO: add stronger game and user validation
+      if (gameId && context.session) {
+        const cache = await redisCache.get<{
+          gameStatus: string;
+          balls: number[];
+        }>(`game_balls:${gameId}`);
+
+        if (cache) return cache;
+      }
 
       const game = await sCtx.prisma.game.findFirst({
         where: { users: { some: { id: context.session?.itemId ?? "" } } },

@@ -44,7 +44,8 @@ export let redisCache: RedisCache;
 const db: ktc.Config["db"] = {
   provider: "postgresql",
   url:
-    `${process.env.DATABASE_URL}?connection_limit=10&pool_timeout=10` ||
+    (process.env.DATABASE_URL &&
+      `${process.env.DATABASE_URL}?connection_limit=10&pool_timeout=10`) ||
     "postgres://postgres:postgres@localhost:5432/postgres?connection_limit=10&pool_timeout=10",
   extendPrismaSchema: (s) =>
     `${s.replace(exGeneratorClient, generatorClient)}${generatorZod}`,

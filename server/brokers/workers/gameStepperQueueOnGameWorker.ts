@@ -2,6 +2,7 @@ import { connection, Queues } from "../consts";
 import { Queue, Worker } from "bullmq";
 import { Context } from ".keystone/types";
 import { Prisma } from ".prisma/client";
+import { redisCache } from "../../configuration/db";
 
 const gameStepperQueueOnGameWorkerInit = ({
   context,
@@ -64,6 +65,19 @@ const gameStepperQueueOnGameWorkerInit = ({
             where: { id: gameId },
             data: { step: { increment: 1 } },
           });
+
+          /** Setting cache for [gameBallSetQuery]{@link gameBallSetQuery} */
+          await redisCache.set(
+            `game_balls:${gameId}`,
+            {
+              gameStatus: game.gameStatus,
+              balls:
+                (game?.balls as Array<number>)
+                  .slice(Math.max(game.step - 5, 0), game.step)
+                  .reverse() ?? [],
+            },
+            Math.floor(12000 / speed)
+          );
 
           await botMoveSimulationQueue.add("botMoveSimulation", {
             gameId,

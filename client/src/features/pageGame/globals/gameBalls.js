@@ -30,7 +30,9 @@ export default () => ({
   },
   async loadBalls() {
     try {
-      const { balls, gameStatus } = await Alpine.$repo.games.getGameBalls();
+      const { balls, gameStatus } = await Alpine.$repo.games.getGameBalls({
+        gameId: Alpine.store("user").gameId,
+      });
 
       this.balls = balls;
       this.gameStatus = gameStatus;
