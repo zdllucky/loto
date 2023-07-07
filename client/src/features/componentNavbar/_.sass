@@ -1,10 +1,13 @@
+@use "~bootswatch/dist/sketchy/variables.scss" as t
 .top-3
   top: 1rem
 
 [data-bs-theme=light] .navbar
   @extend .bg-light
-[data-bs-theme=dark] .navbar *
-  @extend .text-body
+[data-bs-theme=dark] .navbar
+  background-color: t.$gray-900
+  & *
+    @extend .text-body
 
 .navbar
   .navbar-nav

@@ -21,7 +21,7 @@ include ../componentNavbar/_
         include ./components/joinPrivateRoom
       .col-auto.ps-0
         include ./components/createRoom
-    .row
+    .row.mb-5
       .col
         .list-group.overflow-hidden(x-autoanimate)
           template(:key="room.id", x-data="selectRoom")&attributes({"x-for": "room in rooms"})

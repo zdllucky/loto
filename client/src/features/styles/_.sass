@@ -8,9 +8,10 @@ $headings-font-family:        $font-family-sans-serif !default
 @import "~bootstrap-icons/font/bootstrap-icons.scss"
 @import "~bootswatch/dist/sketchy/bootswatch.scss"
 
+
 html, body
   scroll-behavior: auto
-  overflow-scrolling: auto
+  overflow-scrolling: touch
   @extend .h-100
 
   &::-webkit-scrollbar, *::-webkit-scrollbar
@@ -49,10 +50,3 @@ input::-webkit-contacts-auto-fill-button
   pointer-events: none
   position: absolute
   right: 0
-
-[data-bs-theme=light] nav.main-nav
-  @extend .bg-light
-[data-bs-theme=dark]
-  nav.main-nav
-    .navbar-brand
-      @extend .text-light

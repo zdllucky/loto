@@ -72,7 +72,7 @@ include ../componentNavbar/_
           x-text="$store.loc.l.badges[room.speed === 2 ? 'easy' : room.speed === 3 ? 'medium' : 'hard']",
           :class="{ 'bg-success': room.speed === 2, 'bg-warning': room.speed === 3, 'bg-danger': room.speed === 4 }"
         )
-    .row
+    .row.mb-5
       .col-12
         ul.list-group.overflow-hidden(x-autoanimate)
           template(:key="user.id")&attributes({"x-for": "user in room.users"})
