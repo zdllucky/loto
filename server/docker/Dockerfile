@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --ignore-scripts
+RUN NODE_ENV=production npm ci --ignore-scripts
 
 FROM node:16-alpine
 
