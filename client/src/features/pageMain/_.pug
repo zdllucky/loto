@@ -6,7 +6,7 @@ include ../componentNavbar/_
       +profileButton.nav-link.py-0
         i.bi.bi-person-circle.me-1
         span(x-text="$store.loc.l.pageMain.actions.profile")
-  .container-fluid.mt-5.h-100(x-autoanimate)
+  .container-fluid.mt-5.h-100(x-autoanimate, x-init="$store.user.refresh()")
     template(x-if="$store.user.roomId")
       .row
         .col.pb-3
