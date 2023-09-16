@@ -108,6 +108,8 @@ const createGameProcedureWorkerInit = ({ context }: { context: Context }) =>
       removeOnFail: {
         count: 1000,
       },
+      maxStalledCount: 0,
+      stalledInterval: 30000,
     }
   );
 

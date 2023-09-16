@@ -1,6 +1,6 @@
 {
   "name": "keystone-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development COOKIE_SECRET=f7401e2ec9452dc942a52c8f45f2d7c5424c37f92c85afb24ed6470580d1c05c keystone dev --with-migrations",
@@ -51,8 +51,7 @@
   "eslintConfig": {
     "env": {
       "es6": true,
-      "node": true,
-      "browser": true
+      "node": true
     },
     "rules": {
       "@typescript-eslint/no-non-null-assertion": "off",
@@ -83,14 +82,35 @@
       "eslint-plugin-react",
       "@typescript-eslint"
     ],
-    "globals": {
-      "AndroidFunction": "readonly",
-      "onAlpineInit": "readonly",
-      "webkit": "readonly"
-    },
-    "ignorePatterns": [
-      "**/*.d.ts",
-      "**/node_modules/**"
+    "overrides": [
+      {
+        "files": [
+          "./client/**/*.js",
+          "**/*.tsx"
+        ],
+        "env": {
+          "browser": true,
+          "es6": true
+        }
+      },
+      {
+        "files": [
+          "./client/**/*.js"
+        ],
+        "globals": {
+          "AndroidFunction": "readonly",
+          "onAlpineInit": "readonly",
+          "webkit": "readonly"
+        }
+      },
+      {
+        "files": [
+          "**/*.pug"
+        ],
+        "plugins": [
+          "pug"
+        ]
+      }
     ]
   },
   "prettier": {
@@ -98,8 +118,15 @@
     "tabWidth": 2,
     "singleQuote": false,
     "jsxSingleQuote": false,
-    "plugins": [
-      "@prettier/plugin-pug"
+    "overrides": [
+      {
+        "files": [
+          "client/**/*.pug"
+        ],
+        "plugins": [
+          "@prettier/plugin-pug"
+        ]
+      }
     ]
   }
 }

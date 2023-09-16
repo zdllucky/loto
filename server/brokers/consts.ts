@@ -35,7 +35,6 @@ export const Queues = {
   createGameEvent: {
     name: "createGameEvent",
     options: {
-      limit: 100,
       repeat: { every: 10000 },
     },
   },
