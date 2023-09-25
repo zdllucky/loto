@@ -1,16 +1,19 @@
 import { Context } from ".keystone/types";
 import { Queue, Worker } from "bullmq";
 import { connection, Queues } from "../consts";
-const createGameEventWorkerInit = ({ context }: { context: Context }) =>
+
+const createGameEventWorkerInit = ({
+  context,
+  createGameProcedureQueue,
+}: {
+  context: Context;
+  createGameProcedureQueue: Queue;
+}) =>
   new Worker(
     Queues.createGameEvent.name,
     async ({ data }) => {
       const { limit } = data;
       const sCtx = context.sudo();
-      const createGameProcedureQueue = new Queue(
-        Queues.createGameProcedure.name,
-        { connection }
-      );
 
       const res = await sCtx.prisma.$transaction(async (prisma) => {
         const [{ room_count }] = await prisma.$queryRaw<

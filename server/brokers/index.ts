@@ -12,6 +12,7 @@ import gameStepperQueueOnGameWorkerInit from "./workers/gameStepperQueueOnGameWo
 import botMoveSimulationWorkerInit from "./workers/botMoveSimulationWorker";
 import finishGameEventWorkerInit from "./workers/finishGameEventWorker";
 import finishGameProcedureWorkerInit from "./workers/finishGameProcedureWorker";
+
 export interface BigInt {
   /** Convert to BigInt to string form in JSON.stringify */
   toJSON: () => string;
@@ -30,16 +31,24 @@ BigInt.prototype.toJSON = function () {
   }
 };
 
-const initMQService = async ({ context }: { context: Context }) => ({
-  ...(await initRoomGenerator({ context })),
-  ...(await initRoomBotsGenerator({ context })),
-  ...(await initBotsCleanup({ context })),
-  ...(await initFullFakeRoomCleanup({ context })),
-  ...(await initCreateGameProcedure({ context })),
-  ...(await initCreateGameEvent({ context })),
-  ...(await initGenerateGameStepperQueuesOnGame({ context })),
-  ...(await initFinishGame({ context })),
-});
+const initMQService = async ({ context }: { context: Context }) => {
+  const createGameProcedure = await initCreateGameProcedure({ context });
+
+  return {
+    ...(await initRoomGenerator({ context })),
+    ...(await initRoomBotsGenerator({ context })),
+    ...(await initBotsCleanup({ context })),
+    ...(await initFullFakeRoomCleanup({ context })),
+    ...(await initCreateGameProcedure({ context })),
+    createGameProcedure,
+    ...(await initCreateGameEvent({
+      context,
+      createGameProcedureQueue: createGameProcedure.createGameProcedureQueue,
+    })),
+    ...(await initGenerateGameStepperQueuesOnGame({ context })),
+    ...(await initFinishGame({ context })),
+  };
+};
 
 const initFinishGame = async ({ context }: { context: Context }) => {
   const finishGameEventQueue = new Queue(Queues.finishGameEvent.name, {
@@ -147,18 +156,27 @@ const initCreateGameProcedure = async ({ context }: { context: Context }) => {
   return { createGameProcedureQueue, createGameProcedureWorker };
 };
 
-const initCreateGameEvent = async ({ context }: { context: Context }) => {
+const initCreateGameEvent = async ({
+  context,
+  createGameProcedureQueue,
+}: {
+  context: Context;
+  createGameProcedureQueue: Queue;
+}) => {
   const createGameEventQueue = new Queue(Queues.createGameEvent.name, {
     connection,
   });
 
-  const createGameEventWorker = createGameEventWorkerInit({ context });
+  const createGameEventWorker = createGameEventWorkerInit({
+    context,
+    createGameProcedureQueue,
+  });
 
   createGameEventWorker.isRunning() || (await createGameEventWorker.run());
 
   await createGameEventQueue.add(
     "createGameEventRepeatedly",
-    { limit: Queues.createGameEvent.options.limit },
+    {},
     { repeat: Queues.createGameEvent.options.repeat }
   );
 
